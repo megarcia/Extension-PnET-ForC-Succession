@@ -1,0 +1,174 @@
+﻿// NOTE: File --> System.IO
+// NOTE: Landis.Data --> Landis.Core
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Landis.Core;
+
+namespace Landis.Library.PnETCohorts
+{
+    public static class Names
+    {
+        public static SortedDictionary<string, Parameter<string>> parameters = new SortedDictionary<string, Parameter<string>>(StringComparer.InvariantCultureIgnoreCase);
+        public const string ExtensionName = "PnET-Succession";
+        public const string PnETOutputSites = "PnETOutputSites";
+        public const string EcoregionParameters = "EcoregionParameters";
+        public const string DisturbanceReductions = "DisturbanceReductions";
+        public const string PnETGenericParameters = "PnETGenericParameters";
+        public const string PnETGenericDefaultParameters = "PnETGenericDefaultParameters";
+        public const string VanGenuchten = "VanGenuchten";
+        public const string SaxtonAndRawls = "SaxtonAndRawlsParameters";
+        public const string PnETSpeciesParameters = "PnETSpeciesParameters";
+        public const string StartYear = "StartYear";
+        public const string Timestep = "Timestep";
+        public const string SeedingAlgorithm = "SeedingAlgorithm";
+        public const string LayerThreshRatio = "LayerThreshRatio";
+        public const string MaxCanopyLayers = "MaxCanopyLayers";
+        public const string IMAX = "IMAX";
+        public const string InitialCommunities = "InitialCommunities";
+        public const string InitialCommunitiesMap = "InitialCommunitiesMap";
+        public const string InitialCommunitiesSpinup = "InitialCommunitiesSpinup";
+        public const string MinFolRatioFactor = "MinFolRatioFactor";
+        public const string LeafLitterMap = "LeafLitterMap";
+        public const string WoodDebrisMap = "WoodyDebrisMap";
+        public const string ClimateConfigFile = "ClimateConfigFile";
+        public const string MapCoordinates = "MapCoordinates";
+        public const string PnEToutputSiteCoordinates = "PnEToutputSiteCoordinates";
+        public const string PnEToutputSiteLocation = "PnEToutputSiteLocation";
+        public const string PressureHeadCalculationMethod = "PressureHeadCalculationMethod";
+        public const string Wythers = "Wythers";
+        public const string DTemp = "DTemp";
+        public const string AMaxBFCO2 = "AMaxBFCO2";
+        public const string SoilIceDepth = "SoilIceDepth";
+        public const string LeakageFrostDepth = "LeakageFrostDepth";
+        public const string CohortBinSize = "CohortBinSize";
+        public const string InvertPest = "InvertPest";
+        public const string PARunits = "PARunits";
+        public const string SpinUpWaterStress = "SpinUpWaterStress";
+        public const string PrecipEventsWithReplacement = "PrecipEventsWithReplacement";
+        public const string Parallel = "Parallel";
+        public const string CohortStacking = "CohortStacking";
+        public const string ETExtCoeff = "ETExtCoeff";
+        public const string ReferenceETCropCoeff = "ReferenceETCropCoeff";
+        public const string CanopySumScale = "CanopySumScale";
+       
+        /// <summary>
+        /// Ecoregion parameters
+        /// </summary>
+        public const string LeakageFrac = "LeakageFrac";
+        public const string RunoffCapture = "RunoffCapture";
+        public const string PrecLossFrac = "PrecLossFrac";
+        public const string RootingDepth = "RootingDepth";
+        public const string SoilType = "SoilType";
+        public const string PrecIntConst = "PrecIntConst";
+        public const string SnowSublimFrac = "SnowSublimFrac";
+        public const string PrecipEvents = "PrecipEvents";
+        public const string Latitude = "Latitude";
+        public const string climateFileName = "climateFileName";
+        public const string WinterSTD = "WinterSTD";
+        public const string MossDepth = "MossDepth";
+        public const string EvapDepth = "EvapDepth";
+        public const string FrostFactor = "FrostFactor";
+
+        /// <summary>
+        /// Species parameters
+        /// </summary>
+        public const string FolN_slope = "FolN_slope";
+        public const string FolN_intercept = "FolN_intercept";
+        public const string FolBiomassFrac_slope = "FolBiomassFrac_slope";
+        public const string FolBiomassFrac_intercept = "FolBiomassFrac_intercept";
+        public const string FOzone_slope = "FOzone_slope";
+        public static readonly string[] MutuallyExclusiveCanopyTypes = new string[] { "dark", "light", "decid", "ground", "open" };
+        public const string LeafOnMinT = "LeafOnMinT"; // Optional
+        public const string RefoliationMinimumTrigger = "RefolMinimumTrigger";
+        public const string MaxRefoliationFrac = "RefolMaximum";
+        public const string RefoliationCost = "RefolCost";
+        public const string NonRefoliationCost = "NonRefolCost";
+
+        public static List<string> AllNames
+        {
+            get
+            {
+                List<string> Names = new List<string>();
+                foreach (var name in typeof(Names).GetFields())
+                {
+                    string value = name.GetValue(name).ToString();
+                    Names.Add(value);
+                }
+                return Names;
+            }
+        }
+
+        public static void LoadParameters(SortedDictionary<string, Parameter<string>> modelParameters)
+        {
+            parameters = modelParameters;
+        }
+
+        public static bool TryGetParameter(string label, out Parameter<string> parameter)
+        {
+            parameter = null;
+            if (label == null)
+                return false;
+            if (parameters.ContainsKey(label) == false)
+                return false;
+            else
+            {
+                parameter = parameters[label];
+                return true;
+            }
+        }
+
+        public static Dictionary<string, Parameter<string>> LoadTable(string label, List<string> RowLabels, List<string> Columnheaders, bool transposed = false)
+        {
+            string filename = GetParameter(label).Value;
+            if (File.Exists(filename) == false)
+                throw new Exception("File not found " + filename);
+            ParameterTableParser parser = new ParameterTableParser(filename, label, RowLabels, Columnheaders, transposed);
+            Dictionary<string, Parameter<string>> parameters = Landis.Data.Load<Dictionary<string, Parameter<string>>>(filename, parser);
+
+            return parameters;
+        }
+
+        public static Parameter<string> GetParameter(string label)
+        {
+            if (parameters.ContainsKey(label) == false)
+                throw new Exception("No value provided for parameter " + label);
+
+            return parameters[label];
+        }
+
+        public static Parameter<string> GetParameter(string label, float min, float max)
+        {
+            if (parameters.ContainsKey(label) == false)
+                throw new Exception("No value provided for parameter " + label);
+            Parameter<string> p = parameters[label];
+            foreach (KeyValuePair<string, string> value in p)
+            {
+                float f;
+                if (float.TryParse(value.Value, out f) == false)
+                    throw new Exception("Unable to parse value " + value.Value + " for parameter " + label + " unexpected format.");
+                if (f > max || f < min)
+                    throw new Exception("Parameter value " + value.Value + " for parameter " + label + " is out of range. [" + min + "," + max + "]");
+            }
+
+            return p;
+        }
+
+        public static bool HasMultipleMatches(string lifeForm, ref string[] matches)
+        {
+            int matchCount = 0;
+            foreach (string type in MutuallyExclusiveCanopyTypes)
+            {
+                if (!string.IsNullOrEmpty(lifeForm) && lifeForm.ToLower().Contains(type.ToLower()))
+                {
+                    matches[matchCount] = type;
+                    matchCount += 1;
+                }
+                if (matchCount > 1)
+                    return true;
+            }
+            return false;
+        }
+    }
+}

@@ -1,0 +1,69 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Landis.Library.PnETCohorts</RootNamespace>
+    <AssemblyName>Landis.Library.PnETCohorts-v3</AssemblyName>
+    <AssemblyTitle>Landis.Library.PnETCohorts-v3</AssemblyTitle>
+    <AssemblyCopyright>Landis-II-Foundation</AssemblyCopyright>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/LANDIS-II-Foundation/Extension-PnET-Succession</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseUrl>https://github.com/LANDIS-II-Foundation/Extension-PnET-Succession/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>http://www.landis-ii.org</PackageProjectUrl>
+    <NeutralLanguage>English</NeutralLanguage>
+    <Authors>Brian Miranda, Eric Gustafson, Arjan de Bruijn, Matthew Garcia</Authors>
+    <Product>Landis.Library.PnETCohorts</Product>
+    <Copyright>Landis-II-Foundation</Copyright>
+    <Version>3.0.0</Version>
+    <PackageTags>LANDIS-II;Landis;Extension;Succession;PnET</PackageTags>
+    <Description></Description>
+    <PackageReleaseNotes>.NET Standard 2.0 update</PackageReleaseNotes>
+    <FileVersion>3.0.0</FileVersion>
+    <Company>USDA Forest Service</Company>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="lib\**" />
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="lib\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="lib\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="EcoregionClimateVariables.cs" />
+    <Compile Remove="IEcoregionClimateVariables.cs" />
+    <Compile Remove="InitialCommunity\Pixel.cs" />
+    <Compile Remove="WaterStressTable.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Landis.Core" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Landis.Library.Climate-v5">
+      <HintPath>lib\Landis.Library.Climate-v5.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.InitialCommunity.Universal">
+      <HintPath>lib\Landis.Library.InitialCommunity.Universal.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Metadata-v2">
+      <HintPath>lib\Landis.Library.Metadata-v2.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Parameters-v2">
+      <HintPath>lib\Landis.Library.Parameters-v2.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Succession-v9">
+      <HintPath>lib\Landis.Library.Succession-v9.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.UniversalCohorts-v1">
+      <HintPath>lib\Landis.Library.UniversalCohorts-v1.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
