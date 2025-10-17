@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Landis.Extension.Succession.ForC</RootNamespace>
+    <AssemblyName>Landis.Extension.Succession.ForC-v4</AssemblyName>
+    <AssemblyTitle>Landis.Extension.Succession.ForC-v4</AssemblyTitle>
+    <Version>4.1</Version>
+    <AssemblyVersion>4.1</AssemblyVersion>
+    <FileVersion>4.1</FileVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/LANDIS-II-Foundation/Extension-ForCS-Succession</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseUrl>https://github.com/LANDIS-II-Foundation/Extension-ForCS-Succession/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>http://www.landis-ii.org</PackageProjectUrl>
+    <NeutralLanguage>English</NeutralLanguage>
+    <Authors>Caren Dymond, Sarah Beukema</Authors>
+    <Product>Landis.Extension.Succession.ForC</Product>
+    <Copyright></Copyright>
+    <PackageTags>LANDIS-II;Landis;Extension;Succession;ForC</PackageTags>
+    <Description></Description>
+    <PackageReleaseNotes>.NET Standard 2.0 update</PackageReleaseNotes>
+    <Company></Company>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="lib\**" />
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="lib\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="lib\**" />
+    <None Remove="Properties\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Landis.Core" Version="3.0.1" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Landis.Library.InitialCommunity.Universal">
+      <HintPath>lib\Landis.Library.InitialCommunity.Universal.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Metadata-v2">
+      <HintPath>lib\Landis.Library.Metadata-v2.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Parameters-v2">
+      <HintPath>lib\Landis.Library.Parameters-v2.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Succession-v9">
+      <HintPath>lib\Landis.Library.Succession-v9.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.UniversalCohorts-v1">
+      <HintPath>lib\Landis.Library.UniversalCohorts-v1.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

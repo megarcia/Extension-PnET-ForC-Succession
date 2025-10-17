@@ -1,0 +1,437 @@
+// Authors: Caren Dymond, Sarah Beukema
+
+// NOTE: ActiveSite --> Landis.SpatialModeling
+// NOTE: CohortDefoliation --> Landis.Library.UniversalCohorts
+// NOTE: CohortGrowthReduction --> Landis.Library.UniversalCohorts
+// NOTE: ICohort --> Landis.Library.UniversalCohorts
+// NOTE: IEcoregion --> Landis.Core
+// NOTE: ISpecies --> Landis.Core
+// NOTE: ISpeciesCohorts --> Landis.Library.UniversalCohorts
+// NOTE: Percentage --> Landis.Utilities
+// NOTE: SiteCohorts --> Landis.Library.UniversalCohorts
+
+using System;
+using System.Dynamic;
+using Landis.Core;
+using Landis.Library.UniversalCohorts;
+using Landis.SpatialModeling;
+using Landis.Utilities;
+
+namespace Landis.Extension.Succession.ForC
+{
+    /// <summary>
+    /// Calculations for an individual cohort's biomass.
+    /// </summary>
+    /// <remarks>
+    /// References:
+    /// <list type="">
+    ///     <item>
+    ///     Crow, T. R., 1978.  Biomass and production in three contiguous
+    ///     forests in northern Wisconsin. Ecology 59(2):265-273.
+    ///     </item>
+    ///     <item>
+    ///     Niklas, K. J., Enquist, B. J., 2002.  Canonical rules for plant
+    ///     organ biomass partitioning and annual allocation.  Amer. J. Botany
+    ///     89(5): 812-819.
+    ///     </item>
+    /// </list>
+    /// </remarks>
+    public class CohortBiomass : Library.UniversalCohorts.ICalculator
+    {
+
+        /// <summary>
+        /// The single instance of the biomass calculations that is used by
+        /// the plug-in.
+        /// </summary>
+        public static CohortBiomass Calculator;
+
+        // Ecoregion where the cohort's site is located
+        private IEcoregion ecoregion;
+        // Ratio of actual biomass to potential biomass for the cohort.
+        private double B_AP;
+        // Ratio of potential biomass to maximum biomass for the cohort.
+        private double B_PM;
+        // Totaly mortality without annual leaf litter for the cohort
+        private int M_noLeafLitter;
+        private double growthReduction;
+        private double defoliation;
+        public static int SubYear;
+        public static double SpinupMortalityFraction;
+
+        public int MortalityWithoutLeafLitter
+        {
+            get
+            {
+                return M_noLeafLitter;
+            }
+        }
+
+        public CohortBiomass()
+        {
+        }
+
+        /// <summary>
+        /// Calculates the change in a cohort's biomass due to 
+        /// Annual Net Primary Productivity (ANPP), age-related 
+        /// mortality (M_AGE), and development-related mortality 
+        /// (M_BIO). Name is inherited from Succession Library,
+        /// so it's not renamed "CalcBiomassChange" as I (MG) 
+        /// would normally do.
+        /// </summary>
+        public double ComputeChange(ICohort cohort,
+                                    ActiveSite site,
+                                    out double ANPP,
+                                    out ExpandoObject otherParams)
+         {
+            dynamic tempObject = new ExpandoObject();
+            otherParams = tempObject;
+            ecoregion = PlugIn.ModelCore.Ecoregion[site];
+            int siteBiomass = SiteVars.TotalBiomass[site]; 
+            // Save the pre-growth root biomass. This needs to be calculated BEFORE growth and mortality
+            double TotalRoots = Roots.CalcRootBiomass(site, cohort.Species, cohort.Data.Biomass);
+            SiteVars.soils[site].CollectRootBiomass(TotalRoots, 0);
+            // First, calculate age-related mortality.
+            // Age-related mortality will include woody and standing leaf biomass (=0 for deciduous trees).
+            double mortalityAge = CalcAgeMortality(cohort);
+            double actualANPP = CalcActualANPP(cohort, site, siteBiomass, SiteVars.PreviousYearMortality[site]);
+            // Age mortality is discounted from ANPP to prevent the over-
+            // estimation of mortality.  ANPP cannot be negative.
+            actualANPP = Math.Max(1, actualANPP - mortalityAge);
+            // Growth-related mortality
+            double mortalityGrowth = CalcGrowthMortality(cohort, site, siteBiomass);
+            // Age-related mortality is discounted from growth-related
+            // mortality to prevent the under-estimation of mortality.  Cannot be negative.
+            mortalityGrowth = Math.Max(0, mortalityGrowth - mortalityAge);
+            // Also ensure that growth mortality does not exceed actualANPP.
+            mortalityGrowth = Math.Min(mortalityGrowth, actualANPP);
+            // Total mortality for the cohort
+            double totalMortality = mortalityAge + mortalityGrowth;
+            if (totalMortality > cohort.Data.Biomass)
+                throw new ApplicationException("Error: Mortality exceeds cohort biomass");
+            // Defoliation ranges from 0.0 (none) to 1.0 (total)
+            defoliation = CohortDefoliation.Compute(site, cohort, cohort.Data.Biomass, siteBiomass);
+            double defoliationLoss = 0.0;
+            if (defoliation > 0)
+            {
+                double standing_nonwood = CalcFractionANPPleaf(cohort.Species) * actualANPP;
+                defoliationLoss = standing_nonwood * defoliation;
+                SiteVars.soils[site].DisturbanceImpactsDOM(site, "defol", 0);  //just soil impacts. Dist impacts are handled differently??
+            }
+            ANPP = actualANPP;
+            double deltaBiomass = (int)(actualANPP - totalMortality - defoliationLoss);
+            double newBiomass = cohort.Data.Biomass + (double)deltaBiomass;
+            double totalLitter = UpdateDeadBiomass(cohort, actualANPP, totalMortality, site, newBiomass);
+            // The KillNow flag indicates that this is the year of growth in which
+            // to kill off some cohorts in order to make snags.
+            if (SiteVars.soils[site].bKillNow && Snags.bSnagsPresent)
+            {
+                // There could be more than one species-age combination, so we have 
+                // to loop through them. However, the user has been asked to put the 
+                // ages in order from smallest to largest, so we can stop looking
+                // as soon as we reach an age that is older than the cohort's age.
+                for (int idx = 0; idx < Constants.NUMSNAGS; idx++)
+                {
+                    if (cohort.Data.Age == Snags.DiedAt[idx] && Snags.initSpecIdx[idx] == cohort.Species.Index)
+                    {
+                        deltaBiomass = -cohort.Data.Biomass; // set biomass to 0 to make core remove this from the list
+                        // When this cohort gets passed to the cohort died event, 
+                        // there is no longer any biomass present, so we have to 
+                        // capture the biomass information here, while we still can.
+                        double foliar = (double)cohort.ComputeNonWoodyBiomass(site);
+                        double wood = (double)cohort.Data.Biomass - foliar;
+                        Snags.bSnagsUsed[idx] = true;
+                        SiteVars.soils[site].CollectBiomassMortality(cohort.Species, cohort.Data.Age, wood, foliar, 5 + idx);
+                    }
+                    if (Snags.DiedAt[idx] > cohort.Data.Age || Snags.DiedAt[idx] == 0)
+                        break; 
+                }
+            }
+            if (deltaBiomass > -cohort.Data.Biomass)
+            {
+                // If we didn't kill this cohort to make a snag, then update the 
+                // post-growth root biomass.
+                TotalRoots = Roots.CalcRootBiomass(site, cohort.Species, newBiomass);
+                SiteVars.soils[site].CollectRootBiomass(TotalRoots, 1);
+            }
+            return deltaBiomass;
+        }
+
+        /// <summary>
+        /// Calculates M_AGE_ij: the mortality caused by the aging of the cohort.
+        /// See equation 6 in Scheller and Mladenoff, 2004.
+        /// </summary>
+        private double CalcAgeMortality(ICohort cohort)
+        {
+            double max_age = (double)cohort.Species.Longevity;
+            double d = SpeciesData.MortCurveShape[cohort.Species];
+            double M_AGE = cohort.Data.Biomass * Math.Exp((double)cohort.Data.Age / max_age * d) / Math.Exp(d);
+            M_AGE = Math.Min(M_AGE, cohort.Data.Biomass);
+            if (PlugIn.ModelCore.CurrentTime <= 0 && SpinupMortalityFraction > 0.0)
+            {
+                M_AGE += cohort.Data.Biomass * SpinupMortalityFraction;
+                if (PlugIn.CalibrateMode)
+                    PlugIn.ModelCore.UI.WriteLine("Yr={0}. SpinupMortalityFraction={1:0.0000}, AdditionalMortality={2:0.0}, Spp={3}, Age={4}.", (PlugIn.ModelCore.CurrentTime + SubYear), SpinupMortalityFraction, (cohort.Data.Biomass * SpinupMortalityFraction), cohort.Species.Name, cohort.Data.Age);
+            }
+            return M_AGE;
+        }
+
+        private double CalcActualANPP(ICohort cohort,
+                                      ActiveSite site,
+                                      int siteBiomass,
+                                      int prevYearSiteMortality)
+        {
+            growthReduction = CohortGrowthReduction.Compute(cohort, site);
+            double cohortBiomass = cohort.Data.Biomass;
+            double capacityReduction = 1.0;
+            double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species][ecoregion];
+            double maxBiomass = SpeciesData.B_MAX_Spp[cohort.Species][ecoregion] * capacityReduction;
+            double growthShape = SpeciesData.GrowthCurveShapeParm[cohort.Species];
+            if (SiteVars.CapacityReduction != null && SiteVars.CapacityReduction[site] > 0)
+            {
+                capacityReduction = 1.0 - SiteVars.CapacityReduction[site];
+                if (PlugIn.CalibrateMode)
+                    PlugIn.ModelCore.UI.WriteLine("Yr={0}. Capacity Remaining={1:0.00}, Spp={2}, Age={3} B={4}.",
+                                                  PlugIn.ModelCore.CurrentTime + SubYear,
+                                                  capacityReduction, cohort.Species.Name,
+                                                  cohort.Data.Age, cohort.Data.Biomass);
+            }
+            double indexC = CalcCompetition(site, cohort);   // Biomass model
+            // Potential biomass, equation 3 in Scheller and Mladenoff, 2004   
+            double potentialBiomass = Math.Max(1, maxBiomass - siteBiomass + cohortBiomass);  // Biomass model
+            // Species can use new space immediately except in the 
+            // case of capacity reduction due to harvesting.
+            if (capacityReduction >= 1.0)
+                potentialBiomass = Math.Max(potentialBiomass, prevYearSiteMortality);
+            // Ratio of cohort's actual biomass to potential biomass
+            B_AP = Math.Min(1.0, cohortBiomass / potentialBiomass);
+            // Ratio of cohort's potential biomass to maximum biomass.
+            // The ratio cannot be exceed 1.
+            B_PM = Math.Min(1.0, indexC);   // Biomass model
+            // Actual ANPP: equation (4) from Scheller & Mladenoff, 2004.
+            // Constants k1 and k2 control whether growth rate declines with
+            // age. Set to default = 1.
+            double actualANPP = maxANPP * Math.E * Math.Pow(B_AP, growthShape) * Math.Exp(-1 * Math.Pow(B_AP, growthShape)) * B_PM;   // Biomass model
+            // Calculated actual ANPP can not exceed the limit set by the
+            // maximum ANPP times the ratio of potential to maximum biomass.
+            // This down-regulates actual ANPP by the available growing space.
+            actualANPP = Math.Min(maxANPP * B_PM, actualANPP);
+            if (growthReduction > 0)
+                actualANPP *= 1.0 - growthReduction;
+            return actualANPP;
+        }
+
+        /// <summary>
+        /// The mortality caused by development processes, including 
+        /// self-thinning and loss of branches, twigs, etc.
+        /// See equation 5 in Scheller and Mladenoff, 2004.
+        /// </summary>
+        private double CalcGrowthMortality(ICohort cohort,
+                                           ActiveSite site,
+                                           int siteBiomass)
+        {
+            double M_BIO = 1.0;
+            double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species][ecoregion];
+            // Michaelis-Menten function (added by Scheller et al. 2010):  // Biomass
+            if (B_AP > 1.0)
+                M_BIO = maxANPP * B_PM;
+            else
+                M_BIO = maxANPP * (2.0 * B_AP) / (1.0 + B_AP) * B_PM;
+            // Mortality should not exceed the amount of living biomass
+            M_BIO = Math.Min(cohort.Data.Biomass, M_BIO);
+            // Calculated actual ANPP can not exceed the limit set by the
+            // maximum ANPP times the ratio of potential to maximum biomass.
+            // This down regulates actual ANPP by the available growing space.
+            M_BIO = Math.Min(maxANPP * B_PM, M_BIO);
+            if (growthReduction > 0)
+                M_BIO *= 1.0 - growthReduction;
+            return M_BIO;
+        }
+
+        private double UpdateDeadBiomass(ICohort cohort, double actualANPP, double totalMortality, ActiveSite site, double newBiomass)
+        {
+            ISpecies species = cohort.Species;
+            double leafLongevity = SpeciesData.LeafLongevity[species];
+            double cohortBiomass = newBiomass; // Mortality is for the current year's biomass.
+            double leafFraction = CalcFractionANPPleaf(species);
+            // First, deposit the a portion of the leaf mass directly onto the forest floor.
+            // In this way, the actual amount of leaf biomass is added for the year.
+            // In addition, add the equivalent portion of fine roots to the surface layer.
+            // 0.8 was used to calibrate the model to steady-state Nitrogen.  Without this reduction, total N
+            // increases by 0.038% each year.  
+            double annualLeafANPP = actualANPP * leafFraction;
+            // The next section allocates mortality from standing (wood and leaf) biomass, i.e., 
+            // biomass that has accrued from previous years' growth.
+            // Subtract annual leaf growth as that was taken care of above.            
+            totalMortality -= annualLeafANPP;
+            // Assume that standing foliage is equal to this years annualLeafANPP * leaf longevity
+            // minus this years leaf ANPP.  This assumes that actual ANPP has been relatively constant 
+            // over the past 2 or 3 years (if coniferous).
+            double standing_nonwood = (annualLeafANPP * leafLongevity) - annualLeafANPP;
+            double standing_wood = Math.Max(0, cohortBiomass - standing_nonwood);
+            double fractionStandingNonwood = standing_nonwood / cohortBiomass;
+            //  Assume that the remaining mortality is divided proportionally
+            //  between the woody mass and non-woody mass (Niklaus & Enquist,
+            //  2002). Do not include current year's growth.
+            double mortality_nonwood = Math.Max(0.0, totalMortality * fractionStandingNonwood);
+            double mortality_wood = Math.Max(0.0, totalMortality - mortality_nonwood);
+            if (mortality_wood < 0 || mortality_nonwood < 0)
+                throw new ApplicationException("Error: Woody input is < 0");
+            // Total mortality not including annual leaf litter
+            M_noLeafLitter = (int)mortality_wood;
+            SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, mortality_wood, mortality_nonwood + annualLeafANPP, 0);
+            // add root biomass information - now calculated based on both woody and non-woody biomass
+            Roots.CalcRootTurnover(site, species, cohortBiomass);
+            SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRootTurnover, Roots.FineRootTurnover, 1);
+            // if biomass is going down, then we need to capture a decrease in the roots as well.
+            if (cohortBiomass < cohort.Data.Biomass)
+            {
+                double preMortRoots = Roots.CalcRootBiomass(site, species, cohort.Data.Biomass);
+                double preMortCoarse = Roots.CoarseRoot;
+                double preMortFine = Roots.FineRoot;
+                double TotRoots = Roots.CalcRootBiomass(site, species, cohortBiomass);
+                // if the root biomass went down, then we need to allocate that difference.
+                if (preMortRoots > TotRoots)
+                {
+                    // We will allocate the total root decline to the different pools based on the relative proportions
+                    // prior to the decline. (Note that we are not calculating actual declines for each type because
+                    // sometimes if we are changing calculation methods, we may change the allocation and may cause a large 
+                    // decrease in one pool and an increase in the other.)
+                    double diffFine = preMortFine / preMortRoots * (preMortRoots - TotRoots);
+                    double diffCoarse = preMortRoots - TotRoots - diffFine;
+                    SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, diffCoarse, diffFine, 1);
+                    // write a note to the file if the allocation changes unexpectedly, but not during spin-up
+                    if (((preMortCoarse - Roots.CoarseRoot) < 0 || (preMortFine - Roots.FineRoot) < 0) && PlugIn.ModelCore.CurrentTime > 0)
+                    {
+                        string strCombo = "from: " + preMortCoarse;
+                        strCombo += " to: " + Roots.CoarseRoot;
+                        string strCombo2 = "from: " + preMortFine;
+                        strCombo2 += " to: " + Roots.FineRoot;
+                        PlugIn.ModelCore.UI.WriteLine("Root Dynamics: Overall root biomass declined but note change in coarse root allocation " + strCombo + " and fine root allocation" + strCombo2);
+                    }
+                }
+                else if (PlugIn.ModelCore.CurrentTime > 0)
+                {
+                    //write a note to the file if the root biomass increases while abio decreases, but not during spin-up
+                    string strCombo = "from: " + cohort.Data.Biomass;
+                    strCombo += " to: " + cohortBiomass;
+                    string strCombo2 = "from: " + preMortRoots;
+                    strCombo2 += " to: " + TotRoots;
+                    PlugIn.ModelCore.UI.WriteLine("Root Dynamics: Note that aboveground biomass decreased " + strCombo + " but root biomass increased " + strCombo2);
+                }
+            }
+            if (PlugIn.ModelCore.CurrentTime == 0)
+            {
+                SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, standing_wood, standing_nonwood, 3);
+                Roots.CalcRootTurnover(site, species, standing_wood + standing_nonwood);
+                SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRootTurnover, Roots.FineRootTurnover, 4);
+            }
+            return annualLeafANPP + mortality_nonwood + mortality_wood;
+        }
+
+        /// <summary>
+        /// Calculates the cohort's biomass that is leaf litter
+        /// or other non-woody components.  Assumption is that 
+        /// remainder is woody.
+        /// </summary>
+        public static double CalcStandingLeafBiomass(double ANPPactual,
+                                                     ICohort cohort)
+        {
+            double annualLeafFraction = CalcFractionANPPleaf(cohort.Species);
+            double annualFoliar = ANPPactual * annualLeafFraction;
+            double B_nonwoody = annualFoliar * SpeciesData.LeafLongevity[cohort.Species];
+            // Non-woody cannot be less than 2.5% or greater than leaf fraction of total
+            // biomass for a cohort.
+            B_nonwoody = Math.Max(B_nonwoody, cohort.Data.Biomass * 0.025);
+            B_nonwoody = Math.Min(B_nonwoody, cohort.Data.Biomass * annualLeafFraction);
+            return B_nonwoody;
+        }
+
+        public static double CalcFractionANPPleaf(ISpecies species)
+        {
+            // A portion of growth goes to creating leaves (Niklas and Enquist 2002).
+            // Approximate for angio and conifer:
+            // pg. 817, growth (G) ratios for leaf:stem (Table 4) = 0.54 or 35% leaf
+            double leafFraction = 0.35;
+            // Approximately 3.5% of aboveground production goes to early leaf
+            // fall, bud scales, seed production, and herbivores (Crow 1978).
+            // leafFraction += 0.035;
+            return leafFraction;
+        }
+
+        /// <summary>
+        /// Calculates the percentage of a cohort's standing biomass 
+        /// that is non-woody. Name is inherited from Succession Library,
+        /// so it's not renamed "CalcNonWoodyPercentage" as I (MG) would 
+        /// normally do.
+        /// 
+        /// April 2010: changed to be a constant percentage of foliage, 
+        /// so that the calculations of turnover give reasonable numbers.
+        /// </summary>
+        public Percentage ComputeNonWoodyPercentage(ICohort cohort,
+                                                    ActiveSite site)
+        {
+            double leaf = 0.1;
+            Percentage temp = new Percentage(leaf);
+            return temp;
+        }
+
+        /// <summary>
+        /// Calculates the initial biomass for a cohort at a site.
+        /// </summary>
+        public static int CalcInitCohortBiomass(ISpecies species,
+                                                SiteCohorts siteCohorts,
+                                                ActiveSite site)
+        {
+            IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+            double B_ACT = 0.0;
+            // Biomass code
+            // Copied from Library.BiomassCohorts.Cohorts.cs, but added 
+            // restriction that age > 1 (required when running 1-year timestep)
+            foreach (ISpeciesCohorts speciesCohorts in siteCohorts)
+            {
+                foreach (ICohort cohort in speciesCohorts)
+                {
+                    if (cohort.Data.Age > 1)
+                        B_ACT += cohort.Data.Biomass;
+                }
+            }
+            double maxBiomass = SpeciesData.B_MAX_Spp[species][ecoregion];
+            double maxANPP = SpeciesData.ANPP_MAX_Spp[species][ecoregion];
+            // Initial biomass exponentially declines in response to competition.
+            double initCohortBiomass = maxANPP * Math.Exp(-1.6 * B_ACT / EcoregionData.B_MAX[ecoregion]);     //Biomass
+            // Initial biomass cannot be greater than maxANPP
+            initCohortBiomass = Math.Min(maxANPP, initCohortBiomass);
+            //  Initial biomass cannot be less than 2.  C. Dymond issue from August 2016
+            initCohortBiomass = Math.Max(2.0, initCohortBiomass);
+            return (int)initCohortBiomass;
+        }
+
+        /// <summary>
+        /// New method for calculating competition limits.
+        /// Iterates through cohorts, assigning each a competitive efficiency
+        /// </summary>
+        /// <param name="site"></param>
+        /// <param name="cohort"></param>
+        /// <returns></returns>
+        private static double CalcCompetition(ActiveSite site,
+                                              ICohort cohort)
+        {
+            double competitionPower = 0.95;
+            double CMultiplier = Math.Max(Math.Pow(cohort.Data.Biomass, competitionPower), 1.0);
+            double CMultTotal = CMultiplier;
+            foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
+            {
+                foreach (ICohort xcohort in speciesCohorts)
+                {
+                    if (xcohort.Data.Age + 1 != cohort.Data.Age || xcohort.Species.Index != cohort.Species.Index)
+                    {
+                        double tempCMultiplier = Math.Max(Math.Pow(xcohort.Data.Biomass, competitionPower), 1.0);
+                        CMultTotal += tempCMultiplier;
+                    }
+                }
+            }
+            double Cfraction = CMultiplier / CMultTotal;
+            return Cfraction;
+        }
+    }
+}
