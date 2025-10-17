@@ -1,0 +1,76 @@
+LandisData	PnETGenericDefaultParameters
+PnETGenericDefaultParameters		Value
+>>----------------------------------------
+AmaxAmod                    0.75
+AMaxBFCO2                   1.0
+BaseFoliarRespiration       0.1
+BGBiomassFrac               0.33
+CanopySumScale              0.206
+CFracBiomass                0.45    << C content of biomass
+CohortStacking              false
+ColdTolerance               -9999   >> Optional parameter
+DTemp                       true
+DVPD1                       0.05
+DVPD2                       2
+EstablishmentFRad           1.0
+EstablishmentFWater         1.0
+ETExtCoeff                  0.65
+EvapDepth                   500     >> mm
+FolBiomassFrac              0.033   << fraction of wood biomass representing max foliage that can be allocated
+FolBiomassFrac_intercept    -9999   >> Optional parameter, set to FolBiomassFrac if not provided
+FolBiomassFrac_slope        0.0
+FolLignin                   0.2
+FolN_intercept              -9999   >> Optional parameter, set to FolN if not provided
+FolN_slope                  0.0
+FOzone_slope                0.0
+FrostFactor                 1
+H1                          0.0	<< waterlogging threshold. Below this, Psn stops because of waterlogging. 
+H2                          3.64 << waterlogging stress threshold. Below this, Psn begins to slow because of waterlogging
+H3                          150 << dry stress threshold (m of pressure head). Above this, Psn begins to slow because of water stress.
+H4                          150	<< wilting point (m of pressure head). Above this, Psn stops because of water stress. Higher value = more drought-tolerant.
+HalfSatFCO2                 0.0
+IMAX                        5
+InitialCommunitiesSpinup    SpinupLayers
+InitialNSC                  7
+InvertPest                  false
+LayerThreshRatio            0.5
+LeafOnMinT                  -9999 >> Optional parameter, set to PsnMinT if not provided
+LeakageFrac                 1
+LeakageFrostDepth           0.0
+Lifeform                    tree
+LiveWoodBiomassFrac         0.00004 << lower value results in a higher fraction of active (live) wood
+MaintResp                   0.002
+MaxCanopyLayers             3
+MaxLAI                      -9999 >> Optional parameter
+MaxProbEstablishment        1.0
+MinFolRatioFactor           0
+MossDepth                   0.0
+MossScalar                  -9999 >> Optional parameter
+NSCFrac                     0.05 << target NSCfraction
+NSCReserve                  0.00
+NonRefolCost                0.10
+Parallel                    1
+PARunits                    umol >> Default umol/m2/s
+PhotosynthesisFAge          5.0
+PrecIntConst                0.1
+PrecipEvents                11
+PrecipEventsWithReplacement true
+PressureHeadCalculationMethod   SaxtonAndRawls
+PreventEstablishment        false
+PsnTmax                     -9999   << Optional parameter, set to PsnTOpt + (PsnTOpt - PsnTMin)
+Q10                         2
+ReferenceETCropCoeff        0.3
+RefolCost                   0.90
+RefolMaximum                0.70
+RefolMinimumTrigger         0.60
+RootTurnoverRate            0.02
+RunOffCapture               0.0
+SLWDel                      0
+SnowSublimFrac              0.15
+SoilIceDepth                false
+SpinUpWaterStress           false  
+StomataO3Sensitivity        NA
+WinterSTD                   0.0
+WoodDebrisDecompRate        0.1
+WoodTurnoverRate            0.01
+Wythers                     true
