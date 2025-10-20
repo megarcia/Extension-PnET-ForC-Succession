@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Landis.Utilities;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     public class ParameterTableParser : Landis.TextParser<Dictionary<string, Parameter<string>>>  
     {

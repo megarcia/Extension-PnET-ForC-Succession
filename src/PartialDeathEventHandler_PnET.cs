@@ -1,5 +1,5 @@
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// Represents a method that handles cohort-death events.

@@ -1,6 +1,6 @@
 // Authors: Caren Dymond, Sarah Beukema
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     public class SoilVars
     {

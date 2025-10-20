@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using Landis.Utilities;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
 
     /// <summary>

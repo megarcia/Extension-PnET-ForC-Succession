@@ -5,7 +5,7 @@ using System;
 using Landis.Core;
 using Landis.Library.UniversalCohorts;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// Data for an individual cohort that is not shared with other cohorts.

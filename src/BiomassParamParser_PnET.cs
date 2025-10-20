@@ -11,7 +11,7 @@
 using Landis.Core;
 using Landis.Utilities;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     class BiomassParamParser : Landis.TextParser<BiomassParam>
     {

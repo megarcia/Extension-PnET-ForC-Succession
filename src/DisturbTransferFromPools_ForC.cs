@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Landis.Utilities;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     class DisturbTransferFromPools : IDisturbTransferFromPools
     {

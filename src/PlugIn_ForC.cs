@@ -26,7 +26,7 @@ using Landis.Library.Succession;
 using Landis.Library.UniversalCohorts;
 using Landis.SpatialModeling;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     public class PlugIn : Landis.Library.Succession.ExtensionBase
     {

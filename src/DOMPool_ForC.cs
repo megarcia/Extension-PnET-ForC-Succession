@@ -2,7 +2,7 @@
 
 using Landis.Utilities;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// eDOMPoolIDs - IDs used to index directly into the calculations.

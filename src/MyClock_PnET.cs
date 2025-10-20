@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Landis.Extension.Succession.BiomassPnET
+namespace Landis.Extension.Succession.PnETForC
 {
     public class MyClock
     {

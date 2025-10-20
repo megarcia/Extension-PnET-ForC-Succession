@@ -2,7 +2,7 @@
 
 using Landis.Library.UniversalCohorts;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// The biomass cohorts for a particular species at a site.

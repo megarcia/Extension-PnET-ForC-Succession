@@ -19,7 +19,7 @@ using Landis.Library.UniversalCohorts;
 using Landis.SpatialModeling;
 using Landis.Utilities;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     public class Cohort : Library.UniversalCohorts.Cohort, ICohort
     { 

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Landis.Utilities;
 using Landis.Library.Succession;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     public class EcoSppDOMTable
     {

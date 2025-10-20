@@ -15,7 +15,7 @@ using Landis.Library.UniversalCohorts;
 using Landis.SpatialModeling;
 using Landis.Utilities;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// Definition of the probability of germination under different light levels for 5 shade classes.

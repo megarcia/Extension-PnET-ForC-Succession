@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     public class LocalOutput
     {

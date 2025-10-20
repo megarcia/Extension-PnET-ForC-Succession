@@ -14,7 +14,7 @@ using Landis.Library.InitialCommunities.Universal;
 using Landis.Library.UniversalCohorts;
 using Landis.SpatialModeling;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// The initial live and dead biomass at a site.

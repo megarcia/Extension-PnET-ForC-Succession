@@ -11,7 +11,7 @@ using Landis.Core;
 using Landis.Library.Parameters;
 using Landis.Utilities;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// Utility methods.

@@ -16,7 +16,7 @@ using Landis.Library.Parameters;
 using Landis.Library.Succession;
 using Landis.Utilities;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// The parameters for biomass succession.

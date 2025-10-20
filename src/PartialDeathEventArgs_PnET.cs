@@ -6,7 +6,7 @@
 using Landis.Core;
 using Landis.SpatialModeling;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// Information about a cohort's death.

@@ -1,4 +1,4 @@
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// eBiomassPoolIDs - IDs used to index directly into the calculations.

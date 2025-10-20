@@ -16,7 +16,7 @@ using Landis.Library.Parameters;
 using Landis.Library.UniversalCohorts;
 using Landis.SpatialModeling;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     public class SiteCohorts : Library.UniversalCohorts.SiteCohorts, ISiteCohorts
     {

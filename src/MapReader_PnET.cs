@@ -12,7 +12,7 @@ using System.IO;
 using Landis.Library.PnETCohorts;
 using Landis.SpatialModeling;using Landis.Utilities;
 
-namespace Landis.Extension.Succession.BiomassPnET
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// Methods to read maps instead of using domain spin-up

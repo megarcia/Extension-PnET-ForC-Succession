@@ -2,7 +2,7 @@
 
 using Landis.Library.Parameters;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// The parameters for ForC climate initialization.

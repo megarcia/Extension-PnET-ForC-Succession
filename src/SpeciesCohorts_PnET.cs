@@ -15,7 +15,7 @@ using Landis.Library.UniversalCohorts;
 using Landis.SpatialModeling;
 using log4net;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// The cohorts for a particular species at a site.

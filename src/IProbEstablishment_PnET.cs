@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Landis.Library.Parameters;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     public interface IProbEstablishment
     {

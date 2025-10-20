@@ -5,7 +5,7 @@
 using System;
 using Landis.SpatialModeling;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// An iterator for a species' cohorts from oldest to youngest.

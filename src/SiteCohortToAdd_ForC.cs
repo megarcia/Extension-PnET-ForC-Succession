@@ -6,7 +6,7 @@
 using Landis.Core;
 using Landis.SpatialModeling;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     public struct SiteCohortToAdd
     {

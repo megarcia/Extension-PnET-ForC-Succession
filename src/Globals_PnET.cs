@@ -5,7 +5,7 @@ using System.Linq;
 using Landis.Core;
 using Landis.Library.Climate;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     public static class Globals
     {

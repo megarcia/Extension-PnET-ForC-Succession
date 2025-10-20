@@ -6,7 +6,7 @@
 using Landis.Core;
 using Landis.Utilities;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     public class InputSnagParams : IInputSnagParams
     {

@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using Landis.Core;
 using Landis.Utilities;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// A parser that reads biomass succession parameters from text input.

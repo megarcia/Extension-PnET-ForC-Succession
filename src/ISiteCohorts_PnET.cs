@@ -5,7 +5,7 @@ using Landis.Core;
 using Landis.Library.Parameters;
 using Landis.Library.UniversalCohorts;
 
-namespace Landis.Library.PnETCohorts 
+namespace Landis.Extension.Succession.PnETForC 
 {
     public interface ISiteCohorts : Library.UniversalCohorts.ISiteCohorts
     {

@@ -5,7 +5,7 @@ using System;
 using System.Diagnostics;
 using Landis.Core;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     public class SoilDecay
     {

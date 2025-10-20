@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// The parameters for Disturbance Matrices.

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Landis.Library.UniversalCohorts;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// PnET's Cohort Interface

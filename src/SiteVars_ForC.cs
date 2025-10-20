@@ -10,7 +10,7 @@ using System.Diagnostics;
 using Landis.Library.UniversalCohorts;
 using Landis.SpatialModeling;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// The pools of dead biomass for the landscape's sites.

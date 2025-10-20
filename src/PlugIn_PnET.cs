@@ -90,7 +90,7 @@ using Landis.SpatialModeling;
 using Landis.Library.UniversalCohorts;
 using Landis.Utilities;
 
-namespace Landis.Extension.Succession.BiomassPnET
+namespace Landis.Extension.Succession.PnETForC
 {
     public class PlugIn : Landis.Library.Succession.ExtensionBase 
     {

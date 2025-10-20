@@ -1,5 +1,5 @@
 ﻿
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     // Mimicks the functionality of .Net 4 Tuple. 
     class Tuple<T1, T2>

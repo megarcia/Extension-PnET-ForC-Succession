@@ -5,7 +5,7 @@
 
 using System;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     public class Hydrology : IHydrology
     {

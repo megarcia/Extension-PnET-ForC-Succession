@@ -2,7 +2,7 @@
 
 using Landis.Core;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     public interface IPnETEcoregionData : IEcoregion
     {

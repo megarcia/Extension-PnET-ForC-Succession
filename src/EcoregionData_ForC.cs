@@ -10,7 +10,7 @@ using Landis.Library.Parameters;
 using Landis.SpatialModeling;
 using Landis.Utilities;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     public class EcoregionData
     {

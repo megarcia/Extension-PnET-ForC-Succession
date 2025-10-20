@@ -1,4 +1,4 @@
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
     /// Name strings used throughout ForC 

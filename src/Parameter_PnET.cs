@@ -7,7 +7,7 @@ using System.Linq;
 using Landis.Core;
 using Landis.Library.Parameters;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     public class Parameter<T> : IEnumerable<KeyValuePair<string, T>>  
     {

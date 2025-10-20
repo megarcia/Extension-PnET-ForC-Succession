@@ -4,7 +4,7 @@
 
 using Landis.Library.UniversalCohorts;
 
-namespace Landis.Extension.Succession.ForC
+namespace Landis.Extension.Succession.PnETForC
 {
     public class FireEffects
     {

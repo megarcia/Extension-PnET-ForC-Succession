@@ -1,7 +1,7 @@
 using System;
 using System.Data;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     public class Evapotranspiration
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using Landis.Library.Climate;
 using Landis.Library.Parameters;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     public class ClimateRegionData
     {

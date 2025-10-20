@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Landis.Library.PnETCohorts 
+namespace Landis.Extension.Succession.PnETForC 
 {
     public interface IObservedClimate: IEnumerable<ObservedClimate>  
     {

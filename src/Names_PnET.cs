@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using Landis.Core;
 
-namespace Landis.Library.PnETCohorts
+namespace Landis.Extension.Succession.PnETForC
 {
     public static class Names
     {

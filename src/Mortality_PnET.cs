@@ -15,7 +15,7 @@ using Landis.Library.PnETCohorts;
 using Landis.Library.UniversalCohorts;
 // using Landis.SpatialModeling;
 
-namespace Landis.Extension.Succession.BiomassPnET
+namespace Landis.Extension.Succession.PnETForC
 {
     class Mortality
     {

@@ -8,7 +8,7 @@ using System.Linq;
 using Landis.Library.PnETCohorts;
 using Landis.SpatialModeling;
 
-namespace Landis.Extension.Succession.BiomassPnET
+namespace Landis.Extension.Succession.PnETForC
 {
     public static class AssignOutputFiles
     {
