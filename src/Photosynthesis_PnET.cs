@@ -1,3 +1,20 @@
+// functional class Photosynthesis, from PnET
+// --> functions CurvilinearPsnTempResponse
+//               DTempResponse
+//               CalcDVPD
+//               CalcJH2O
+//               CalcAmaxB_CO2
+//               CalcCiModifier
+//               CalcCiElev
+//               CalcDelAmaxCi
+//               CalcFRad
+//               CalcPotentialGrossPsn
+//               CalcFWater
+//               CalcFOzone
+//               CalcAdjHalfSat
+//               CalcAdjFolN
+//               CalcJCO2_JH2O
+
 using System;
 
 namespace Landis.Extension.Succession.PnETForC

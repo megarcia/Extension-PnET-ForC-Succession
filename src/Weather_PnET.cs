@@ -1,3 +1,10 @@
+// functional class Weather, from PnET
+// --> functions CalcTavg
+//               CalcTday
+//               CalcVaporPressure
+//               CalcVaporPressureCurveSlope
+//               CalcVPD
+
 using System;
 
 namespace Landis.Extension.Succession.PnETForC

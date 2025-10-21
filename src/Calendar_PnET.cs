@@ -1,3 +1,10 @@
+// functional class Calendar, from PnET
+// --> enum Months
+// --> functions CalcDaySpan
+//               CalcNightLength
+//               CalcDayLength
+//               CalcDaylightHrs
+
 using System;
 
 namespace Landis.Extension.Succession.PnETForC

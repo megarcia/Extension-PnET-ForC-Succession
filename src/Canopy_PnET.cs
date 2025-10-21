@@ -1,3 +1,8 @@
+// functional class Canopy
+// --> functions CalcLAISum
+//               CalcLAI
+//               CalcCohortLAI
+
 using System;
 
 namespace Landis.Extension.Succession.PnETForC

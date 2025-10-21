@@ -1,3 +1,9 @@
+// functional class Respiration, from PnET
+// --> functions CalcBaseFolRespFrac_Wythers
+//               CalcQ10_Wythers
+//               CalcFQ10
+//               CalcFTemp
+
 using System;
 
 namespace Landis.Extension.Succession.PnETForC

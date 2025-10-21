@@ -1,4 +1,15 @@
-﻿using System;
+﻿// functional class Snow, from PnET
+// --> functions CalcDensity
+//               CalcDepth
+//               CalcThermalConductivity
+//               CalcThermalDamping
+//               CalcDampingRatio
+//               CalcMaxSnowMelt
+//               CalcMelt
+//               CalcSnowFrac
+//               CalcNewSnowDepth
+
+using System;
 
 namespace Landis.Extension.Succession.PnETForC
 {
