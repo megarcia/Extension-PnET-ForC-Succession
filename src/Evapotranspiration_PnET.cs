@@ -1,3 +1,13 @@
+// functional class Evapotranspiration, from PnET
+// --> functions CalcPotentialEvaporation_umol
+//               CalcPotentialGroundET_Radiation_umol
+//               CalcReferenceET_Hamon
+//               CalcPotentialGroundET_LAI_WATER
+//               CalcPotentialGroundET_LAI_WEPP
+//               CalcPotentialGroundET_LAI
+//               CalcWVConductance
+//               CalcWUE
+
 using System;
 using System.Data;
 
@@ -155,7 +165,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// <returns></returns>
         public static float CalcWUE(float grossPsn, float canopyLayerFrac, float transpiration)
         {
-            float JCO2_JH2O = 0;
+            float JCO2_JH2O = 0F;
             if (transpiration > 0)
                 JCO2_JH2O = (float)(0.0015f * grossPsn * canopyLayerFrac / transpiration);
             float WUE = JCO2_JH2O * Constants.MCO2_MC;
