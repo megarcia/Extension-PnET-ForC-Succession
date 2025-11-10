@@ -24,13 +24,13 @@ namespace Landis.Extension.Succession.PnETForC
 
         public Parameter(string name, T value, string label = null)
         {
-            this.p_label = label;
+            p_label = label;
             Add(name, value);
         }
 
         public Parameter(string label = null)
         {
-            this.p_label = label;
+            p_label = label;
         }
 
         public T Value
@@ -159,51 +159,51 @@ namespace Landis.Extension.Succession.PnETForC
 
         public static explicit operator Library.Parameters.Ecoregions.AuxParm<T>(Parameter<T> m)
         {
-            string ecoregionname = null;
+            string ecoregionName;
             T value;
             try
             {
-                Library.Parameters.Ecoregions.AuxParm<T> newvalues = new Library.Parameters.Ecoregions.AuxParm<T>(Globals.ModelCore.Ecoregions);
-                foreach (IEcoregion eco in Globals.ModelCore.Ecoregions) if (eco.Active)
+                Library.Parameters.Ecoregions.AuxParm<T> newValues = new Library.Parameters.Ecoregions.AuxParm<T>(Globals.ModelCore.Ecoregions);
+                foreach (IEcoregion ecoregion in Globals.ModelCore.Ecoregions) if (ecoregion.Active)
                     {
-                        ecoregionname = eco.Name;
+                        ecoregionName = ecoregion.Name;
                         if (m.values.Count == 1) value = m.values.First().Value;
-                        else value = m.values[eco.Name];
-                        newvalues[eco] = value;
+                        else value = m.values[ecoregion.Name];
+                        newValues[ecoregion] = value;
                     }
-                return newvalues;
+                return newValues;
             }
             catch (Exception e)
             {
                 if (e.GetType() == typeof(KeyNotFoundException))
-                    throw new Exception("Error parsing parameter " + m.p_label + " for species " + ecoregionname + " missing value");
+                    throw new Exception("Error parsing parameter " + m.p_label + " for species " + ecoregionName + " missing value");
                 else
-                    throw new Exception("Error parsing parameter " + m.p_label + " for species " + ecoregionname + e.Message);
+                    throw new Exception("Error parsing parameter " + m.p_label + " for species " + ecoregionName + e.Message);
             }
         }
 
         public static explicit operator Library.Parameters.Species.AuxParm<T>(Parameter<T> m)
         {
+            string speciesName;
             T value;
-            string speciesname = null;
             try
             {
-                Library.Parameters.Species.AuxParm<T> newvalues = new Library.Parameters.Species.AuxParm<T>(Globals.ModelCore.Species);
+                Library.Parameters.Species.AuxParm<T> newValues = new Library.Parameters.Species.AuxParm<T>(Globals.ModelCore.Species);
                 foreach (ISpecies species in Globals.ModelCore.Species)
                 {
-                    speciesname = species.Name;
+                    speciesName = species.Name;
                     if (m.values.Count == 1) value = m.values.First().Value;
                     else value = m.values[species.Name];
-                    newvalues[species] = value;
+                    newValues[species] = value;
                 }
-                return newvalues;
+                return newValues;
             }
             catch (Exception e)
             {
                 if (e.GetType() == typeof(KeyNotFoundException))
-                    throw new Exception("Error parsing parameter " + m.p_label + " for species " + speciesname + " missing value");
+                    throw new Exception("Error parsing parameter " + m.p_label + " for species " + speciesName + " missing value");
                 else
-                    throw new Exception("Error parsing parameter " + m.p_label + " for species " + speciesname + e.Message);
+                    throw new Exception("Error parsing parameter " + m.p_label + " for species " + speciesName + e.Message);
             }
         }
 
