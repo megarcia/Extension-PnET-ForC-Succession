@@ -22,12 +22,12 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Kills coarse roots and add the biomass directly to the SOC pool.
         /// </summary>
-        public static void AddCoarseRootLitter(double abovegroundWoodBiomass,
+        public static void AddCoarseRootLitter(double agWoodBiomass,
                                                ISpecies species,
                                                ActiveSite site)
         {
 
-            double coarseRootBiomass = CalcCoarseRoot(abovegroundWoodBiomass); // Ratio above to below
+            double coarseRootBiomass = CalcCoarseRoot(agWoodBiomass); // Ratio above to below
             if (coarseRootBiomass > 0)
                 SiteVars.SoilOrganicMatterC[site] += coarseRootBiomass * 0.47;  // = convert to g C / m2
         }
@@ -35,11 +35,11 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Kills fine roots and add the biomass directly to the SOC pool.
         /// </summary>
-        public static void AddFineRootLitter(double abovegroundFoliarBiomass,
+        public static void AddFineRootLitter(double agFoliarBiomass,
                                              ISpecies species,
                                              ActiveSite site)
         {
-            double fineRootBiomass = CalcFineRoot(abovegroundFoliarBiomass);
+            double fineRootBiomass = CalcFineRoot(agFoliarBiomass);
             if (fineRootBiomass > 0)
                 SiteVars.SoilOrganicMatterC[site] += fineRootBiomass * 0.47;  // = convert to g C / m2
         }
@@ -48,14 +48,14 @@ namespace Landis.Extension.Succession.PnETForC
         /// Calculate coarse and fine roots based on total aboveground biomass.
         /// Niklas & Enquist 2002: 25% of total stocks
         /// </summary>
-        public static double CalcCoarseRoot(double abio)
+        public static double CalcCoarseRoot(double agBiomass)
         {
-            return abio * 0.24;
+            return agBiomass * 0.24;
         }
 
-        public static double CalcFineRoot(double abio)
+        public static double CalcFineRoot(double agBiomass)
         {
-            return abio * 0.06;
+            return agBiomass * 0.06;
         }
 
         /// <summary>
@@ -63,38 +63,38 @@ namespace Landis.Extension.Succession.PnETForC
         /// Calculate coarse and fine roots based on woody biomass.
         /// These are no longer straight percentages.
         /// </summary>
-        public static double CalcRootBiomass(ActiveSite site, ISpecies species, double abio)
+        public static double CalcRootBiomass(ActiveSite site, ISpecies species, double agBiomass)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            int i = 0;
+            int i;
             for (i = 0; i < 4; i++)
             {
                 if (SpeciesData.MinWoodyBio[species][ecoregion][i + 1] > -999)
                 {
-                    if (abio >= SpeciesData.MinWoodyBio[species][ecoregion][i] &&
-                        abio < SpeciesData.MinWoodyBio[species][ecoregion][i + 1])
+                    if (agBiomass >= SpeciesData.MinWoodyBio[species][ecoregion][i] &&
+                        agBiomass < SpeciesData.MinWoodyBio[species][ecoregion][i + 1])
                         break;
                 }
                 else
                     break;
             }
-            double totalroot = abio * SpeciesData.Ratio[species][ecoregion][i];
-            FineRoot = totalroot * SpeciesData.FracFine[species][ecoregion][i];
-            CoarseRoot = totalroot - FineRoot;
-            return totalroot;
+            double totalRootBiomass = agBiomass * SpeciesData.Ratio[species][ecoregion][i];
+            FineRoot = totalRootBiomass * SpeciesData.FracFine[species][ecoregion][i];
+            CoarseRoot = totalRootBiomass - FineRoot;
+            return totalRootBiomass;
         }
 
-        public static void CalcRootTurnover(ActiveSite site, ISpecies species, double abio)
+        public static void CalcRootTurnover(ActiveSite site, ISpecies species, double agBiomass)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            double totalroot = CalcRootBiomass(site, species, abio);
-            int i = 0;
+            double totalRootBiomass = CalcRootBiomass(site, species, agBiomass);
+            int i;
             for (i = 0; i < 4; i++)
             {
                 if (SpeciesData.MinWoodyBio[species][ecoregion][i + 1] > -999)
                 {
-                    if (abio >= SpeciesData.MinWoodyBio[species][ecoregion][i] &&
-                        abio < SpeciesData.MinWoodyBio[species][ecoregion][i + 1])
+                    if (agBiomass >= SpeciesData.MinWoodyBio[species][ecoregion][i] &&
+                        agBiomass < SpeciesData.MinWoodyBio[species][ecoregion][i + 1])
                         break;
                 }
                 else
