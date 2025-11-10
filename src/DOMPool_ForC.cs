@@ -19,7 +19,7 @@ namespace Landis.Extension.Succession.PnETForC
         SlowBG,
         SoftStemSnag,
         SoftBranchSnag,
-        BlackCarbon
+        SpareCPool
     };
 
     public class DOMPool : IDOMPool

@@ -29,7 +29,7 @@ namespace Landis.Extension.Succession.PnETForC
             SLOWBG,
             SSTEMSNAG,
             SOTHERSNAG,
-            BLACKCARBON
+            SPARECPOOL
         };
 
         public enum ComponentType  // The biomass component type.
@@ -360,16 +360,21 @@ namespace Landis.Extension.Succession.PnETForC
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += totalLostC - toAir;
                 carbonToSlowPool[(int)SoilPoolType.MEDIUM] += totalLostC - toAir;
             }
-            // Do black carbon dynamics (note that there is currently nothing 
-            // going into black carbon)
-            if (soilC[(int)SoilPoolType.BLACKCARBON, species.Index] > 0)
+            // Do spare carbon pool (formerly "black carbon") dynamics 
+            // NOTE that the spare carbon pool currently has no inputs,
+            // which are to be specified by the developer according to 
+            // the type of carbon pool this ends up being used for.
+            // ALSO NOTE that the only output for this spare carbon pool
+            // is through decay, which moves carbon to the Air and (for
+            // some reason) the SlowAG pool.
+            if (soilC[(int)SoilPoolType.SPARECPOOL, species.Index] > 0)
             {
-                double blackC_lost;
-                blackC_lost = soilC[(int)SoilPoolType.BLACKCARBON, species.Index] * SoilVars.decayRates[(int)SoilPoolType.BLACKCARBON, species.Index];
-                soilC[(int)SoilPoolType.BLACKCARBON, species.Index] -= blackC_lost;
-                carbonToAir[(int)SoilPoolType.BLACKCARBON] += blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].FracAir;
-                carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += blackC_lost - blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].FracAir;
-                carbonToSlowPool[(int)SoilPoolType.BLACKCARBON] += blackC_lost - blackC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BlackCarbon].FracAir;
+                double spareC_lost;
+                spareC_lost = soilC[(int)SoilPoolType.SPARECPOOL, species.Index] * SoilVars.decayRates[(int)SoilPoolType.SPARECPOOL, species.Index];
+                soilC[(int)SoilPoolType.SPARECPOOL, species.Index] -= spareC_lost;
+                carbonToAir[(int)SoilPoolType.SPARECPOOL] += spareC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SpareCPool].FracAir;
+                carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += spareC_lost - spareC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SpareCPool].FracAir;
+                carbonToSlowPool[(int)SoilPoolType.SPARECPOOL] += spareC_lost - spareC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SpareCPool].FracAir;
             }
             // Do the slow soil pool dynamics.
             // First we calculate the carbon input to the soil pool 
