@@ -1,2 +1,6 @@
 .DS_Store
 */.DS_Store
+*.sln
+src/bin
+src/obj
+test
