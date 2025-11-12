@@ -14,8 +14,8 @@ namespace Landis.Extension.Succession.PnETForC
 
         public enum SnagType
         {
-            STEMSNAGS = 0,
-            OTHERSNAG
+            STEMSNAG = 0,
+            BRANCHSNAG
         };
 
         public static void Initialize(IInputSnagParams parameters)
