@@ -829,7 +829,7 @@ namespace Landis.Extension.Succession.PnETForC
                         SoilVars.BioLive[i, (int)species.Index] = 0.0;   // zero out the live biomass component, unless the last year of spin-up
                 // Calculate soil carbon pool decay rates as a function of 
                 // temperature and weather    
-                SoilDecay.CalcDecayRates(ecoregion, species);  // MG 20250911 updated procedure removes site argument
+                DOMDecay.CalcDecayRates(ecoregion, species);  // MG 20250911 updated procedure removes site argument
                 // Initialize C transferred to air, C transferred to the slow pool.
                 for (i = 0; i < Constants.NUMSOILPOOLS; i++)
                 {

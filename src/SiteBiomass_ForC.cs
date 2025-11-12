@@ -211,7 +211,7 @@ namespace Landis.Extension.Succession.PnETForC
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             foreach (var cohort in SiteVars.Cohorts[site])
-                SoilDecay.CalcDecayRates(ecoregion, cohort.Species);  // MG 20250911 updated procedure removes site argument
+                DOMDecay.CalcDecayRates(ecoregion, cohort.Species);  // MG 20250911 updated procedure removes site argument
         }
 
         private static void SpinUpBiomassCohorts(List<ICohort> ageCohorts,

@@ -1,3 +1,8 @@
+// functional class DOMDecay, from ForC
+// --> functions CalcDecayRates
+//               CalcDecayFTemp
+//               CalcDecayFPrecip
+//
 // NOTE: IEcoregion --> Landis.Core
 // NOTE: ISpecies --> Landis.Core
 
@@ -7,10 +12,11 @@ using Landis.Core;
 
 namespace Landis.Extension.Succession.PnETForC
 {
-    public class SoilDecay
+    public class DOMDecay
     {
         /// <summary>
-        /// Calculates the decay rates of each pool and species.
+        /// Calculates the decay rate for each DOM pool 
+        /// given an ecoregion and species.
         /// </summary>
         /// <param name="ecoregion"></param>
         /// <param name="species"></param>
@@ -28,15 +34,15 @@ namespace Landis.Extension.Succession.PnETForC
             */
 
             double MeanAnnualTemperature = EcoregionData.AnnualTemperature[ecoregion];
-            double AnnualPrecipitation = 1.0;           // not actually used
-            // First we assign precipitation and temperature effects to the 
-            // decay rates.  The very fast, fast, medium, and slow pools are 
-            // all influenced by these effects.  Note that decay rates can 
-            // vary by species now
+            double AnnualPrecipitation = 1.0; // not actually used yet
+
+            // First we assign precipitation and temperature effects to 
+            // the decay rates.  The very fast, fast, medium, and slow 
+            // pools are all influenced by these effects.  
+            // NOTE: DOMSoilVars.decayRates use a 0-based index into an
+            // array, but DOMPools requires a key that is 1-based.
             for (int currPool = 0; currPool < Constants.NUMSOILPOOLS - 1; currPool++)
             {
-                // DEVNOTE: DOMSoilVars.decayRates use a 0-based index into an array,
-                // whereas DOMPools requires a key that is 1-based.
                 Debug.Assert(SoilVars.iParams.DOMPools.ContainsKey(currPool + 1));
                 double DOMdecayrate = SoilVars.iParams.DOMDecayRates[ecoregion][species][currPool];
                 double decayFTemp = CalcDecayFTemp(MeanAnnualTemperature, SoilVars.iParams.DOMPoolQ10[ecoregion][species][currPool]);
