@@ -27,8 +27,8 @@ namespace Landis.Extension.Succession.PnETForC
             MEDIUM,
             SLOWAG,
             SLOWBG,
-            SSTEMSNAG,
-            SOTHERSNAG,
+            STEMSNAG,
+            BRANCHSNAG,
             SPARECPOOL
         };
 
@@ -241,7 +241,7 @@ namespace Landis.Extension.Succession.PnETForC
                 || netCLoss[(int)ComponentType.COARSEROOT, species.Index] > 0
                 || soilC[(int)SoilPoolType.FASTAG, species.Index] > 0
                 || soilC[(int)SoilPoolType.FASTBG, species.Index] > 0
-                || soilC[(int)SoilPoolType.SOTHERSNAG, 0] > 0)
+                || soilC[(int)SoilPoolType.BRANCHSNAG, 0] > 0)
             {
                 /* Variable definitions:  (Used only by fast soil pool dynamics code.) */
                 double fastCAG;
@@ -257,8 +257,8 @@ namespace Landis.Extension.Succession.PnETForC
                 // to the user.
                 //
                 // Branch snags go to fast soil pool.
-                branchSnagToFastPool = soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] * SoilVars.iParams.FracDOMBranchSnagToFastAG;
-                soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] -= branchSnagToFastPool;
+                branchSnagToFastPool = soilC[(int)SoilPoolType.BRANCHSNAG, species.Index] * SoilVars.iParams.FracDOMBranchSnagToFastAG;
+                soilC[(int)SoilPoolType.BRANCHSNAG, species.Index] -= branchSnagToFastPool;
                 // Next, the amount of above and belowground carbon added to the 
                 // fast soil pool by the species' branches (i.e. submerchantable 
                 // and miscellaneous components) and coarse roots turnover is 
@@ -308,32 +308,32 @@ namespace Landis.Extension.Succession.PnETForC
             // there is input to the snag pools (from netCloss or from input 
             // pools calculated above -Jan2020)
             if (netCLoss[(int)ComponentType.MERCHANTABLE, species.Index] > 0
-                || soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] > 0
-                || soilC[(int)SoilPoolType.SOTHERSNAG, 0] > 0 
+                || soilC[(int)SoilPoolType.STEMSNAG, species.Index] > 0
+                || soilC[(int)SoilPoolType.BRANCHSNAG, 0] > 0 
                 || snagPools[species.Index, (int)Snags.SnagType.STEMSNAGS] > 0
                 || snagPools[species.Index, (int)Snags.SnagType.OTHERSNAG] > 0)
             {
                 // calculate how much snag goes to medium soil pool
-                stemSnagToMediumPool = soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] * SoilVars.iParams.FracDOMStemSnagToMedium;
-                soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] -= stemSnagToMediumPool;
+                stemSnagToMediumPool = soilC[(int)SoilPoolType.STEMSNAG, species.Index] * SoilVars.iParams.FracDOMStemSnagToMedium;
+                soilC[(int)SoilPoolType.STEMSNAG, species.Index] -= stemSnagToMediumPool;
                 snagPools[species.Index, (int)Snags.SnagType.STEMSNAGS] = netCLoss[(int)ComponentType.MERCHANTABLE, species.Index];
-                soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] += snagPools[species.Index, (int)Snags.SnagType.STEMSNAGS];
-                soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] += snagPools[species.Index, (int)Snags.SnagType.OTHERSNAG];
-                StemSnagLost = soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] * SoilVars.decayRates[(int)SoilPoolType.SSTEMSNAG, species.Index];
-                soilC[(int)SoilPoolType.SSTEMSNAG, species.Index] -= StemSnagLost;
+                soilC[(int)SoilPoolType.STEMSNAG, species.Index] += snagPools[species.Index, (int)Snags.SnagType.STEMSNAGS];
+                soilC[(int)SoilPoolType.BRANCHSNAG, species.Index] += snagPools[species.Index, (int)Snags.SnagType.OTHERSNAG];
+                StemSnagLost = soilC[(int)SoilPoolType.STEMSNAG, species.Index] * SoilVars.decayRates[(int)SoilPoolType.STEMSNAG, species.Index];
+                soilC[(int)SoilPoolType.STEMSNAG, species.Index] -= StemSnagLost;
                 totalStemSnagLost += StemSnagLost;
-                BranchSnagLost = soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] * SoilVars.decayRates[(int)SoilPoolType.SOTHERSNAG, species.Index];
-                soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] -= BranchSnagLost;
+                BranchSnagLost = soilC[(int)SoilPoolType.BRANCHSNAG, species.Index] * SoilVars.decayRates[(int)SoilPoolType.BRANCHSNAG, species.Index];
+                soilC[(int)SoilPoolType.BRANCHSNAG, species.Index] -= BranchSnagLost;
                 totalBranchSnagLost += BranchSnagLost;
                 // collect information into variables for output
                 snagToAir = StemSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.StemSnag].FracAir;
-                carbonToAir[(int)SoilPoolType.SSTEMSNAG] += snagToAir;
+                carbonToAir[(int)SoilPoolType.STEMSNAG] += snagToAir;
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += StemSnagLost - snagToAir;
-                carbonToSlowPool[(int)SoilPoolType.SSTEMSNAG] += StemSnagLost - snagToAir;
+                carbonToSlowPool[(int)SoilPoolType.STEMSNAG] += StemSnagLost - snagToAir;
                 snagToAir = BranchSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BranchSnag].FracAir;
-                carbonToAir[(int)SoilPoolType.SOTHERSNAG] += snagToAir;
+                carbonToAir[(int)SoilPoolType.BRANCHSNAG] += snagToAir;
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += BranchSnagLost - snagToAir;
-                carbonToSlowPool[(int)SoilPoolType.SOTHERSNAG] += BranchSnagLost - snagToAir;
+                carbonToSlowPool[(int)SoilPoolType.BRANCHSNAG] += BranchSnagLost - snagToAir;
             }
             // Do the medium soil pool dynamics, working individually with each 
             // species. Since only stem turnover (ie. merchantable component 
@@ -707,7 +707,7 @@ namespace Landis.Extension.Succession.PnETForC
                         oDisturbTransfer = (DisturbTransferFromPool)oDisturbTransferPoolsDOM.GetDisturbTransfer(ipool + 1);
                         loss = soilC[ipool, species.Index] * oDisturbTransfer.FracToAir;
                         tofps = soilC[ipool, species.Index] * oDisturbTransfer.FracToFPS;
-                        if (ipool == (int)SoilPoolType.SSTEMSNAG || ipool == (int)SoilPoolType.SOTHERSNAG)
+                        if (ipool == (int)SoilPoolType.STEMSNAG || ipool == (int)SoilPoolType.BRANCHSNAG)
                             FPSsnag += tofps;
                         else
                             FPSdom += tofps;
@@ -718,18 +718,18 @@ namespace Landis.Extension.Succession.PnETForC
                         // All DOM pools should not have anything going to "floor" since they are already there.
                         // So, just do the transfers for the snags into floor
                         // stem snag goes to the ground in medium
-                        if (ipool == (int)SoilPoolType.SSTEMSNAG)
+                        if (ipool == (int)SoilPoolType.STEMSNAG)
                         {
                             tofloor = soilC[ipool, species.Index] * oDisturbTransfer.FracToDOM;
                             soilC[(int)SoilPoolType.MEDIUM, species.Index] += tofloor;
                         }
                         // branch snag goes to the ground in fast
-                        else if (ipool == (int)SoilPoolType.SOTHERSNAG)
+                        else if (ipool == (int)SoilPoolType.BRANCHSNAG)
                         {
                             tofloor = soilC[ipool, species.Index] * oDisturbTransfer.FracToDOM;
                             soilC[(int)SoilPoolType.FASTAG, species.Index] += tofloor;
                         }
-                        if (ipool == (int)SoilPoolType.SSTEMSNAG || ipool == (int)SoilPoolType.SOTHERSNAG)
+                        if (ipool == (int)SoilPoolType.STEMSNAG || ipool == (int)SoilPoolType.BRANCHSNAG)
                             logFluxDist.Write("{0:0.000},", tofloor); // litterInput (from disturbance of snags)
                         soilC[ipool, species.Index] -= loss + tofps + tofloor;
                         if (soilC[ipool, species.Index] < 0)
@@ -954,7 +954,7 @@ namespace Landis.Extension.Succession.PnETForC
                         {
                             logFlux.Write("{0:0.000},", carbonToAir[i]);
                             logFlux.Write("{0:0.000},", carbonToSlowPool[i]);
-                            if (i == 7)     // SSTEMSNAG 
+                            if (i == 7)     // STEMSNAG 
                                 logFlux.Write("{0:0.000},", stemSnagToMediumPool);
                             else if (i == 8)    // SSTEMBRANCH 
                                 logFlux.Write("{0:0.000},", branchSnagToFastPool);
@@ -1071,14 +1071,14 @@ namespace Landis.Extension.Succession.PnETForC
             {
                 logFlux.Write("{0}_toAir, ", colSoil[i]);
                 logFlux.Write("{0}_toSlow, ", colSoil[i]);
-                if (i == 7)     //SSTEMSNAG
+                if (i == 7)     //STEMSNAG
                     logFlux.Write("SngStemToMed, ");
-                else if (i == 8)    //SOTHERSNAG
+                else if (i == 8)    //BRANCHSNAG
                     logFlux.Write("SngOthToFast, ");
                 logFluxDist.Write("{0}_toAir, ", colSoil[i]);
-                if (i == 7)     //SSTEMSNAG
+                if (i == 7)     //STEMSNAG
                     logFluxDist.Write("SngStemToMed, ");
-                else if (i == 8)    //SOTHERSNAG
+                else if (i == 8)    //BRANCHSNAG
                     logFluxDist.Write("SngOthToFast, ");
                 logPools.Write("{0},", colSoil[i]);
             }
