@@ -954,9 +954,9 @@ namespace Landis.Extension.Succession.PnETForC
                         {
                             logFlux.Write("{0:0.000},", carbonToAir[i]);
                             logFlux.Write("{0:0.000},", carbonToSlowPool[i]);
-                            if (i == 7)     // STEMSNAG 
+                            if (i == (int)DOMPoolType.STEMSNAG)
                                 logFlux.Write("{0:0.000},", stemSnagToMediumPool);
-                            else if (i == 8)    // SSTEMBRANCH 
+                            else if (i == (int)DOMPoolType.BRANCHSNAG)
                                 logFlux.Write("{0:0.000},", branchSnagToFastPool);
                         }
                     }
@@ -965,10 +965,10 @@ namespace Landis.Extension.Succession.PnETForC
                 {
                     for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
                     {
-                        if (i != 3)     // (don't print out the sub-merch, since we aren't using it)
+                        if (i != (int)BiomassPoolType.SUBMERCHANTABLE) // don't print out the sub-merch, since we aren't using it
                         {
                             if (j == 0)
-                                logFlux.Write("{0:0.000},", SoilVars.BioInput[i, species.Index,0]); //the input that is not from disturbance
+                                logFlux.Write("{0:0.000},", SoilVars.BioInput[i, species.Index, 0]); // the input that is not from disturbance
                             netCLoss[i, species.Index] = 0.0;
                             SoilVars.BioInput[i, species.Index, 0] = 0.0;
                         }
@@ -1071,14 +1071,14 @@ namespace Landis.Extension.Succession.PnETForC
             {
                 logFlux.Write("{0}_toAir, ", colSoil[i]);
                 logFlux.Write("{0}_toSlow, ", colSoil[i]);
-                if (i == 7)     //STEMSNAG
+                if (i == (int)DOMPoolType.STEMSNAG)
                     logFlux.Write("SngStemToMed, ");
-                else if (i == 8)    //BRANCHSNAG
+                else if (i == (int)DOMPoolType.BRANCHSNAG)
                     logFlux.Write("SngOthToFast, ");
                 logFluxDist.Write("{0}_toAir, ", colSoil[i]);
-                if (i == 7)     //STEMSNAG
+                if (i == (int)DOMPoolType.STEMSNAG)
                     logFluxDist.Write("SngStemToMed, ");
-                else if (i == 8)    //BRANCHSNAG
+                else if (i == (int)DOMPoolType.BRANCHSNAG)
                     logFluxDist.Write("SngOthToFast, ");
                 logPools.Write("{0},", colSoil[i]);
             }
