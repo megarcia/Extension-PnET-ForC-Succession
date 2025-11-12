@@ -218,7 +218,7 @@ namespace Landis.Extension.Succession.PnETForC
         public const int NUMSNAGS = 1000;
         public const int NUMBIOMASSCOMPONENTS = 6;  // ComponentType.FINEROOT + 1, The total number of biomass components.
         public const double BIOTOC = 0.5;
-        public const int NUMSOILPOOLS = 10; // SoilPoolType.SPARECPOOL + 1;
+        public const int NUMSOILPOOLS = 10; // DOMPoolType.SPARECPOOL + 1;
         public const int NUMSNAGPOOLS = 2; // Snags.SnagType.OTHERSNAG + 1 i.e., stem and branches snag pool
         public const double FINEROOTSABOVERATIO = 0.5;
         public const double COARSEROOTABOVERATIO = 0.5;
