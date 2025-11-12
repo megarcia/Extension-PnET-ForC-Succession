@@ -4,24 +4,6 @@ using Landis.Utilities;
 
 namespace Landis.Extension.Succession.PnETForC
 {
-    /// <summary>
-    /// eDOMPoolIDs - IDs used to index directly into the calculations.
-    /// Note that unlike Soils.SoilPoolType, these are 1-based.
-    /// </summary>
-    public enum eDOMPoolIDs
-    {
-        VeryFastAG = 1,
-        VeryFastBG,
-        FastAG,
-        FastBG,
-        Medium,
-        SlowAG,
-        SlowBG,
-        StemSnag,
-        BranchSnag,
-        SpareCPool
-    };
-
     public class DOMPool : IDOMPool
     {
         private int m_nID;

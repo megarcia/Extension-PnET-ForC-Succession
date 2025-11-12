@@ -226,11 +226,11 @@ namespace Landis.Extension.Succession.PnETForC
                 // A proportion of the total carbon lost from the very fast pool is
                 // released into the atmosphere.  The rest is given to the slow soil
                 // pool.
-                toAir = totalLostC_AS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.VeryFastAG].FracAir;
+                toAir = totalLostC_AS * SoilVars.iParams.DOMPools[(int)DOMPoolIDs.VeryFastAG].FracAir;
                 carbonToAir[(int)SoilPoolType.VERYFASTAG] += toAir;
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += totalLostC_AS - toAir;
                 carbonToSlowPool[(int)SoilPoolType.VERYFASTAG] += totalLostC_AS - toAir;
-                toAir = totalLostC_BS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.VeryFastBG].FracAir;
+                toAir = totalLostC_BS * SoilVars.iParams.DOMPools[(int)DOMPoolIDs.VeryFastBG].FracAir;
                 carbonToAir[(int)SoilPoolType.VERYFASTBG] += toAir;
                 carbonToABG_SlowPool[Constants.BGSLOWPOOLIDX] += totalLostC_BS - toAir;
                 carbonToSlowPool[(int)SoilPoolType.VERYFASTBG] += totalLostC_BS - toAir;
@@ -288,11 +288,11 @@ namespace Landis.Extension.Succession.PnETForC
                 // A proportion of the total carbon lost from the fast pool is 
                 // released into the atmosphere.  The rest is given to the slow 
                 // soil pool.
-                toAir = totalLostC_AS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.FastAG].FracAir;
+                toAir = totalLostC_AS * SoilVars.iParams.DOMPools[(int)DOMPoolIDs.FastAG].FracAir;
                 carbonToAir[(int)SoilPoolType.FASTAG] += toAir;
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += totalLostC_AS - toAir;
                 carbonToSlowPool[(int)SoilPoolType.FASTAG] += totalLostC_AS - toAir;
-                toAir = totalLostC_BS * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.FastBG].FracAir;
+                toAir = totalLostC_BS * SoilVars.iParams.DOMPools[(int)DOMPoolIDs.FastBG].FracAir;
                 carbonToAir[(int)SoilPoolType.FASTBG] += toAir;
                 carbonToABG_SlowPool[Constants.BGSLOWPOOLIDX] += totalLostC_BS - toAir;
                 carbonToSlowPool[(int)SoilPoolType.FASTBG] += totalLostC_BS - toAir;
@@ -326,11 +326,11 @@ namespace Landis.Extension.Succession.PnETForC
                 soilC[(int)SoilPoolType.BRANCHSNAG, species.Index] -= BranchSnagLost;
                 totalBranchSnagLost += BranchSnagLost;
                 // collect information into variables for output
-                snagToAir = StemSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.StemSnag].FracAir;
+                snagToAir = StemSnagLost * SoilVars.iParams.DOMPools[(int)DOMPoolIDs.StemSnag].FracAir;
                 carbonToAir[(int)SoilPoolType.STEMSNAG] += snagToAir;
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += StemSnagLost - snagToAir;
                 carbonToSlowPool[(int)SoilPoolType.STEMSNAG] += StemSnagLost - snagToAir;
-                snagToAir = BranchSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BranchSnag].FracAir;
+                snagToAir = BranchSnagLost * SoilVars.iParams.DOMPools[(int)DOMPoolIDs.BranchSnag].FracAir;
                 carbonToAir[(int)SoilPoolType.BRANCHSNAG] += snagToAir;
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += BranchSnagLost - snagToAir;
                 carbonToSlowPool[(int)SoilPoolType.BRANCHSNAG] += BranchSnagLost - snagToAir;
@@ -355,7 +355,7 @@ namespace Landis.Extension.Succession.PnETForC
                 // A proportion of the total carbon lost from the medium pool is 
                 // released into the atmosphere.  The rest is given to the slow 
                 // soil pool.
-                toAir = totalLostC * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.Medium].FracAir;
+                toAir = totalLostC * SoilVars.iParams.DOMPools[(int)DOMPoolIDs.Medium].FracAir;
                 carbonToAir[(int)SoilPoolType.MEDIUM] += toAir;
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += totalLostC - toAir;
                 carbonToSlowPool[(int)SoilPoolType.MEDIUM] += totalLostC - toAir;
@@ -372,9 +372,9 @@ namespace Landis.Extension.Succession.PnETForC
                 double spareC_lost;
                 spareC_lost = soilC[(int)SoilPoolType.SPARECPOOL, species.Index] * SoilVars.decayRates[(int)SoilPoolType.SPARECPOOL, species.Index];
                 soilC[(int)SoilPoolType.SPARECPOOL, species.Index] -= spareC_lost;
-                carbonToAir[(int)SoilPoolType.SPARECPOOL] += spareC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SpareCPool].FracAir;
-                carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += spareC_lost - spareC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SpareCPool].FracAir;
-                carbonToSlowPool[(int)SoilPoolType.SPARECPOOL] += spareC_lost - spareC_lost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SpareCPool].FracAir;
+                carbonToAir[(int)SoilPoolType.SPARECPOOL] += spareC_lost * SoilVars.iParams.DOMPools[(int)DOMPoolIDs.SpareCPool].FracAir;
+                carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += spareC_lost - spareC_lost * SoilVars.iParams.DOMPools[(int)DOMPoolIDs.SpareCPool].FracAir;
+                carbonToSlowPool[(int)SoilPoolType.SPARECPOOL] += spareC_lost - spareC_lost * SoilVars.iParams.DOMPools[(int)DOMPoolIDs.SpareCPool].FracAir;
             }
             // Do the slow soil pool dynamics.
             // First we calculate the carbon input to the soil pool 
@@ -678,7 +678,7 @@ namespace Landis.Extension.Succession.PnETForC
                     return;
                 oDisturbTransferPoolsDOM = (DisturbTransferFromPools)SoilVars.iParamsDM.DisturbOtherFromDOMPools[TransferName];
             }
-            // Make sure we use the eDOMPoolIDs (1-based) not the 0-based SoilPoolType enum.
+            // Make sure we use the DOMPoolIDs (1-based) not the 0-based SoilPoolType enum.
             // Now that we have the information, let's actually do the transfers.
             // set up the printing flags
             /*
