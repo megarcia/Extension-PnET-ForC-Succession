@@ -4,6 +4,12 @@ namespace Landis.Extension.Succession.PnETForC
 {
     public class Snags
     {
+        public enum SnagType
+        {
+            STEMSNAG = 0,
+            BRANCHSNAG
+        };
+
         public static bool bSnagsPresent = false;
         public static int[] DiedAt = new int[Constants.NUMSNAGS];
         public static int[] initSpecIdx = new int[Constants.NUMSNAGS];
@@ -11,12 +17,6 @@ namespace Landis.Extension.Succession.PnETForC
         public static string[] initSnagDist = new string[Constants.NUMSNAGS];
         public static bool[] bSnagsUsed = new bool[Constants.NUMSNAGS];     // flag for if this site contained this snag type.
         private double[,] BioSnag = new double[2, PlugIn.ModelCore.Species.Count];
-
-        public enum SnagType
-        {
-            STEMSNAG = 0,
-            BRANCHSNAG
-        };
 
         public static void Initialize(IInputSnagParams parameters)
         {
