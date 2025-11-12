@@ -17,8 +17,8 @@ namespace Landis.Extension.Succession.PnETForC
         Medium,
         SlowAG,
         SlowBG,
-        SoftStemSnag,
-        SoftBranchSnag,
+        StemSnag,
+        BranchSnag,
         SpareCPool
     };
 

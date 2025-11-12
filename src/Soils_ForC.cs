@@ -326,11 +326,11 @@ namespace Landis.Extension.Succession.PnETForC
                 soilC[(int)SoilPoolType.SOTHERSNAG, species.Index] -= BranchSnagLost;
                 totalBranchSnagLost += BranchSnagLost;
                 // collect information into variables for output
-                snagToAir = StemSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SoftStemSnag].FracAir;
+                snagToAir = StemSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.StemSnag].FracAir;
                 carbonToAir[(int)SoilPoolType.SSTEMSNAG] += snagToAir;
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += StemSnagLost - snagToAir;
                 carbonToSlowPool[(int)SoilPoolType.SSTEMSNAG] += StemSnagLost - snagToAir;
-                snagToAir = BranchSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.SoftBranchSnag].FracAir;
+                snagToAir = BranchSnagLost * SoilVars.iParams.DOMPools[(int)eDOMPoolIDs.BranchSnag].FracAir;
                 carbonToAir[(int)SoilPoolType.SOTHERSNAG] += snagToAir;
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += BranchSnagLost - snagToAir;
                 carbonToSlowPool[(int)SoilPoolType.SOTHERSNAG] += BranchSnagLost - snagToAir;
