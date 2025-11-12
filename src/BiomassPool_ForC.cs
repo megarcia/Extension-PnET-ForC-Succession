@@ -1,10 +1,10 @@
 namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
-    /// eBiomassPoolIDs - IDs used to index directly into the calculations.
+    /// BiomassPoolIDs - IDs used to index directly into the calculations.
     /// Note that unlike Soils.ComponentType, these are 1-based.
     /// </summary>
-    public enum eBiomassPoolIDs
+    public enum BiomassPoolIDs
     {
         Merchantable = 1,
         Foliage,
