@@ -18,16 +18,6 @@ namespace Landis.Extension.Succession.PnETForC
 {
     public class Soils
     {
-        public enum BiomassPoolType  // The biomass component type.
-        {
-            MERCHANTABLE = 0,  // The merchantable biomass component.
-            FOLIAGE,  // The foliage biomass component.
-            OTHER,  // The other biomass component.
-            SUBMERCHANTABLE,  // The submerchantable biomass component.
-            COARSEROOT,  // The coarse root biomass component.
-            FINEROOT  // The fine root biomass component.
-        };  
-
         private ActiveSite m_ActiveSite;
         private bool[] DistOccurred = new bool[Constants.NUMDISTURBANCES];      
         private bool[] SpeciesPresent = new bool[PlugIn.ModelCore.Species.Count]; // true if a species is or was ever present on the site
@@ -183,13 +173,13 @@ namespace Landis.Extension.Succession.PnETForC
             // biomass.
             //
             // Do the very fast soil pool dynamics
-            if (netCLoss[(int)BiomassPoolType.FOLIAGE, species.Index] > 0
-                || netCLoss[(int)BiomassPoolType.FINEROOT, species.Index] > 0
+            if (netCLoss[(int)BiomassPoolTypes.FOLIAGE, species.Index] > 0
+                || netCLoss[(int)BiomassPoolTypes.FINEROOT, species.Index] > 0
                 || soilC[(int)DOMPoolTypes.VERYFASTAG, species.Index] > 0
                 || soilC[(int)DOMPoolTypes.VERYFASTBG, species.Index] > 0)
             {
-                aboveC = netCLoss[(int)BiomassPoolType.FOLIAGE, species.Index];
-                belowC = netCLoss[(int)BiomassPoolType.FINEROOT, species.Index];
+                aboveC = netCLoss[(int)BiomassPoolTypes.FOLIAGE, species.Index];
+                belowC = netCLoss[(int)BiomassPoolTypes.FINEROOT, species.Index];
                 totalC = aboveC + belowC;
                 veryfastAGC = aboveC + Constants.FINEROOTSABOVERATIO * belowC;
                 veryfastBGC = (1 - Constants.FINEROOTSABOVERATIO) * belowC;
@@ -222,9 +212,9 @@ namespace Landis.Extension.Succession.PnETForC
                 carbonToSlowPool[(int)DOMPoolTypes.VERYFASTBG] += totalLostC_BS - toAir;
             }
             // Do the fast soil pool dynamics
-            if (netCLoss[(int)BiomassPoolType.SUBMERCHANTABLE, species.Index] > 0
-                || netCLoss[(int)BiomassPoolType.OTHER, species.Index] > 0
-                || netCLoss[(int)BiomassPoolType.COARSEROOT, species.Index] > 0
+            if (netCLoss[(int)BiomassPoolTypes.SUBMERCHANTABLE, species.Index] > 0
+                || netCLoss[(int)BiomassPoolTypes.OTHER, species.Index] > 0
+                || netCLoss[(int)BiomassPoolTypes.COARSEROOT, species.Index] > 0
                 || soilC[(int)DOMPoolTypes.FASTAG, species.Index] > 0
                 || soilC[(int)DOMPoolTypes.FASTBG, species.Index] > 0
                 || soilC[(int)DOMPoolTypes.BRANCHSNAG, 0] > 0)
@@ -251,8 +241,8 @@ namespace Landis.Extension.Succession.PnETForC
                 // tabulated. The total carbon added to the pool by the current 
                 // species is merely the sum of the above- and below-ground carbon
                 // added.
-                aboveC = netCLoss[(int)BiomassPoolType.SUBMERCHANTABLE, species.Index] + netCLoss[(int)BiomassPoolType.OTHER, species.Index];
-                belowC = netCLoss[(int)BiomassPoolType.COARSEROOT, species.Index];
+                aboveC = netCLoss[(int)BiomassPoolTypes.SUBMERCHANTABLE, species.Index] + netCLoss[(int)BiomassPoolTypes.OTHER, species.Index];
+                belowC = netCLoss[(int)BiomassPoolTypes.COARSEROOT, species.Index];
                 totalC = aboveC + belowC;
                 snagPools[species.Index, (int)Snags.SnagType.BRANCHSNAG] = aboveC * (1.0 - SpeciesData.FracNonMerch[species]);
                 fastCAG = (aboveC * SpeciesData.FracNonMerch[species]) + Constants.COARSEROOTABOVERATIO * belowC + branchSnagToFastPool;
@@ -293,7 +283,7 @@ namespace Landis.Extension.Succession.PnETForC
             // do the snag dynamics if there already are snags (soilC) or if 
             // there is input to the snag pools (from netCloss or from input 
             // pools calculated above -Jan2020)
-            if (netCLoss[(int)BiomassPoolType.MERCHANTABLE, species.Index] > 0
+            if (netCLoss[(int)BiomassPoolTypes.MERCHANTABLE, species.Index] > 0
                 || soilC[(int)DOMPoolTypes.STEMSNAG, species.Index] > 0
                 || soilC[(int)DOMPoolTypes.BRANCHSNAG, 0] > 0 
                 || snagPools[species.Index, (int)Snags.SnagType.STEMSNAG] > 0
@@ -302,7 +292,7 @@ namespace Landis.Extension.Succession.PnETForC
                 // calculate how much snag goes to medium soil pool
                 stemSnagToMediumPool = soilC[(int)DOMPoolTypes.STEMSNAG, species.Index] * SoilVars.iParams.FracDOMStemSnagToMedium;
                 soilC[(int)DOMPoolTypes.STEMSNAG, species.Index] -= stemSnagToMediumPool;
-                snagPools[species.Index, (int)Snags.SnagType.STEMSNAG] = netCLoss[(int)BiomassPoolType.MERCHANTABLE, species.Index];
+                snagPools[species.Index, (int)Snags.SnagType.STEMSNAG] = netCLoss[(int)BiomassPoolTypes.MERCHANTABLE, species.Index];
                 soilC[(int)DOMPoolTypes.STEMSNAG, species.Index] += snagPools[species.Index, (int)Snags.SnagType.STEMSNAG];
                 soilC[(int)DOMPoolTypes.BRANCHSNAG, species.Index] += snagPools[species.Index, (int)Snags.SnagType.BRANCHSNAG];
                 StemSnagLost = soilC[(int)DOMPoolTypes.STEMSNAG, species.Index] * SoilVars.decayRates[(int)DOMPoolTypes.STEMSNAG, species.Index];
@@ -427,27 +417,27 @@ namespace Landis.Extension.Succession.PnETForC
                 FracStem = DeadStemToSnagRates(species, age, woodC_mort);
             if (AboveBelow == 0)        // aboveground wood
             {
-                netCLoss[(int)BiomassPoolType.FOLIAGE, idxSpecies] += nonwoodC_mort;
-                SoilVars.BioInput[(int)BiomassPoolType.FOLIAGE, idxSpecies, idxAge] += nonwoodC_mort;
+                netCLoss[(int)BiomassPoolTypes.FOLIAGE, idxSpecies] += nonwoodC_mort;
+                SoilVars.BioInput[(int)BiomassPoolTypes.FOLIAGE, idxSpecies, idxAge] += nonwoodC_mort;
                 // determine the amount of this that is merchantable
                 if (mortality_wood > 0)
                 {
                     FracStem = DeadStemToSnagRates(species, age, woodC_mort);
-                    netCLoss[(int)BiomassPoolType.MERCHANTABLE, idxSpecies] += woodC_mort * FracStem;
-                    netCLoss[(int)BiomassPoolType.OTHER, idxSpecies] += woodC_mort * (1 - FracStem);
-                    SoilVars.BioInput[(int)BiomassPoolType.MERCHANTABLE, idxSpecies, idxAge] += woodC_mort * FracStem;
-                    SoilVars.BioInput[(int)BiomassPoolType.OTHER, idxSpecies, idxAge] += woodC_mort * (1 - FracStem);
+                    netCLoss[(int)BiomassPoolTypes.MERCHANTABLE, idxSpecies] += woodC_mort * FracStem;
+                    netCLoss[(int)BiomassPoolTypes.OTHER, idxSpecies] += woodC_mort * (1 - FracStem);
+                    SoilVars.BioInput[(int)BiomassPoolTypes.MERCHANTABLE, idxSpecies, idxAge] += woodC_mort * FracStem;
+                    SoilVars.BioInput[(int)BiomassPoolTypes.OTHER, idxSpecies, idxAge] += woodC_mort * (1 - FracStem);
                 }
             }
             else if (PlugIn.ModelCore.CurrentTime == 0 && AboveBelow == 3)
             {
-                SoilVars.BioLive[(int)BiomassPoolType.MERCHANTABLE, idxSpecies] += woodC_mort * FracStem;
-                SoilVars.BioLive[(int)BiomassPoolType.OTHER, idxSpecies] += woodC_mort * (1 - FracStem);
+                SoilVars.BioLive[(int)BiomassPoolTypes.MERCHANTABLE, idxSpecies] += woodC_mort * FracStem;
+                SoilVars.BioLive[(int)BiomassPoolTypes.OTHER, idxSpecies] += woodC_mort * (1 - FracStem);
             }
             else if (PlugIn.ModelCore.CurrentTime == 0 && AboveBelow == 4)
             {
-                SoilVars.BioLive[(int)BiomassPoolType.FINEROOT, idxSpecies] += nonwoodC_mort;
-                SoilVars.BioLive[(int)BiomassPoolType.COARSEROOT, idxSpecies] += woodC_mort;
+                SoilVars.BioLive[(int)BiomassPoolTypes.FINEROOT, idxSpecies] += nonwoodC_mort;
+                SoilVars.BioLive[(int)BiomassPoolTypes.COARSEROOT, idxSpecies] += woodC_mort;
             }
             else if (PlugIn.ModelCore.CurrentTime == 0 && AboveBelow >= 5)
             {
@@ -460,10 +450,10 @@ namespace Landis.Extension.Succession.PnETForC
             else
             {
                 // belowground wood
-                netCLoss[(int)BiomassPoolType.FINEROOT, idxSpecies] += nonwoodC_mort;
-                netCLoss[(int)BiomassPoolType.COARSEROOT, idxSpecies] += woodC_mort;
-                SoilVars.BioInput[(int)BiomassPoolType.FINEROOT, idxSpecies, idxAge] += nonwoodC_mort;
-                SoilVars.BioInput[(int)BiomassPoolType.COARSEROOT, idxSpecies, idxAge] += woodC_mort;
+                netCLoss[(int)BiomassPoolTypes.FINEROOT, idxSpecies] += nonwoodC_mort;
+                netCLoss[(int)BiomassPoolTypes.COARSEROOT, idxSpecies] += woodC_mort;
+                SoilVars.BioInput[(int)BiomassPoolTypes.FINEROOT, idxSpecies, idxAge] += nonwoodC_mort;
+                SoilVars.BioInput[(int)BiomassPoolTypes.COARSEROOT, idxSpecies, idxAge] += woodC_mort;
             }
             // totals for the flux summary table
             if (AboveBelow < 3)
@@ -951,7 +941,7 @@ namespace Landis.Extension.Succession.PnETForC
                 {
                     for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
                     {
-                        if (i != (int)BiomassPoolType.SUBMERCHANTABLE) // don't print out the sub-merch, since we aren't using it
+                        if (i != (int)BiomassPoolTypes.SUBMERCHANTABLE) // don't print out the sub-merch, since we aren't using it
                         {
                             if (j == 0)
                                 logFlux.Write("{0:0.000},", SoilVars.BioInput[i, species.Index, 0]); // the input that is not from disturbance
