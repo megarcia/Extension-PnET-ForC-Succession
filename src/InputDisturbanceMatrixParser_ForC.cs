@@ -161,7 +161,7 @@ namespace Landis.Extension.Succession.PnETForC
                     throw new InputValueException(nIntensity.Name,
                                                   "DisturbFireTransferBiomass: {0} is not a valid Intensity value.", nIntensity.Value.Actual);
                 ReadValue(nBiomassPoolID, currentLine);
-                if ((nBiomassPoolID.Value < 1) || (nBiomassPoolID.Value > Constants.NUMBIOMASSCOMPONENTS))
+                if ((nBiomassPoolID.Value < 1) || (nBiomassPoolID.Value > Constants.NUMBIOMASSPOOLS))
                     throw new InputValueException(nBiomassPoolID.Name,
                                                   "DisturbFireTransferBiomass: {0} is not a valid biomass pool ID.", nBiomassPoolID.Value.Actual);
                 // Convert Intensity from 1-based in input file to 0-based simple array.
@@ -181,7 +181,7 @@ namespace Landis.Extension.Succession.PnETForC
                 GetNextLine();
             }
             parameters.SetDisturbFireFromBiomassPools(aDisturbTransferPools);
-            if (nread < Constants.FIREINTENSITYCOUNT * (Constants.NUMBIOMASSCOMPONENTS - 1))
+            if (nread < Constants.FIREINTENSITYCOUNT * (Constants.NUMBIOMASSPOOLS - 1))
                 PlugIn.ModelCore.UI.WriteLine("DisturbFireTransferBiomass: Some combinations of Fire Intensity and biomass type are missing. When these biomass components are killed, C loss will not be captured.");
             //  DisturbOtherTransferBiomass Parameters
             ReadName(Names.DisturbOtherTransferBiomass);
@@ -221,7 +221,7 @@ namespace Landis.Extension.Succession.PnETForC
                 GetNextLine();
             }
             parameters.SetDisturbOtherFromBiomassPools(dictDisturbTransfer);
-            if (nread < 3 * (Constants.NUMBIOMASSCOMPONENTS - 1))
+            if (nread < 3 * (Constants.NUMBIOMASSPOOLS - 1))
                 PlugIn.ModelCore.UI.WriteLine("DisturbOtherTransferBiomass: Some biomass components are missing. When these biomass components are killed, C loss will not be captured.");
             return parameters; 
         }
