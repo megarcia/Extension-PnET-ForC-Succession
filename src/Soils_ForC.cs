@@ -140,7 +140,7 @@ namespace Landis.Extension.Succession.PnETForC
             double aboveC;      // The amount of carbon added to a soil pool that is attributable to aboveground biomass of an arbitrary species.
             double belowC;      // The amount of carbon added to a soil pool that is attributable to belowground biomass of an arbitrary species.
             double totalC;      // The amount of carbon added to a soil pool that is attributable to an arbitrary species.
-            double totalLostC;  // The total amount of carbon lost from a soil pool.
+            double totalLostC = 0.0;  // The total amount of carbon lost from a soil pool.
             double lostC;       // The amount of carbon lost from a soil pool that is attributable to an arbitrary species.
             // Separated soil very fast above and below ground pool
             double veryfastAGC;
@@ -150,8 +150,8 @@ namespace Landis.Extension.Succession.PnETForC
             double toAir;
             // Variable definitions: (Used exclusively by very fast soil pool dynamics code.)
             double[] carbonToABG_SlowPool = new double[Constants.NUMSLOWPOOLS]; // to store the slow carbon from different sources
-            double totalLostC_AS;
-            double totalLostC_BS;
+            double totalLostC_AS = 0.0;
+            double totalLostC_BS = 0.0;
             double[,] snagPools = new double[PlugIn.ModelCore.Species.Count, Constants.NUMSNAGPOOLS];
             branchSnagToFastPool = 0.0;
             stemSnagToMediumPool = 0.0;
@@ -172,40 +172,42 @@ namespace Landis.Extension.Succession.PnETForC
             // is outside this routine so that it happens when we know about cohort 
             // biomass.
             //
-            // Do the very fast soil pool dynamics
+            // Do the very fast DOM pool dynamics
             if (netCLoss[(int)BiomassPoolTypes.FOLIAGE, species.Index] > 0
                 || netCLoss[(int)BiomassPoolTypes.FINEROOT, species.Index] > 0
                 || soilC[(int)DOMPoolTypes.VERYFASTAG, species.Index] > 0
                 || soilC[(int)DOMPoolTypes.VERYFASTBG, species.Index] > 0)
             {
-                aboveC = netCLoss[(int)BiomassPoolTypes.FOLIAGE, species.Index];
-                belowC = netCLoss[(int)BiomassPoolTypes.FINEROOT, species.Index];
-                totalC = aboveC + belowC;
-                veryfastAGC = aboveC + Constants.FINEROOTSABOVERATIO * belowC;
-                veryfastBGC = (1 - Constants.FINEROOTSABOVERATIO) * belowC;
                 // We determine the new carbon in the very fast soil pool by adding 
                 // in the biomass carbon turned over and subtracting out the carbon 
                 // lost due to decay attributable to the current species.
-                totalLostC = 0F;
-                lostCA = 0F;
-                lostCB = 0F;
-                totalLostC_AS = 0F;
-                totalLostC_BS = 0F;
-                soilC[(int)DOMPoolTypes.VERYFASTAG, species.Index] += veryfastAGC;
-                soilC[(int)DOMPoolTypes.VERYFASTBG, species.Index] += veryfastBGC;
-                lostCA = soilC[(int)DOMPoolTypes.VERYFASTAG, species.Index] * SoilVars.decayRates[(int)DOMPoolTypes.VERYFASTAG, species.Index];
-                soilC[(int)DOMPoolTypes.VERYFASTAG, species.Index] -= lostCA;
-                totalLostC_AS += lostCA;
-                lostCB = soilC[(int)DOMPoolTypes.VERYFASTBG, species.Index] * SoilVars.decayRates[(int)DOMPoolTypes.VERYFASTBG, species.Index];
-                soilC[(int)DOMPoolTypes.VERYFASTBG, species.Index] -= lostCB;
-                totalLostC_BS += lostCB;
+                //
                 // A proportion of the total carbon lost from the very fast pool is
                 // released into the atmosphere.  The rest is given to the slow soil
                 // pool.
+                //
+                // total C
+                aboveC = netCLoss[(int)BiomassPoolTypes.FOLIAGE, species.Index];
+                belowC = netCLoss[(int)BiomassPoolTypes.FINEROOT, species.Index];
+                totalC = aboveC + belowC;
+                // VeryFastAG C
+                veryfastAGC = aboveC + Constants.FINEROOTSABOVERATIO * belowC;
+                soilC[(int)DOMPoolTypes.VERYFASTAG, species.Index] += veryfastAGC;
+                // VeryFastBG C
+                veryfastBGC = (1 - Constants.FINEROOTSABOVERATIO) * belowC;
+                soilC[(int)DOMPoolTypes.VERYFASTBG, species.Index] += veryfastBGC;
+                // VeryFastAG lost C
+                lostCA = soilC[(int)DOMPoolTypes.VERYFASTAG, species.Index] * SoilVars.decayRates[(int)DOMPoolTypes.VERYFASTAG, species.Index];
+                soilC[(int)DOMPoolTypes.VERYFASTAG, species.Index] -= lostCA;
+                totalLostC_AS += lostCA;
                 toAir = totalLostC_AS * SoilVars.iParams.DOMPools[(int)DOMPoolIDs.VeryFastAG].FracAir;
                 carbonToAir[(int)DOMPoolTypes.VERYFASTAG] += toAir;
                 carbonToABG_SlowPool[Constants.AGSLOWPOOLIDX] += totalLostC_AS - toAir;
                 carbonToSlowPool[(int)DOMPoolTypes.VERYFASTAG] += totalLostC_AS - toAir;
+                // VeryFastBG lost C
+                lostCB = soilC[(int)DOMPoolTypes.VERYFASTBG, species.Index] * SoilVars.decayRates[(int)DOMPoolTypes.VERYFASTBG, species.Index];
+                soilC[(int)DOMPoolTypes.VERYFASTBG, species.Index] -= lostCB;
+                totalLostC_BS += lostCB;
                 toAir = totalLostC_BS * SoilVars.iParams.DOMPools[(int)DOMPoolIDs.VeryFastBG].FracAir;
                 carbonToAir[(int)DOMPoolTypes.VERYFASTBG] += toAir;
                 carbonToABG_SlowPool[Constants.BGSLOWPOOLIDX] += totalLostC_BS - toAir;
