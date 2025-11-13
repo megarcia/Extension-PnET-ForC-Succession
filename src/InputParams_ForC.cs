@@ -723,9 +723,9 @@ namespace Landis.Extension.Succession.PnETForC
             m_dsSpecies = PlugIn.ModelCore.Species;
             m_dsEcoregion = PlugIn.ModelCore.Ecoregions;
             m_dictDOMPools = new Dictionary<int, IDOMPool>();
-            m_aDOMDecayRates = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
-            m_aDOMPoolAmountT0 = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
-            m_aDOMPoolQ10 = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMSOILPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
+            m_aDOMDecayRates = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMDOMPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
+            m_aDOMPoolAmountT0 = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMDOMPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
+            m_aDOMPoolQ10 = CreateEcoregionSpeciesPoolParm<double>(Constants.NUMDOMPOOLS); // CreateSpeciesEcoregionPoolParm<double>();
             m_DOMInitialVFastAG = CreateEcoregionSpeciesParm<double>(); //  CreateSpeciesEcoregionParm<double>();
             m_dFracBiomassFine = 0.0;
             m_dFracBiomassCoarse = 0.0;

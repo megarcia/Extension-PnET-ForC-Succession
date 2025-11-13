@@ -41,7 +41,7 @@ namespace Landis.Extension.Succession.PnETForC
             // pools are all influenced by these effects.  
             // NOTE: DOMSoilVars.decayRates use a 0-based index into an
             // array, but DOMPools requires a key that is 1-based.
-            for (int currPool = 0; currPool < Constants.NUMSOILPOOLS - 1; currPool++)
+            for (int currPool = 0; currPool < Constants.NUMDOMPOOLS - 1; currPool++)
             {
                 Debug.Assert(SoilVars.iParams.DOMPools.ContainsKey(currPool + 1));
                 double DOMdecayrate = SoilVars.iParams.DOMDecayRates[ecoregion][species][currPool];

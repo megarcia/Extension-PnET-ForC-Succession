@@ -29,10 +29,10 @@ namespace Landis.Extension.Succession.PnETForC
         private static StreamWriter logFluxDist;
         private static StreamWriter logFluxBio;
         private double[,] netCLoss = new double[Constants.NUMBIOMASSCOMPONENTS, PlugIn.ModelCore.Species.Count];
-        private double[,] soilC = new double[Constants.NUMSOILPOOLS, PlugIn.ModelCore.Species.Count];      // The carbon in each soil pool attributable to each species.
-        private double[] carbonToAir = new double[Constants.NUMSOILPOOLS];
-        private double[] carbonToSlowPool = new double[Constants.NUMSOILPOOLS];
-        private double[] totalDOMC = new double[Constants.NUMSOILPOOLS];
+        private double[,] soilC = new double[Constants.NUMDOMPOOLS, PlugIn.ModelCore.Species.Count];      // The carbon in each soil pool attributable to each species.
+        private double[] carbonToAir = new double[Constants.NUMDOMPOOLS];
+        private double[] carbonToSlowPool = new double[Constants.NUMDOMPOOLS];
+        private double[] totalDOMC = new double[Constants.NUMDOMPOOLS];
         private double[,] TotTransfer = new double[2, 3];   // first: 0=no dist,1=dist; second: 0=to DOM, 1=to Air, 3=to FPS
         private double stemSnagToMediumPool;
         private double branchSnagToFastPool;
@@ -65,7 +65,7 @@ namespace Landis.Extension.Succession.PnETForC
             m_ActiveSite = site;
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[m_ActiveSite];
             foreach (ISpecies species in PlugIn.ModelCore.Species)
-                for (int idxDOMPool = 0; idxDOMPool < Constants.NUMSOILPOOLS; idxDOMPool++)
+                for (int idxDOMPool = 0; idxDOMPool < Constants.NUMDOMPOOLS; idxDOMPool++)
                     soilC[idxDOMPool, species.Index] = SoilVars.iParams.DOMPoolAmountT0[ecoregion][species][idxDOMPool];
             InitializeSoilOutputFiles();  // note that this will actually only be done for the first site.
         }
@@ -84,7 +84,7 @@ namespace Landis.Extension.Succession.PnETForC
             {
                 for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
                     netCLoss[i, j] = oSrc.netCLoss[i, j];
-                for (i = 0; i < Constants.NUMSOILPOOLS; i++)
+                for (i = 0; i < Constants.NUMDOMPOOLS; i++)
                 {
                     soilC[i, j] = oSrc.soilC[i, j];
                     if (j == 0)
@@ -379,7 +379,7 @@ namespace Landis.Extension.Succession.PnETForC
             // Method to do biomixing
             DoPoolBioMixing(species, SoilVars.iParams.FracDOMSlowAGToSlowBG);
             // total the soil pools for output purposes
-            for (currPool = 0; currPool < Constants.NUMSOILPOOLS; currPool++)
+            for (currPool = 0; currPool < Constants.NUMDOMPOOLS; currPool++)
                 totalDOMC[currPool] += soilC[currPool, species.Index];
             return;
         }
@@ -674,7 +674,7 @@ namespace Landis.Extension.Succession.PnETForC
                     logFluxDist.Write("{0},", idxDist);
                     double FPSsnag = 0;
                     double FPSdom = 0;
-                    for (int ipool = 0; ipool < Constants.NUMSOILPOOLS; ipool++)
+                    for (int ipool = 0; ipool < Constants.NUMDOMPOOLS; ipool++)
                     {
                         // Do all reductions to air and fps
                         loss = 0;
@@ -740,7 +740,7 @@ namespace Landis.Extension.Succession.PnETForC
                 {
                     if (SpeciesPresent[(int)species.Index])    // Only print species that have once been on the site
                     {
-                        for (int currPool = 0; currPool < Constants.NUMSOILPOOLS; currPool++)
+                        for (int currPool = 0; currPool < Constants.NUMDOMPOOLS; currPool++)
                             totalDOMC[currPool] = soilC[currPool, species.Index];
                         SoilOutput(site, species, 1);      // pool and flux output by species
                     }
@@ -796,7 +796,7 @@ namespace Landis.Extension.Succession.PnETForC
                 if (!SpeciesPresent[(int)species.Index])    // if the species has never been on the site, we don't want to bother processing it
                 {
                     if (PlugIn.ModelCore.CurrentTime == 1 || LastPass == 1)
-                        for (i = 0; i < Constants.NUMSOILPOOLS; i++)
+                        for (i = 0; i < Constants.NUMDOMPOOLS; i++)
                             soilC[i, (int)species.Index] = 0.0;     // zero out the pools for species that have never been present at the beginning of the projection
                     continue;
                 }
@@ -807,7 +807,7 @@ namespace Landis.Extension.Succession.PnETForC
                 // temperature and weather    
                 DOMDecay.CalcDecayRates(ecoregion, species);  // MG 20250911 updated procedure removes site argument
                 // Initialize C transferred to air, C transferred to the slow pool.
-                for (i = 0; i < Constants.NUMSOILPOOLS; i++)
+                for (i = 0; i < Constants.NUMDOMPOOLS; i++)
                 {
                     carbonToAir[i] = 0.0;
                     carbonToSlowPool[i] = 0.0;
@@ -820,7 +820,7 @@ namespace Landis.Extension.Succession.PnETForC
                 SiteVars.LitterMass[site].Mass += totalDOMC[0] + totalDOMC[1]; //litter = very fast above and below ground
                 if (totalDOMC[0] <= 0.01)
                     i = 0;
-                for (i = 0; i < Constants.NUMSOILPOOLS; i++)
+                for (i = 0; i < Constants.NUMDOMPOOLS; i++)
                 {
                     // totals for the flux summary table
                     TotTransfer[0, 1] += carbonToAir[i];     // 0=no dist, 1=toAir
@@ -920,7 +920,7 @@ namespace Landis.Extension.Succession.PnETForC
                          PlugIn.ModelCore.CurrentTime, site.Location.Row, site.Location.Column, PlugIn.ModelCore.Ecoregion[site].MapCode, species.Name);
                     logFlux.Write("{0},", j);
                 }
-                for (i = 0; i < Constants.NUMSOILPOOLS; i++)
+                for (i = 0; i < Constants.NUMDOMPOOLS; i++)
                 {
                     if (j == 0)
                     {
@@ -1043,7 +1043,7 @@ namespace Landis.Extension.Succession.PnETForC
             logFluxSum.Write("Time,row,column,ecoregion,ABio,BBio,TotalDOM,DelBio,Turnover,NetGrowth,NPP,Rh,NEP,NBP,ToFPS");
             string[] colSoil = new string[] { "VF_A", "VF_B", "Fast_A", "Fast_B", "MED", "Slow_A", "Slow_B", "Sng_Stem", "Sng_Oth", "Extra" };
             string[] colLitter = new string[] { "MERCH", "FOL", "OtherWoody", "CrsRt", "FRt" };
-            for (i = 0; i < Constants.NUMSOILPOOLS; i++)
+            for (i = 0; i < Constants.NUMDOMPOOLS; i++)
             {
                 logFlux.Write("{0}_toAir, ", colSoil[i]);
                 logFlux.Write("{0}_toSlow, ", colSoil[i]);
