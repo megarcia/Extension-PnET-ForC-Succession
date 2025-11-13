@@ -27,5 +27,4 @@ namespace Landis.Extension.Succession.PnETForC
         COARSEROOT,  // The coarse root biomass component.
         FINEROOT  // The fine root biomass component.
     };  
-
 }
