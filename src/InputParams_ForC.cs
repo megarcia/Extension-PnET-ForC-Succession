@@ -426,7 +426,7 @@ namespace Landis.Extension.Succession.PnETForC
 
         public void SetTolerance(InputValue<double> newValue)
         {
-            m_dSpinUpTolerance = Util.CheckBiomassParm(newValue, 0, 100);
+            m_dSpinUpTolerance = Util.CheckParamInputValue(newValue, 0, 100);
         }
 
         public void SetIterations(InputValue<int> newValue)
@@ -453,25 +453,25 @@ namespace Landis.Extension.Succession.PnETForC
         public void SetFunctionalType(ISpecies species,
                                       InputValue<int> newValue)
         {
-            sppFunctionalType[species] = Util.CheckBiomassParm(newValue, 0, 100);
+            sppFunctionalType[species] = Util.CheckParamInputValue(newValue, 0, 100);
         }
 
         public void SetLeafLongevity(ISpecies species,
                                      InputValue<double> newValue)
         {
-            leafLongevity[species] = Util.CheckBiomassParm(newValue, 0.9, 5.0);
+            leafLongevity[species] = Util.CheckParamInputValue(newValue, 0.9, 5.0);
         }
 
         public void SetMortCurveShape(ISpecies species,
                                       InputValue<double> newValue)
         {
-            mortCurveShape[species] = Util.CheckBiomassParm(newValue, 1.0, 50.0);
+            mortCurveShape[species] = Util.CheckParamInputValue(newValue, 1.0, 50.0);
         }
 
         public void SetGrowthCurveShape(ISpecies species,
                                         InputValue<double> newValue)
         {
-            growthCurveShape[species] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
+            growthCurveShape[species] = Util.CheckParamInputValue(newValue, 0.0, 1.0);
         }
 
         public void SetMerchStemsMinAge(ISpecies species, InputValue<int> newValue)
@@ -487,22 +487,22 @@ namespace Landis.Extension.Succession.PnETForC
 
         public void SetMerchCurveParmA(ISpecies species, InputValue<double> newValue)
         {
-            m_adMerchCurveParmA[species] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
+            m_adMerchCurveParmA[species] = Util.CheckParamInputValue(newValue, 0.0, 1.0);
         }
 
         public void SetMerchCurveParmB(ISpecies species, InputValue<double> newValue)
         {
-            m_adMerchCurveParmB[species] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
+            m_adMerchCurveParmB[species] = Util.CheckParamInputValue(newValue, 0.0, 1.0);
         }
 
         public void SetFracNonMerch(ISpecies species, InputValue<double> newValue)
         {
-            m_adFracNonMerch[species] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
+            m_adFracNonMerch[species] = Util.CheckParamInputValue(newValue, 0.0, 1.0);
         }
 
         public void SetFieldCapacity(IEcoregion ecoregion, InputValue<double> newValue)
         {
-            fieldCapacity[ecoregion] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
+            fieldCapacity[ecoregion] = Util.CheckParamInputValue(newValue, 0.0, 1.0);
         }
 
         public void SetFieldCapacity(IEcoregion ecoregion, double newValue)
@@ -512,7 +512,7 @@ namespace Landis.Extension.Succession.PnETForC
 
         public void SetLatitude(IEcoregion ecoregion, InputValue<double> newValue)
         {
-            latitude[ecoregion] = Util.CheckBiomassParm(newValue, 0.0, 50.0);
+            latitude[ecoregion] = Util.CheckParamInputValue(newValue, 0.0, 50.0);
         }
 
         public void SetLatitude(IEcoregion ecoregion, double newValue)
@@ -537,7 +537,7 @@ namespace Landis.Extension.Succession.PnETForC
                 strCombo += actPool;
                 PlugIn.ModelCore.UI.WriteLine("Warning: Decay rate for " + strCombo + " is 0. No decay will occur.");
             }
-            m_aDOMDecayRates[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
+            m_aDOMDecayRates[ecoregion][species][idxDOMPool] = Util.CheckParamInputValue(newValue, 0.0, 1.0);
         }
 
         public void SetDOMPoolAmountT0(IEcoregion ecoregion, ISpecies species, int idxDOMPool, InputValue<double> newValue)
@@ -559,7 +559,7 @@ namespace Landis.Extension.Succession.PnETForC
 
         public void SetDOMPoolQ10(IEcoregion ecoregion, ISpecies species, int idxDOMPool, InputValue<double> newValue)
         {
-            m_aDOMPoolQ10[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 1.0, 5.0);
+            m_aDOMPoolQ10[ecoregion][species][idxDOMPool] = Util.CheckParamInputValue(newValue, 1.0, 5.0);
         }
 
         public void SetDOMDecayRate(IEcoregion ecoregion, ISpecies species, int idxDOMPool, double newValue)
@@ -573,7 +573,7 @@ namespace Landis.Extension.Succession.PnETForC
                 strCombo += actPool;
                 PlugIn.ModelCore.UI.WriteLine("Warning: Decay rate for " + strCombo + " is 0. No decay will occur.");
             }
-            m_aDOMDecayRates[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 0.0, 1.0, "DOMDecayRate");
+            m_aDOMDecayRates[ecoregion][species][idxDOMPool] = Util.CheckParamInputValue(newValue, 0.0, 1.0, "DOMDecayRate");
         }
 
         public void SetDOMPoolAmountT0(IEcoregion ecoregion, ISpecies species, int idxDOMPool, double newValue)
@@ -595,14 +595,14 @@ namespace Landis.Extension.Succession.PnETForC
 
         public void SetDOMPoolQ10(IEcoregion ecoregion, ISpecies species, int idxDOMPool, double newValue)
         {
-            m_aDOMPoolQ10[ecoregion][species][idxDOMPool] = Util.CheckBiomassParm(newValue, 1.0, 5.0, "DOMPoolQ10");
+            m_aDOMPoolQ10[ecoregion][species][idxDOMPool] = Util.CheckParamInputValue(newValue, 1.0, 5.0, "DOMPoolQ10");
         }
 
         public void SetDOMInitialVFastAG(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue)
         {
             Debug.Assert(species != null);
             Debug.Assert(ecoregion != null);
-            m_DOMInitialVFastAG[ecoregion][species] = CheckBiomassParm(newValue, 0.0, 1.0);
+            m_DOMInitialVFastAG[ecoregion][species] = CheckParamInputValue(newValue, 0.0, 1.0);
         }
 
         public void SetFireTolerance(ISpecies species, byte newValue)
@@ -619,27 +619,27 @@ namespace Landis.Extension.Succession.PnETForC
 
         public void SetPropBiomassFine(InputValue<double> dFrac)
         {
-            m_dFracBiomassFine = CheckBiomassParm(dFrac, 0.0, 1.0);
+            m_dFracBiomassFine = CheckParamInputValue(dFrac, 0.0, 1.0);
         }
 
         public void SetPropBiomassCoarse(InputValue<double> dFrac)
         {
-            m_dFracBiomassCoarse = CheckBiomassParm(dFrac, 0.0, 1.0);
+            m_dFracBiomassCoarse = CheckParamInputValue(dFrac, 0.0, 1.0);
         }
 
         public void SetPropDOMSlowAGToSlowBG(InputValue<double> dFrac)
         {
-            m_dFracDOMSlowAGToSlowBG = CheckBiomassParm(dFrac, 0.0, 1.0);
+            m_dFracDOMSlowAGToSlowBG = CheckParamInputValue(dFrac, 0.0, 1.0);
         }
 
         public void SetPropDOMStemSnagToMedium(InputValue<double> dFrac)
         {
-            m_dFracDOMStemSnagToMedium = CheckBiomassParm(dFrac, 0.0, 1.0);
+            m_dFracDOMStemSnagToMedium = CheckParamInputValue(dFrac, 0.0, 1.0);
         }
 
         public void SetPropDOMBranchSnagToFastAG(InputValue<double> dFrac)
         {
-            m_dFracDOMBranchSnagToFastAG = CheckBiomassParm(dFrac, 0.0, 1.0);
+            m_dFracDOMBranchSnagToFastAG = CheckParamInputValue(dFrac, 0.0, 1.0);
         }
 
         /// <summary>
@@ -668,22 +668,22 @@ namespace Landis.Extension.Succession.PnETForC
 
         public void SetBGtoAGBiomassRatio(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
         {
-            m_BGtoAGBiomassRatio[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
+            m_BGtoAGBiomassRatio[ecoregion][species][i] = CheckParamInputValue(newValue, 0.0, 1.0);
         }
 
         public void SetFracFineRoots(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
         {
-            m_FracFineRoots[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
+            m_FracFineRoots[ecoregion][species][i] = CheckParamInputValue(newValue, 0.0, 1.0);
         }
 
         public void SetFineRootTurnoverRate(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
         {
-            m_FineRootTurnoverRate[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
+            m_FineRootTurnoverRate[ecoregion][species][i] = CheckParamInputValue(newValue, 0.0, 1.0);
         }
 
         public void SetCoarseRootTurnoverRate(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
         {
-            m_CoarseRootTurnoverRate[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
+            m_CoarseRootTurnoverRate[ecoregion][species][i] = CheckParamInputValue(newValue, 0.0, 1.0);
         }
 
         public void SetANPPTimeCollection(IEcoregion ecoregion, ISpecies species, ITimeCollection<IANPP> oCollection)
@@ -698,7 +698,7 @@ namespace Landis.Extension.Succession.PnETForC
 
         public void SetProbEstablishment(IEcoregion ecoregion, ISpecies species, InputValue<double> dFrac)
         {
-            m_dProbEstablishment[species][ecoregion] = CheckBiomassParm(dFrac, 0.0, 1.0);
+            m_dProbEstablishment[species][ecoregion] = CheckParamInputValue(dFrac, 0.0, 1.0);
         }
 
         public InputParams()
@@ -797,7 +797,7 @@ namespace Landis.Extension.Succession.PnETForC
             return newParm;
         }
 
-        private InputValue<double> CheckBiomassParm(InputValue<double> newValue, double minValue, double maxValue)
+        private InputValue<double> CheckParamInputValue(InputValue<double> newValue, double minValue, double maxValue)
         {
             if (newValue != null)
             {

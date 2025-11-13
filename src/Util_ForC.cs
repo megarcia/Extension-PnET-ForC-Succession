@@ -55,7 +55,7 @@ namespace Landis.Extension.Succession.PnETForC
             return array;
         }
 
-        public static double CheckBiomassParm(InputValue<double> newValue,
+        public static double CheckParamInputValue(InputValue<double> newValue,
                                               double minValue, double maxValue)
         {
             if (newValue != null)
@@ -68,7 +68,7 @@ namespace Landis.Extension.Succession.PnETForC
             return newValue.Actual;
         }
 
-        public static double CheckBiomassParm(double newValue, double minValue,
+        public static double CheckParamInputValue(double newValue, double minValue,
                                               double maxValue, string name)
         {
             if (newValue < minValue || newValue > maxValue)
@@ -78,7 +78,7 @@ namespace Landis.Extension.Succession.PnETForC
             return newValue;
         }
 
-        public static int CheckBiomassParm(InputValue<int> newValue,
+        public static int CheckParamInputValue(InputValue<int> newValue,
                                            int minValue, int maxValue)
         {
             if (newValue != null)

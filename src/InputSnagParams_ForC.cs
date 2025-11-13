@@ -37,8 +37,8 @@ namespace Landis.Extension.Succession.PnETForC
         public void SetInitSnagInfo(ISpecies species, InputValue<int> dAgeAtDeath, InputValue<int> dTimeSinceDeath, InputValue<string> sDisturbType, int i)
         {
             m_SnagSpecies[i] = species.Index;
-            m_SnagAgeAtDeath[i] = Util.CheckBiomassParm(dAgeAtDeath, 0, 999);
-            m_SnagTimeSinceDeath[i] = Util.CheckBiomassParm(dTimeSinceDeath, 0, 999);
+            m_SnagAgeAtDeath[i] = Util.CheckParamInputValue(dAgeAtDeath, 0, 999);
+            m_SnagTimeSinceDeath[i] = Util.CheckParamInputValue(dTimeSinceDeath, 0, 999);
             m_SnagDisturb[i] = sDisturbType;
         }
 
