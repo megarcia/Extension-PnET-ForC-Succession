@@ -28,7 +28,7 @@ namespace Landis.Extension.Succession.PnETForC
         private static StreamWriter logFluxSum;
         private static StreamWriter logFluxDist;
         private static StreamWriter logFluxBio;
-        private double[,] netCLoss = new double[Constants.NUMBIOMASSCOMPONENTS, PlugIn.ModelCore.Species.Count];
+        private double[,] netCLoss = new double[Constants.NUMBIOMASSPOOLS, PlugIn.ModelCore.Species.Count];
         private double[,] soilC = new double[Constants.NUMDOMPOOLS, PlugIn.ModelCore.Species.Count];      // The carbon in each soil pool attributable to each species.
         private double[] carbonToAir = new double[Constants.NUMDOMPOOLS];
         private double[] carbonToSlowPool = new double[Constants.NUMDOMPOOLS];
@@ -82,7 +82,7 @@ namespace Landis.Extension.Succession.PnETForC
             int i;
             for (int j = 0; j < PlugIn.ModelCore.Species.Count; j++)
             {
-                for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
+                for (i = 0; i < Constants.NUMBIOMASSPOOLS; i++)
                     netCLoss[i, j] = oSrc.netCLoss[i, j];
                 for (i = 0; i < Constants.NUMDOMPOOLS; i++)
                 {
@@ -801,7 +801,7 @@ namespace Landis.Extension.Succession.PnETForC
                     continue;
                 }
                 else if (PlugIn.ModelCore.CurrentTime == 0 && lastAge == 0)
-                    for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
+                    for (i = 0; i < Constants.NUMBIOMASSPOOLS; i++)
                         SoilVars.BioLive[i, (int)species.Index] = 0.0;   // zero out the live biomass component, unless the last year of spin-up
                 // Calculate soil carbon pool decay rates as a function of 
                 // temperature and weather    
@@ -891,7 +891,7 @@ namespace Landis.Extension.Succession.PnETForC
                 for (int j = 0; j < 5; j++)
                 {
                     DistOccurred[j] = false;      // reset, ready for next year 
-                    for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
+                    for (i = 0; i < Constants.NUMBIOMASSPOOLS; i++)
                     {
                         netCLoss[i, species.Index] = 0.0;     
                         SoilVars.BioInput[i, species.Index, 0] = 0.0;
@@ -939,7 +939,7 @@ namespace Landis.Extension.Succession.PnETForC
                 }
                 if (bPrintFlux)
                 {
-                    for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
+                    for (i = 0; i < Constants.NUMBIOMASSPOOLS; i++)
                     {
                         if (i != (int)BiomassPoolTypes.SUBMERCHANTABLE) // don't print out the sub-merch, since we aren't using it
                         {
@@ -1059,7 +1059,7 @@ namespace Landis.Extension.Succession.PnETForC
                 logPools.Write("{0},", colSoil[i]);
             }
             logFluxDist.Write("SnagsToFPS, DOMtoFPS");
-            for (i = 0; i < Constants.NUMBIOMASSCOMPONENTS - 1; i++)
+            for (i = 0; i < Constants.NUMBIOMASSPOOLS - 1; i++)
             {
                 logFlux.Write("{0}_ToDOM, ", colLitter[i]);
                 logFluxBio.Write("{0}_ToDOM, ", colLitter[i]);
@@ -1229,7 +1229,7 @@ namespace Landis.Extension.Succession.PnETForC
                         {
                             wood = 0.0;
                             nonwood = 0.0;
-                            for (int i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
+                            for (int i = 0; i < Constants.NUMBIOMASSPOOLS; i++)
                             {
                                 netCLoss[i, idxSpecies] = SoilVars.BioInput[i, idxSpecies, iage];
                                 if (i == 0)
@@ -1284,7 +1284,7 @@ namespace Landis.Extension.Succession.PnETForC
                     idxSpecies = (int)species.Index;
                     if (SpeciesPresent[idxSpecies])
                     {
-                        for (int i = 0; i < Constants.NUMBIOMASSCOMPONENTS; i++)
+                        for (int i = 0; i < Constants.NUMBIOMASSPOOLS; i++)
                         {
                             netCLoss[i, idxSpecies] = SoilVars.BioInput[i, idxSpecies, iage];
                             SoilVars.BioInput[i, idxSpecies, iage] = 0.0;
