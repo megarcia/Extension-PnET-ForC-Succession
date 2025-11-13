@@ -482,11 +482,11 @@ namespace Landis.Extension.Succession.PnETForC
                                               "EstablishmentProbabilities: Establishment probabilities were not entered for all species and ecoregions! Please check.");
             //  Root Dynamics
             ReadName(Names.RootDynamics);
-            InputVar<double> dMinWoody = new InputVar<double>("Min Woody Biomass");
-            InputVar<double> dRatio = new InputVar<double>("Wood:Root Ratio");
-            InputVar<double> dFracFine = new InputVar<double>("Prop Fine");
-            InputVar<double> dFineTurnover = new InputVar<double>("Fine Turnover");
-            InputVar<double> dCoarseTurnover = new InputVar<double>("Coarse Turnover");
+            InputVar<double> dMinWoodyBiomass = new InputVar<double>("Min Woody Biomass");
+            InputVar<double> dBGtoAGBiomassRatio = new InputVar<double>("Wood:Root Ratio");  // should be "Root:AGBiomass Ratio" as used in Roots class (MG 20251113)
+            InputVar<double> dFracFineRoots = new InputVar<double>("Prop Fine");
+            InputVar<double> dFineRootTurnoverRate = new InputVar<double>("Fine Turnover");
+            InputVar<double> dCoarseRootTurnoverRate = new InputVar<double>("Coarse Turnover");
             nread = 0;
             while (! AtEndOfInput && (CurrentName != "No Section To Follow" && CurrentName != Names.SnagData))
             {
@@ -495,21 +495,21 @@ namespace Landis.Extension.Succession.PnETForC
                 IEcoregion ecoregion = GetEcoregion(sEcoregion.Value);
                 ReadValue(sSpecies, currentLine);
                 ISpecies species = GetSpecies(sSpecies.Value);
-                ReadValue(dMinWoody, currentLine);
-                int idxval = parameters.SetMinWoodyBio(ecoregion, species, dMinWoody.Value);
-                if (idxval > 0 && dMinWoody.Value == 0)
+                ReadValue(dMinWoodyBiomass, currentLine);
+                int idxval = parameters.SetMinWoodyBiomass(ecoregion, species, dMinWoodyBiomass.Value);
+                if (idxval > 0 && dMinWoodyBiomass.Value == 0)
                     PlugIn.ModelCore.UI.WriteLine("Root Parameters: The MinBiomass=0 for an eco-spp combo was not entered first. Roots may not be calculated correctly");
-                if (idxval == 0 && dMinWoody.Value > 0)
+                if (idxval == 0 && dMinWoodyBiomass.Value > 0)
                     PlugIn.ModelCore.UI.WriteLine("Root Parameters: The first MinBiomass value entered for an eco-spp combo was not 0.  Roots may not be calculated correctly");
-                ReadValue(dRatio, currentLine);
-                parameters.SetRootRatio(ecoregion, species, dRatio.Value, idxval);
-                ReadValue(dFracFine, currentLine);
-                parameters.SetFracFine(ecoregion, species, dFracFine.Value, idxval);
-                ReadValue(dFineTurnover, currentLine);
-                parameters.SetFineTurnover(ecoregion, species, dFineTurnover.Value, idxval);
-                ReadValue(dCoarseTurnover, currentLine);
-                parameters.SetCoarseTurnover(ecoregion, species, dCoarseTurnover.Value, idxval);
-                if (dMinWoody.Value == 0) //we only want to count those that have a min biomass=0;
+                ReadValue(dBGtoAGBiomassRatio, currentLine);
+                parameters.SetBGtoAGBiomassRatio(ecoregion, species, dBGtoAGBiomassRatio.Value, idxval);
+                ReadValue(dFracFineRoots, currentLine);
+                parameters.SetFracFineRoots(ecoregion, species, dFracFineRoots.Value, idxval);
+                ReadValue(dFineRootTurnoverRate, currentLine);
+                parameters.SetFineRootTurnoverRate(ecoregion, species, dFineRootTurnoverRate.Value, idxval);
+                ReadValue(dCoarseRootTurnoverRate, currentLine);
+                parameters.SetCoarseRootTurnoverRate(ecoregion, species, dCoarseRootTurnoverRate.Value, idxval);
+                if (dMinWoodyBiomass.Value == 0) //we only want to count those that have a min biomass=0;
                     nread += 1;
                 CheckNoDataAfter(lastColumn, currentLine);
                 GetNextLine();

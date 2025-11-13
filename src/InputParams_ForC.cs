@@ -81,11 +81,11 @@ namespace Landis.Extension.Succession.PnETForC
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>> m_ANPPTimeCollection;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>> m_MaxBiomassTimeCollection;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>> m_ProbEstablishmentTimeCollection;
-        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_MinWoodyBio;
-        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_Ratio;
-        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_FracFine;
-        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_FineTurnover;
-        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_CoarseTurnover;
+        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_MinWoodyBiomass;
+        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_BGtoAGBiomassRatio;
+        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_FracFineRoots;
+        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_FineRootTurnoverRate;
+        private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_CoarseRootTurnoverRate;
         private Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> m_dProbEstablishment;
 
         /// <summary>
@@ -337,11 +337,11 @@ namespace Landis.Extension.Succession.PnETForC
         public double FracDOMSlowAGToSlowBG { get { return m_dFracDOMSlowAGToSlowBG; } }
         public double FracDOMStemSnagToMedium { get { return m_dFracDOMStemSnagToMedium; } }
         public double FracDOMBranchSnagToFastAG { get { return m_dFracDOMBranchSnagToFastAG; } }
-        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> CoarseTurnover { get { return m_CoarseTurnover; } }
-        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FineTurnover { get { return m_FineTurnover; } }
-        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> Ratio { get { return m_Ratio; } }
-        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FracFine { get { return m_FracFine; } }
-        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> MinWoodyBio { get { return m_MinWoodyBio; } }
+        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> MinWoodyBiomass { get { return m_MinWoodyBiomass; } }
+        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> BGtoAGBiomassRatio { get { return m_BGtoAGBiomassRatio; } }
+        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FracFineRoots { get { return m_FracFineRoots; } }
+        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> CoarseRootTurnoverRate { get { return m_CoarseRootTurnoverRate; } }
+        public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FineRootTurnoverRate { get { return m_FineRootTurnoverRate; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>> ANPPTimeCollection { get { return m_ANPPTimeCollection; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>> MaxBiomassTimeCollection { get { return m_MaxBiomassTimeCollection; } }
         public Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>> ProbEstablishmentTimeCollection { get { return m_ProbEstablishmentTimeCollection; } }
@@ -650,40 +650,40 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="newValue"></param>
         /// <returns></returns>
         /// <exception cref="InputValueException"></exception>
-        public int SetMinWoodyBio(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue)
+        public int SetMinWoodyBiomass(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue)
         {
             if (newValue.Actual < 0)
                 throw new InputValueException(newValue.String, "{0} is not greater than 0.", newValue.String);
             int i = 0;
             for (i = 0; i < 5; i++)
             {
-                if (m_MinWoodyBio[ecoregion][species][i] == -999)
+                if (m_MinWoodyBiomass[ecoregion][species][i] == -999)
                 {
-                    m_MinWoodyBio[ecoregion][species][i] = newValue;
+                    m_MinWoodyBiomass[ecoregion][species][i] = newValue;
                     break;
                 }
             }
             return i;
         }
 
-        public void SetRootRatio(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
+        public void SetBGtoAGBiomassRatio(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
         {
-            m_Ratio[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
+            m_BGtoAGBiomassRatio[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
         }
 
-        public void SetFracFine(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
+        public void SetFracFineRoots(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
         {
-            m_FracFine[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
+            m_FracFineRoots[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
         }
 
-        public void SetFineTurnover(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
+        public void SetFineRootTurnoverRate(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
         {
-            m_FineTurnover[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
+            m_FineRootTurnoverRate[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
         }
 
-        public void SetCoarseTurnover(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
+        public void SetCoarseRootTurnoverRate(IEcoregion ecoregion, ISpecies species, InputValue<double> newValue, int i)
         {
-            m_CoarseTurnover[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
+            m_CoarseRootTurnoverRate[ecoregion][species][i] = CheckBiomassParm(newValue, 0.0, 1.0);
         }
 
         public void SetANPPTimeCollection(IEcoregion ecoregion, ISpecies species, ITimeCollection<IANPP> oCollection)
@@ -733,18 +733,18 @@ namespace Landis.Extension.Succession.PnETForC
             m_dFracDOMStemSnagToMedium = 0.0;
             m_dFracDOMBranchSnagToFastAG = 0.0;
             // Roots
-            m_MinWoodyBio = CreateEcoregionSpeciesPoolParm<double>(5);
-            m_Ratio = CreateEcoregionSpeciesPoolParm<double>(5);
-            m_FracFine = CreateEcoregionSpeciesPoolParm<double>(5);
-            m_FineTurnover = CreateEcoregionSpeciesPoolParm<double>(5);
-            m_CoarseTurnover = CreateEcoregionSpeciesPoolParm<double>(5);
+            m_MinWoodyBiomass = CreateEcoregionSpeciesPoolParm<double>(5);
+            m_BGtoAGBiomassRatio = CreateEcoregionSpeciesPoolParm<double>(5);
+            m_FracFineRoots = CreateEcoregionSpeciesPoolParm<double>(5);
+            m_FineRootTurnoverRate = CreateEcoregionSpeciesPoolParm<double>(5);
+            m_CoarseRootTurnoverRate = CreateEcoregionSpeciesPoolParm<double>(5);
             // set the initial MinWoodyBiomass to -999 to indicate that it has not been initialized
             foreach (IEcoregion ecoregion in m_dsEcoregion)
             {
                 foreach (ISpecies species in m_dsSpecies)
                 {
                     for (int i=0; i<5; i++)
-                        m_MinWoodyBio[ecoregion][species][i] = -999;
+                        m_MinWoodyBiomass[ecoregion][species][i] = -999;
                 }
             }
             // ANPP and Max Biomass Time Collection

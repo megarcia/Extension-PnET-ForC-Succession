@@ -30,12 +30,12 @@ namespace Landis.Extension.Succession.PnETForC
         //  Establishment probability modifier for each species in each ecoregion (from biomass succession)
         public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> ProbEstablishModifier;
 
-        // Root parameters
-        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> MinWoodyBio;
-        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> Ratio;
-        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> FracFine;
-        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> FineTurnover;
-        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> CoarseTurnover;
+        // Root parameters (why are these all arrays instead of single values? MG 20251113)
+        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> MinWoodyBiomass;
+        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> BGtoAGBiomassRatio;
+        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> FracFineRoots;
+        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> FineRootTurnoverRate;
+        public static Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double[]>> CoarseRootTurnoverRate;
         private static IInputParams m_iParams;
         private static bool bWroteMsg1;
         
@@ -55,13 +55,12 @@ namespace Landis.Extension.Succession.PnETForC
             FireTolerance = parameters.FireTolerance;
             ShadeTolerance = parameters.ShadeTolerance;
 
-            // Roots
-            Ratio = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
-            MinWoodyBio = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
-            FracFine = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
-            FineTurnover = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
-            CoarseTurnover = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
-
+            // Roots (why are these all 5-element arrays instead of single values? MG 20251113)
+            MinWoodyBiomass = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
+            BGtoAGBiomassRatio = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
+            FracFineRoots = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
+            FineRootTurnoverRate = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
+            CoarseRootTurnoverRate = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
                 if (EcoregionData.ActiveSiteCount[ecoregion] == 0)
@@ -70,11 +69,11 @@ namespace Landis.Extension.Succession.PnETForC
                 {
                     for (int i = 0; i < 5; i++)
                     {
-                        Ratio[species][ecoregion][i] = parameters.Ratio[ecoregion][species][i];
-                        MinWoodyBio[species][ecoregion][i] = parameters.MinWoodyBio[ecoregion][species][i];
-                        FracFine[species][ecoregion][i] = parameters.FracFine[ecoregion][species][i];
-                        FineTurnover[species][ecoregion][i] = parameters.FineTurnover[ecoregion][species][i];
-                        CoarseTurnover[species][ecoregion][i] = parameters.CoarseTurnover[ecoregion][species][i];
+                        MinWoodyBiomass[species][ecoregion][i] = parameters.MinWoodyBiomass[ecoregion][species][i];
+                        BGtoAGBiomassRatio[species][ecoregion][i] = parameters.BGtoAGBiomassRatio[ecoregion][species][i];
+                        FracFineRoots[species][ecoregion][i] = parameters.FracFineRoots[ecoregion][species][i];
+                        FineRootTurnoverRate[species][ecoregion][i] = parameters.FineRootTurnoverRate[ecoregion][species][i];
+                        CoarseRootTurnoverRate[species][ecoregion][i] = parameters.CoarseRootTurnoverRate[ecoregion][species][i];
                     }
                 }
             }

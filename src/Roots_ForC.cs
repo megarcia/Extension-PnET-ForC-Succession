@@ -1,5 +1,14 @@
-// Authors: Caren Dymond, Sarah Beukema
-
+// functional class Roots, from ForC
+// --> functions AddCoarseRootLitter (no references)
+//               AddFineRootLitter (no references)
+//               CalcCoarseRoot (referenced only in AddCoarseRootLitter)
+//               CalcFineRoot (referenced only in AddFineRootLitter)
+//               CalcRootBiomass (currently used)
+//               CalcRootTurnover (currently used)
+//
+// Original ForC authors: Caren Dymond, Sarah Beukema
+// Additional analysis and modifications by Matthew Garcia
+//
 // NOTE: ActiveSite --> Landis.SpatialModeling
 // NOTE: IEcoregion --> Landis.Core
 // NOTE: ISpecies --> Landis.Core
@@ -10,12 +19,12 @@ using Landis.SpatialModeling;
 namespace Landis.Extension.Succession.PnETForC
 {
     /// <summary>
-    /// Fine and coarse roots.
+    /// Calculations of fine and coarse root biomass and turnover.
     /// </summary>
     public class Roots
     {
-        public static double CoarseRoot = 0.0;
-        public static double FineRoot = 0.0;
+        public static double CoarseRootBiomass = 0.0;
+        public static double FineRootBiomass = 0.0;
         public static double CoarseRootTurnover = 0.0;
         public static double FineRootTurnover = 0.0;
 
@@ -59,9 +68,9 @@ namespace Landis.Extension.Succession.PnETForC
         }
 
         /// <summary>
-        /// New ways of doing the roots (Nov 2011):
-        /// Calculate coarse and fine roots based on woody biomass.
-        /// These are no longer straight percentages.
+        /// Calculate coarse and fine root biomass based on AGBiomass,
+        /// not static fractions of AGBiomass (as in Niklas and Enquist,
+        /// 2002).
         /// </summary>
         public static double CalcRootBiomass(ActiveSite site, ISpecies species, double agBiomass)
         {
@@ -69,18 +78,18 @@ namespace Landis.Extension.Succession.PnETForC
             int i;
             for (i = 0; i < 4; i++)
             {
-                if (SpeciesData.MinWoodyBio[species][ecoregion][i + 1] > -999)
+                if (SpeciesData.MinWoodyBiomass[species][ecoregion][i + 1] > -999)
                 {
-                    if (agBiomass >= SpeciesData.MinWoodyBio[species][ecoregion][i] &&
-                        agBiomass < SpeciesData.MinWoodyBio[species][ecoregion][i + 1])
+                    if (agBiomass >= SpeciesData.MinWoodyBiomass[species][ecoregion][i] &&
+                        agBiomass < SpeciesData.MinWoodyBiomass[species][ecoregion][i + 1])
                         break;
                 }
                 else
                     break;
             }
-            double totalRootBiomass = agBiomass * SpeciesData.Ratio[species][ecoregion][i];
-            FineRoot = totalRootBiomass * SpeciesData.FracFine[species][ecoregion][i];
-            CoarseRoot = totalRootBiomass - FineRoot;
+            double totalRootBiomass = agBiomass * SpeciesData.BGtoAGBiomassRatio[species][ecoregion][i];
+            FineRootBiomass = totalRootBiomass * SpeciesData.FracFineRoots[species][ecoregion][i];
+            CoarseRootBiomass = totalRootBiomass - FineRootBiomass;
             return totalRootBiomass;
         }
 
@@ -91,17 +100,17 @@ namespace Landis.Extension.Succession.PnETForC
             int i;
             for (i = 0; i < 4; i++)
             {
-                if (SpeciesData.MinWoodyBio[species][ecoregion][i + 1] > -999)
+                if (SpeciesData.MinWoodyBiomass[species][ecoregion][i + 1] > -999)
                 {
-                    if (agBiomass >= SpeciesData.MinWoodyBio[species][ecoregion][i] &&
-                        agBiomass < SpeciesData.MinWoodyBio[species][ecoregion][i + 1])
+                    if (agBiomass >= SpeciesData.MinWoodyBiomass[species][ecoregion][i] &&
+                        agBiomass < SpeciesData.MinWoodyBiomass[species][ecoregion][i + 1])
                         break;
                 }
                 else
                     break;
             }
-            CoarseRootTurnover = CoarseRoot * SpeciesData.CoarseTurnover[species][ecoregion][i];
-            FineRootTurnover = FineRoot * SpeciesData.FineTurnover[species][ecoregion][i];
+            CoarseRootTurnover = CoarseRootBiomass * SpeciesData.CoarseRootTurnoverRate[species][ecoregion][i];
+            FineRootTurnover = FineRootBiomass * SpeciesData.FineRootTurnoverRate[species][ecoregion][i];
         }
     }
 }

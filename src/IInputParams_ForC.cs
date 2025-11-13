@@ -66,11 +66,11 @@ namespace Landis.Extension.Succession.PnETForC
         double FracDOMSlowAGToSlowBG { get; }
         double FracDOMStemSnagToMedium { get; }
         double FracDOMBranchSnagToFastAG { get; }
-        Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> MinWoodyBio { get; }
-        Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> Ratio { get; }
-        Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FracFine { get; }
-        Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FineTurnover { get; }
-        Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> CoarseTurnover { get; }
+        Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> MinWoodyBiomass { get; }
+        Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> BGtoAGBiomassRatio { get; }
+        Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FracFineRoots { get; }
+        Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> FineRootTurnoverRate { get; }
+        Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> CoarseRootTurnoverRate { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>> ANPPTimeCollection { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>> MaxBiomassTimeCollection { get; }
         Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>> ProbEstablishmentTimeCollection { get; }
