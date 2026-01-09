@@ -30,40 +30,40 @@ namespace Landis.Extension.Succession.PnETForC
         public static double FineRootTurnover = 0.0;
 
         /// <summary>
-        /// Kills coarse roots and add the biomass directly to the SOC pool.
+        /// Kills coarse roots and add the carbon mass directly to the SOC pool.
         /// </summary>
         public static void AddCoarseRootLitter(double agWoodBiomass,
                                                ISpecies species,
                                                ActiveSite site)
         {
 
-            double coarseRootBiomass = CalcCoarseRoot(agWoodBiomass); // Ratio above to below
+            double coarseRootBiomass = CalcCoarseRootBiomass(agWoodBiomass);
             if (coarseRootBiomass > 0)
-                SiteVars.SoilOrganicMatterC[site] += coarseRootBiomass * 0.47;  // = convert to g C / m2
+                SiteVars.SoilOrganicMatterC[site] += coarseRootBiomass * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
         }
 
         /// <summary>
-        /// Kills fine roots and add the biomass directly to the SOC pool.
+        /// Kills fine roots and add the carbon mass directly to the SOC pool.
         /// </summary>
         public static void AddFineRootLitter(double agFoliarBiomass,
                                              ISpecies species,
                                              ActiveSite site)
         {
-            double fineRootBiomass = CalcFineRoot(agFoliarBiomass);
+            double fineRootBiomass = CalcFineRootBiomass(agFoliarBiomass);
             if (fineRootBiomass > 0)
-                SiteVars.SoilOrganicMatterC[site] += fineRootBiomass * 0.47;  // = convert to g C / m2
+                SiteVars.SoilOrganicMatterC[site] += fineRootBiomass * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
         }
 
         /// <summary>
         /// Calculate coarse and fine roots based on total aboveground biomass.
         /// Niklas & Enquist 2002: 25% of total stocks
         /// </summary>
-        public static double CalcCoarseRoot(double agBiomass)
+        public static double CalcCoarseRootBiomass(double agBiomass)
         {
             return agBiomass * 0.24;
         }
 
-        public static double CalcFineRoot(double agBiomass)
+        public static double CalcFineRootBiomass(double agBiomass)
         {
             return agBiomass * 0.06;
         }
