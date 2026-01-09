@@ -75,6 +75,8 @@ namespace Landis.Extension.Succession.PnETForC
         public static double CalcRootBiomass(ActiveSite site, ISpecies species, double agBiomass)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+            // NOTE: the loop control variable "i" refers to the points in the
+            // parameter's growth curve, as specified by the user.
             int i;
             for (i = 0; i < 4; i++)
             {
@@ -97,6 +99,8 @@ namespace Landis.Extension.Succession.PnETForC
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             double totalRootBiomass = CalcRootBiomass(site, species, agBiomass);
+            // NOTE: the loop control variable "i" refers to the points in the
+            // parameter's growth curve, as specified by the user.
             int i;
             for (i = 0; i < 4; i++)
             {

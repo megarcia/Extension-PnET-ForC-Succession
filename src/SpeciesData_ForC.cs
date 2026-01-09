@@ -55,7 +55,10 @@ namespace Landis.Extension.Succession.PnETForC
             FireTolerance = parameters.FireTolerance;
             ShadeTolerance = parameters.ShadeTolerance;
 
-            // Roots (why are these all 5-element arrays instead of single values? MG 20251113)
+            // Roots
+            // NOTE: the 5-element arrays here are lists of points in a 
+            // user-specified growth curve, and "i" is the loop counter
+            // to progress through those points during variable assignment.
             MinWoodyBiomass = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
             BGtoAGBiomassRatio = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
             FracFineRoots = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);

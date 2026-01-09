@@ -81,12 +81,16 @@ namespace Landis.Extension.Succession.PnETForC
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IANPP>>> m_ANPPTimeCollection;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IMaxBiomass>>> m_MaxBiomassTimeCollection;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<ITimeCollection<IProbEstablishment>>> m_ProbEstablishmentTimeCollection;
+        private Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> m_dProbEstablishment;
+
+        // Root parameters
+        // NOTE: the arrays here are lists of points in a user-specified
+        // growth curve, instead of using a single value.
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_MinWoodyBiomass;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_BGtoAGBiomassRatio;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_FracFineRoots;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_FineRootTurnoverRate;
         private Library.Parameters.Ecoregions.AuxParm<Library.Parameters.Species.AuxParm<double[]>> m_CoarseRootTurnoverRate;
-        private Library.Parameters.Species.AuxParm<Library.Parameters.Ecoregions.AuxParm<double>> m_dProbEstablishment;
 
         /// <summary>
         /// Timestep (years)
