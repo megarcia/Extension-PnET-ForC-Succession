@@ -3,6 +3,7 @@
 //               AddFineRootLitter (no references)
 //               CalcCoarseRoot (referenced only in AddCoarseRootLitter)
 //               CalcFineRoot (referenced only in AddFineRootLitter)
+//               FindGrowthRegimeIndex (currently used)
 //               CalcRootBiomass (currently used)
 //               CalcRootTurnover (currently used)
 //
@@ -68,11 +69,12 @@ namespace Landis.Extension.Succession.PnETForC
         }
 
         /// <summary>
-        /// Calculate coarse and fine root biomass based on AGBiomass,
-        /// not static fractions of AGBiomass (as in Niklas and Enquist,
-        /// 2002).
+        /// Find the current segment (regime) in the user-specified growth curve 
+        /// using AGBiomass.
         /// </summary>
-        public static double CalcRootBiomass(ActiveSite site, ISpecies species, double agBiomass)
+        public static int FindGrowthRegimeIndex(ActiveSite site,
+                                                ISpecies species,
+                                                double agBiomass)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             // NOTE: the loop control variable "i" refers to the points in the
@@ -89,30 +91,37 @@ namespace Landis.Extension.Succession.PnETForC
                 else
                     break;
             }
+            return i;
+        }
+
+        /// <summary>
+        /// Calculate coarse and fine root biomass based on AGBiomass,
+        /// not static fractions of AGBiomass (as in Niklas and Enquist,
+        /// 2002).
+        /// </summary>
+        public static double CalcRootBiomass(ActiveSite site,
+                                             ISpecies species,
+                                             double agBiomass)
+        {
+            IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+            // NOTE: "i" refers to the current regime in a soil parameter's
+            // growth curve, as specified by the user.
+            int i = FindGrowthRegimeIndex(site, species, agBiomass);
             double totalRootBiomass = agBiomass * SpeciesData.BGtoAGBiomassRatio[species][ecoregion][i];
             FineRootBiomass = totalRootBiomass * SpeciesData.FracFineRoots[species][ecoregion][i];
             CoarseRootBiomass = totalRootBiomass - FineRootBiomass;
             return totalRootBiomass;
         }
 
-        public static void CalcRootTurnover(ActiveSite site, ISpecies species, double agBiomass)
+        public static void CalcRootTurnover(ActiveSite site,
+                                            ISpecies species,
+                                            double agBiomass)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             double totalRootBiomass = CalcRootBiomass(site, species, agBiomass);
-            // NOTE: the loop control variable "i" refers to the points in the
-            // parameter's growth curve, as specified by the user.
-            int i;
-            for (i = 0; i < 4; i++)
-            {
-                if (SpeciesData.MinWoodyBiomass[species][ecoregion][i + 1] > -999)
-                {
-                    if (agBiomass >= SpeciesData.MinWoodyBiomass[species][ecoregion][i] &&
-                        agBiomass < SpeciesData.MinWoodyBiomass[species][ecoregion][i + 1])
-                        break;
-                }
-                else
-                    break;
-            }
+            // NOTE: "i" refers to the current regime in a soil parameter's
+            // growth curve, as specified by the user.
+            int i = FindGrowthRegimeIndex(site, species, agBiomass);
             CoarseRootTurnover = CoarseRootBiomass * SpeciesData.CoarseRootTurnoverRate[species][ecoregion][i];
             FineRootTurnover = FineRootBiomass * SpeciesData.FineRootTurnoverRate[species][ecoregion][i];
         }
