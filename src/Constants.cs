@@ -217,7 +217,7 @@ namespace Landis.Extension.Succession.PnETForC
         public const int FIREINTENSITYCOUNT = 5;
         public const int NUMSNAGS = 1000;
         public const int NUMBIOMASSPOOLS = 6;  // BiomassPoolTypes.FINEROOT + 1, The total number of biomass components.
-        public const double BIOTOC = 0.5;
+        public const double BIOMASS_TO_CMASS = 0.5;
         public const int NUMDOMPOOLS = 10; // DOMPoolTypes.SPARECPOOL + 1;
         public const int NUMSNAGPOOLS = 2; // Snags.SnagType.BRANCHSNAG + 1 i.e., stem and branches snag pool
         public const double FINEROOTSABOVERATIO = 0.5;

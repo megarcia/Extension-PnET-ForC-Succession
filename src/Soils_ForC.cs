@@ -410,8 +410,8 @@ namespace Landis.Extension.Succession.PnETForC
                 SpeciesPresent[idxSpecies] = true;
             if (mortality_wood == 0 && mortality_nonwood == 0)  // this should only happen during initialization
                 return;
-            double nonwoodC_mort = mortality_nonwood * Constants.BIOTOC;   // turns biomass into C
-            double woodC_mort = mortality_wood * Constants.BIOTOC;
+            double nonwoodC_mort = mortality_nonwood * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
+            double woodC_mort = mortality_wood * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
             if (PlugIn.ModelCore.CurrentTime == 0)
                 idxAge = age;               // set to the age in spin-up years (works as it did before)
             double FracStem = 0.0;
@@ -490,10 +490,10 @@ namespace Landis.Extension.Succession.PnETForC
             string TransferName = "null";
             double FracStem;
             double totroot = Roots.CalcRootBiomass(site, species, wood + nonwood);
-            double coarseRootC = Roots.CoarseRoot * Constants.BIOTOC;
-            double fineRootC = Roots.FineRoot * Constants.BIOTOC;
-            double nonwoodC = nonwood * Constants.BIOTOC;   // turns biomass into C
-            double woodC = wood * Constants.BIOTOC;
+            double coarseRootC = Roots.CoarseRoot * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
+            double fineRootC = Roots.FineRoot * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
+            double nonwoodC = nonwood * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
+            double woodC = wood * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
             DistOccurred[idxDist] = true;
             if (!SpeciesPresent[idxSpecies])
                 SpeciesPresent[idxSpecies] = true;
@@ -752,19 +752,16 @@ namespace Landis.Extension.Succession.PnETForC
                 foreach (ICohort cohort in speciesCohorts)
                 {
                     double foliar = (double)cohort.ComputeNonWoodyBiomass(site);
+                    double foliarC = foliar * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
                     double wood = (double)cohort.Data.Biomass - foliar;
-                    double coarseRootC = 0.0;
-                    double fineRootC = 0.0;
+                    double woodC = wood * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
                     double bbio = Roots.CalcRootBiomass(site, cohort.Species, cohort.Data.Biomass);
-                    // now change everything to C
-                    foliar *= Constants.BIOTOC;
-                    wood *= Constants.BIOTOC;
-                    coarseRootC = Roots.CoarseRoot * Constants.BIOTOC;
-                    fineRootC = Roots.FineRoot * Constants.BIOTOC;
+                    double coarseRootC = Roots.CoarseRoot * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
+                    double fineRootC = Roots.FineRoot * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
                     logBioPools.Write("{0},{1},{2},", PlugIn.ModelCore.CurrentTime, site.Location.Row, site.Location.Column);
                     logBioPools.Write("{0},{1},{2},", ecoregion.MapCode, cohort.Species.Name, cohort.Data.Age);
-                    logBioPools.Write("{0:0.0},", wood);
-                    logBioPools.Write("{0:0.0},", foliar);
+                    logBioPools.Write("{0:0.0},", woodC);
+                    logBioPools.Write("{0:0.0},", foliarC);
                     logBioPools.Write("{0:0.0},", coarseRootC);
                     logBioPools.Write("{0:0.0} ", fineRootC);
                     logBioPools.WriteLine("");
@@ -1100,13 +1097,13 @@ namespace Landis.Extension.Succession.PnETForC
             bool bPrint;
             double totalBiomass = TotBiomass;
             // add in the belowground biomass to the total biomass value
-            bbio = RootBiomass * Constants.BIOTOC;
-            totalBiomass *= Constants.BIOTOC;         // change to C
+            bbio = RootBiomass * Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
+            totalBiomass *= Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
             abio = totalBiomass;            // total biomass is currently only aboveground
             totalBiomass += bbio;           // add in the belowground
             // preGrowthBiomass is aboveground only, so calculate additional root component
             preGrowthBiomass += PreGrowthRootBiomass;
-            preGrowthBiomass *= Constants.BIOTOC;     // change to C
+            preGrowthBiomass *= Constants.BIOMASS_TO_CMASS;   // get C mass from biomass
             // update the site variables (used for printing maps)
             // so also move the calculations here, where needed
             // allBiomass = totalBiomass + TotTransfer[1, 0] + TotTransfer[1, 1] + TotTransfer[1, 2];        // add in any biomass that was removed this year from disturbance
@@ -1242,7 +1239,8 @@ namespace Landis.Extension.Succession.PnETForC
                             // simulate the input from a stand-replacing event.
                             // NOTE: we are assuming a severity 4 fire.
                             if (iage == maxage)
-                                DisturbanceImpactsBiomass(site, species, iage, wood / Constants.BIOTOC, nonwood / Constants.BIOTOC, ":fire", 4);
+                                // MG 20260109 : is division by Constants.BIOMASS_TO_CMASS here correct, or should it be multipication to get C mass?
+                                DisturbanceImpactsBiomass(site, species, iage, wood / Constants.BIOMASS_TO_CMASS, nonwood / Constants.BIOMASS_TO_CMASS, ":fire", 4);
                         }
                     }
                     if (iage == maxage)
