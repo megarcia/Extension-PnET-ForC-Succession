@@ -1,4 +1,4 @@
-﻿// merged PnET and ForC Constants
+// merged PnET and ForC Constants
 
 using System;
 
