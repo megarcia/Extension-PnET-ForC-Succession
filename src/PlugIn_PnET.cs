@@ -333,7 +333,7 @@ namespace Landis.Extension.Succession.PnETForC
                             // Calculations for soil temperature, ignoring snow?
                             // MG 20251009 -- replace parts with formulations in 
                             // PnET-Cohort Library, esp. soil thermal conductivity
-                            float ThermalConductivity_theta = Soils.CalcThermalConductivitySoil_Watts(hydrology.SoilWaterContent, ecoregion.Porosity, ecoregion.SoilType) / Constants.Convert_kJperday_to_Watts;
+                            float ThermalConductivity_theta = SoilT.CalcThermalConductivitySoil_Watts(hydrology.SoilWaterContent, ecoregion.Porosity, ecoregion.SoilType) / Constants.Convert_kJperday_to_Watts;
                             float D = ThermalConductivity_theta / Hydrology_SaxtonRawls.GetCTheta(ecoregion.SoilType);  //m2/day
                             float Dmms = D * 1000000F / Constants.SecondsPerDay; // mm2/s
                             float d = (float)Math.Sqrt(2 * Dmms / Constants.omega);
@@ -425,7 +425,7 @@ namespace Landis.Extension.Succession.PnETForC
                                         else
                                             testDepth += 0.25F;
                                     }
-                                    SiteVars.MonthlySoilTemp[site][m] = Soils.CalcMonthlySoilTemps(depthTempDict, ecoregion, 0, 0, hydrology, (float)monthlyAirT[m]);
+                                    SiteVars.MonthlySoilTemp[site][m] = SoilT.CalcMonthlySoilTemps(depthTempDict, ecoregion, 0, 0, hydrology, (float)monthlyAirT[m]);
                                 }
                             }
                         }

@@ -1428,7 +1428,7 @@ namespace Landis.Extension.Succession.PnETForC
                     float thermalDamping_Moss = (float)Math.Sqrt(2.0F * Constants.ThermalDiffusivityMoss / Constants.omega);
                     float DRz_moss = (float)Math.Exp(-1.0F * SiteMossDepth * thermalDamping_Moss);
                     // Soil thermal conductivity via De Vries model (convert to kJ/m.d.K)
-                    float ThermalConductivity_theta = Soils.CalcThermalConductivitySoil_Watts(hydrology.SoilWaterContent, Ecoregion.Porosity, Ecoregion.SoilType) / Constants.Convert_kJperday_to_Watts;
+                    float ThermalConductivity_theta = SoilT.CalcThermalConductivitySoil_Watts(hydrology.SoilWaterContent, Ecoregion.Porosity, Ecoregion.SoilType) / Constants.Convert_kJperday_to_Watts;
                     // Soil thermal diffusivity
                     float D = ThermalConductivity_theta / Hydrology_SaxtonRawls.GetCTheta(Ecoregion.SoilType);  // m2/day
                     float Dmms = D * 1000000F / Constants.SecondsPerDay; // mm2/s
@@ -1533,7 +1533,7 @@ namespace Landis.Extension.Succession.PnETForC
                     if (zTemp <= 0 && !foundBottomIce && !permafrost)
                         frostDepth[data[m].Month - 1] = bottomFreezeDepth;
                 }
-                depthTempDict = Soils.CalcMonthlySoilTemps(depthTempDict, Ecoregion, daysOfWinter, snowpack, hydrology, lastTempBelowSnow);
+                depthTempDict = SoilT.CalcMonthlySoilTemps(depthTempDict, Ecoregion, daysOfWinter, snowpack, hydrology, lastTempBelowSnow);
                 SortedList<float, float> monthlyDepthTempDict = new SortedList<float, float>();
                 // monthlyDepthTempDict.Add(0.1f, depthTempDict[0.1f]);
                 lastTempBelowSnow = depthTempDict[0];

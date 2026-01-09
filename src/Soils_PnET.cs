@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Landis.Extension.Succession.PnETForC
 {
-    public class Soils
+    public class SoilT
     {
         public static SortedList<float, float> CalcMonthlySoilTemps(SortedList<float, float> depthTempDict, IPnETEcoregionData Ecoregion, int daysOfWinter, float snowpack, IHydrology hydrology, float lastTempBelowSnow)
         {
