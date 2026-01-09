@@ -154,9 +154,9 @@ namespace Landis.Extension.Succession.PnETForC
                 {
                     double totalRoot = Roots.CalcRootBiomass(site, species, cohort.Data.Biomass);
                     SiteVars.soilC[site].CollectBiomassMortality(species, cohort.Data.Age, wood, foliar, 0);
-                    SiteVars.soilC[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRoot, Roots.FineRoot, 1);
+                    SiteVars.soilC[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRootBiomass, Roots.FineRootBiomass, 1);
                     if (site.DataIndex == 1)
-                        ModelCore.UI.WriteLine("{0} Roots from dying cohort {1}", ModelCore.CurrentTime, Roots.FineRoot);
+                        ModelCore.UI.WriteLine("{0} Roots from dying cohort {1}", ModelCore.CurrentTime, Roots.FineRootBiomass);
                 }
                 if (disturbanceType != null)
                 {

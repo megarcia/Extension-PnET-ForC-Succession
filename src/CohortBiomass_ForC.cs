@@ -286,10 +286,10 @@ namespace Landis.Extension.Succession.PnETForC
             if (cohortBiomass < cohort.Data.Biomass)
             {
                 double preMortRoots = Roots.CalcRootBiomass(site, species, cohort.Data.Biomass);
-                double preMortCoarse = Roots.CoarseRoot;
-                double preMortFine = Roots.FineRoot;
+                double preMortCoarse = Roots.CoarseRootBiomass;
+                double preMortFine = Roots.FineRootBiomass;
                 double TotRoots = Roots.CalcRootBiomass(site, species, cohortBiomass);
-                // if the root biomass went down, then we need to allocate that difference.
+                // if the root biomass decreased, then we need to allocate that difference.
                 if (preMortRoots > TotRoots)
                 {
                     // We will allocate the total root decline to the different pools based on the relative proportions
@@ -300,12 +300,12 @@ namespace Landis.Extension.Succession.PnETForC
                     double diffCoarse = preMortRoots - TotRoots - diffFine;
                     SiteVars.soilC[site].CollectBiomassMortality(species, cohort.Data.Age, diffCoarse, diffFine, 1);
                     // write a note to the file if the allocation changes unexpectedly, but not during spin-up
-                    if (((preMortCoarse - Roots.CoarseRoot) < 0 || (preMortFine - Roots.FineRoot) < 0) && PlugIn.ModelCore.CurrentTime > 0)
+                    if (((preMortCoarse - Roots.CoarseRootBiomass) < 0 || (preMortFine - Roots.FineRootBiomass) < 0) && PlugIn.ModelCore.CurrentTime > 0)
                     {
                         string strCombo = "from: " + preMortCoarse;
-                        strCombo += " to: " + Roots.CoarseRoot;
+                        strCombo += " to: " + Roots.CoarseRootBiomass;
                         string strCombo2 = "from: " + preMortFine;
-                        strCombo2 += " to: " + Roots.FineRoot;
+                        strCombo2 += " to: " + Roots.FineRootBiomass;
                         PlugIn.ModelCore.UI.WriteLine("Root Dynamics: Overall root biomass declined but note change in coarse root allocation " + strCombo + " and fine root allocation" + strCombo2);
                     }
                 }
