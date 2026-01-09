@@ -130,13 +130,13 @@ namespace Landis.Extension.Succession.PnETForC
             SiteBiomass initSiteBiomass = SiteBiomass.CalcInitSiteBiomass(site, initialCommunity);
             SiteVars.Cohorts[site] = SiteBiomass.Clone(initSiteBiomass.Cohorts);
             // Note: we need this both here and in SiteVars.Initialize()?
-            SiteVars.soils[site] = new Soils(initSiteBiomass.soils);
+            SiteVars.soilC[site] = new SoilC(initSiteBiomass.soilC);
             SiteVars.SoilOrganicMatterC[site] = initSiteBiomass.SoilOrganicMatterC;            
             SiteVars.DeadWoodMass[site].Mass = initSiteBiomass.DeadWoodMass;
             SiteVars.LitterMass[site].Mass = initSiteBiomass.LitterMass;
             SiteVars.DeadWoodDecayRate[site] = initSiteBiomass.DeadWoodDecayRate;
             SiteVars.LitterDecayRate[site] = initSiteBiomass.LitterDecayRate;
-            SiteVars.soils[site].BiomassOutput(site, 1);
+            SiteVars.soilC[site].BiomassOutput(site, 1);
         }
 
         public void CohortMortality(object sender,
@@ -153,8 +153,8 @@ namespace Landis.Extension.Succession.PnETForC
                 if (disturbanceType == null)
                 {
                     double totalRoot = Roots.CalcRootBiomass(site, species, cohort.Data.Biomass);
-                    SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, wood, foliar, 0);
-                    SiteVars.soils[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRoot, Roots.FineRoot, 1);
+                    SiteVars.soilC[site].CollectBiomassMortality(species, cohort.Data.Age, wood, foliar, 0);
+                    SiteVars.soilC[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRoot, Roots.FineRoot, 1);
                     if (site.DataIndex == 1)
                         ModelCore.UI.WriteLine("{0} Roots from dying cohort {1}", ModelCore.CurrentTime, Roots.FineRoot);
                 }
@@ -165,7 +165,7 @@ namespace Landis.Extension.Succession.PnETForC
                         Reproduction.CheckForPostFireRegen(eventArgs.Cohort, site);
                     else
                         Reproduction.CheckForResprouting(eventArgs.Cohort, site);
-                    SiteVars.soils[site].DisturbanceImpactsBiomass(site, cohort.Species, cohort.Data.Age, wood, foliar, disturbanceType.Name, 0);
+                    SiteVars.soilC[site].DisturbanceImpactsBiomass(site, cohort.Species, cohort.Data.Age, wood, foliar, disturbanceType.Name, 0);
                 }
             }
             else
@@ -174,7 +174,7 @@ namespace Landis.Extension.Succession.PnETForC
                 float fractionPartialMortality = mortality / (float)cohort.Data.Biomass;
                 double foliarInput = foliar * fractionPartialMortality;
                 double woodInput = wood * fractionPartialMortality;
-                SiteVars.soils[site].DisturbanceImpactsBiomass(site, cohort.Species, cohort.Data.Age, woodInput, foliarInput, disturbanceType.Name, 0);
+                SiteVars.soilC[site].DisturbanceImpactsBiomass(site, cohort.Species, cohort.Data.Age, woodInput, foliarInput, disturbanceType.Name, 0);
                 Disturbed[site] = true;
             }
             return;
@@ -231,10 +231,10 @@ namespace Landis.Extension.Succession.PnETForC
                 preGrowthBiomass = SiteVars.TotalBiomass[site];
                 SiteVars.Cohorts[site].Grow(site, y == years && isSuccessionTimestep, true);
                 AddNewCohortsPostGrowth(site);
-                SiteVars.soils[site].BiomassOutput(site, 0);
+                SiteVars.soilC[site].BiomassOutput(site, 0);
                 // update total biomass, before sending this to the soil routines.
                 SiteVars.TotalBiomass[site] = Library.UniversalCohorts.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]);
-                SiteVars.soils[site].ProcessSoils(site, SiteVars.TotalBiomass[site], preGrowthBiomass, 0);
+                SiteVars.soilC[site].ProcessSoilC(site, SiteVars.TotalBiomass[site], preGrowthBiomass, 0);
             }
         }
 
@@ -246,9 +246,9 @@ namespace Landis.Extension.Succession.PnETForC
             {
                 int newBiomass = CohortBiomass.CalcInitCohortBiomass(cohort.species, SiteVars.Cohorts[site], site);
                 SiteVars.Cohorts[site].AddNewCohort(cohort.species, 1, newBiomass, new System.Dynamic.ExpandoObject());
-                SiteVars.soils[site].CollectBiomassMortality(cohort.species, 0, 0, 0, 0);
+                SiteVars.soilC[site].CollectBiomassMortality(cohort.species, 0, 0, 0, 0);
                 double TotalRoots = Roots.CalcRootBiomass(site, cohort.species, newBiomass);
-                SiteVars.soils[site].CollectRootBiomass(TotalRoots, 1);
+                SiteVars.soilC[site].CollectRootBiomass(TotalRoots, 1);
             }
         }
 

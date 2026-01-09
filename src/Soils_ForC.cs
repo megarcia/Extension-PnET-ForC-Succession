@@ -16,7 +16,7 @@ using Landis.SpatialModeling;
 
 namespace Landis.Extension.Succession.PnETForC
 {
-    public class Soils
+    public class SoilC
     {
         private ActiveSite m_ActiveSite;
         private bool[] DistOccurred = new bool[Constants.NUMDISTURBANCES];      
@@ -49,14 +49,14 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// default constructor
         /// </summary>
-        public Soils()
+        public SoilC()
         {
         }
 
         /// <summary>
         /// main constructor
         /// </summary>
-        public Soils(IInputParams iParams, ActiveSite site,
+        public SoilC(IInputParams iParams, ActiveSite site,
                      IInputDisturbanceMatrixParams iDMParams)
         {
             Debug.Assert(iParams != null);
@@ -77,7 +77,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// http://stackoverflow.com/questions/78536/cloning-objects-in-c
         /// </summary>
         /// <param name="oSrc"></param>
-        public Soils(Soils oSrc)
+        public SoilC(SoilC oSrc)
         {
             int i;
             for (int j = 0; j < PlugIn.ModelCore.Species.Count; j++)
@@ -779,8 +779,10 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="totalBiomass"></param>
         /// <param name="preGrowthBiomass"></param>
         /// <param name="LastPass"></param>
-        public void ProcessSoils(ActiveSite site, double totalBiomass,
-                                 double preGrowthBiomass, int LastPass)
+        public void ProcessSoilC(ActiveSite site,
+                                 double totalBiomass,
+                                 double preGrowthBiomass,
+                                 int LastPass)
         {
             // note codes: 
             // LastPass = -1 means soil spin-up phase. 
@@ -1199,7 +1201,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// Simulate input and decay to soil pools until the slow pools stabilize.
         /// </summary>
         /// <param name="site"></param>
-        public void SpinupSoils(ActiveSite site)
+        public void SpinupSoilC(ActiveSite site)
         {
             int idxSpecies;
             int icnt = 0;
@@ -1245,7 +1247,7 @@ namespace Landis.Extension.Succession.PnETForC
                     }
                     if (iage == maxage)
                         DisturbanceImpactsDOM(site, ":fire", 4);
-                    ProcessSoils(site, Library.UniversalCohorts.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]), 0, -1);
+                    ProcessSoilC(site, Library.UniversalCohorts.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]), 0, -1);
                 }
                 foreach (ISpecies species in PlugIn.ModelCore.Species)
                 {
@@ -1320,7 +1322,7 @@ namespace Landis.Extension.Succession.PnETForC
                     sDist = ":" + Snags.initSnagDist[distIdx];
                     DisturbanceImpactsDOM(site, sDist, 0);
                 }
-                ProcessSoils(site, SiteVars.TotalBiomass[site], 0, 1);
+                ProcessSoilC(site, SiteVars.TotalBiomass[site], 0, 1);
             }
             BioSnag = null;
             LastSoilPass = false;

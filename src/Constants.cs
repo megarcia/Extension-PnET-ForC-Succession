@@ -224,9 +224,8 @@ namespace Landis.Extension.Succession.PnETForC
         public const double COARSEROOTABOVERATIO = 0.5;
         public const int NUMDISTURBANCES = 9;  // note, if adding more disturbances, then increase this
         public const double DECAYREFTEMP = 10.0;  // reference soil temperature for decay calculation; originally decayRefTemp from DOMDecay.CalcDecayFTemp
-        public const int NUMSLOWPOOLS = 2;  // number of above- and below-ground slow soil carbon pool; originally numberABSlowPool from Soils.DoSoilDynamics
-        public const int AGSLOWPOOLIDX = 0;  // above-ground slow carbon pool; originally aboveSlowPool from Soils.DoSoilDynamics
-        public const int BGSLOWPOOLIDX = 1;  // below-ground slow soil carbon pool; originally belowSlowPool from Soils.DoSoilDynamics
-
+        public const int NUMSLOWPOOLS = 2;  // number of above- and below-ground slow soil carbon pool; originally numberABSlowPool from SoilC.DoSoilDynamics
+        public const int AGSLOWPOOLIDX = 0;  // above-ground slow carbon pool; originally aboveSlowPool from SoilC.DoSoilDynamics
+        public const int BGSLOWPOOLIDX = 1;  // below-ground slow soil carbon pool; originally belowSlowPool from SoilC.DoSoilDynamics
     }
 }
