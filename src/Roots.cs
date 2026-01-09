@@ -70,7 +70,7 @@ namespace Landis.Extension.Succession.PnETForC
 
         /// <summary>
         /// Find the current segment (regime) in the user-specified growth curve 
-        /// using AGBiomass.
+        /// using AGBiomass. Curves consist of 5 points defining growth regimes.
         /// </summary>
         public static int FindGrowthRegimeIndex(ActiveSite site,
                                                 ISpecies species,

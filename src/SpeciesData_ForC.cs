@@ -54,11 +54,9 @@ namespace Landis.Extension.Succession.PnETForC
             GrowthCurveShapeParm = parameters.GrowthCurveShapeParm;
             FireTolerance = parameters.FireTolerance;
             ShadeTolerance = parameters.ShadeTolerance;
-
             // Roots
-            // NOTE: the 5-element arrays here are lists of points in a 
-            // user-specified growth curve, and "i" is the loop counter
-            // to progress through those points during variable assignment.
+            // NOTE: the 5-element arrays here are lists of points in 
+            // user-specified growth curves.
             MinWoodyBiomass = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
             BGtoAGBiomassRatio = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
             FracFineRoots = Util.CreateSpeciesEcoregionArrayParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions, 5);
@@ -70,6 +68,8 @@ namespace Landis.Extension.Succession.PnETForC
                     continue;
                 foreach (ISpecies species in PlugIn.ModelCore.Species)
                 {
+                    // NOTE: the loop control variable "i" refers to the points in the
+                    // parameter's growth curve, as specified by the user.
                     for (int i = 0; i < 5; i++)
                     {
                         MinWoodyBiomass[species][ecoregion][i] = parameters.MinWoodyBiomass[ecoregion][species][i];
