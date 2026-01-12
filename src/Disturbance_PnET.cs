@@ -39,7 +39,7 @@ namespace Landis.Extension.Succession.PnETForC
 
         public static double ReduceFoliage(double FolBiomass, double defoliationFrac)
         {
-            FolBiomass *= (double)(1.0 - defoliationFrac);
+            FolBiomass *= 1.0 - defoliationFrac;
             return FolBiomass;
         }
 
@@ -47,8 +47,8 @@ namespace Landis.Extension.Succession.PnETForC
         {
             if (sitecohorts == null)
                 throw new Exception("sitecohorts should not be null");
-            double WoodDebrisReductionFrac = 0;
-            double LeafLitterReductionFrac = 0;
+            double WoodDebrisReductionFrac = 0.0;
+            double LeafLitterReductionFrac = 0.0;
             if (disturbanceType != null && Names.TryGetParameter(disturbanceType.Name, out Parameter<string> parameter))
             {
                 // If parameters are available, then set the loss fractions here.
@@ -66,9 +66,9 @@ namespace Landis.Extension.Succession.PnETForC
             if (sitecohorts == null)
                 throw new Exception("sitecohorts should not be null");
             // By default, all material is allocated to the wood debris or the leaf litter pool
-            double WoodReductionFrac = 0;
-            double RootReductionFrac = 0;
-            double FolReductionFrac = 0;
+            double WoodReductionFrac = 0.0;
+            double RootReductionFrac = 0.0;
+            double FolReductionFrac = 0.0;
             if (disturbanceType != null && Names.TryGetParameter(disturbanceType.Name, out Parameter<string> parameter))
             {
                 // If parameters are available, then set the loss fractions here.
@@ -80,9 +80,9 @@ namespace Landis.Extension.Succession.PnETForC
                     FolReductionFrac = double.Parse(parameter["FolReduction"]);
             }            
             // Add new dead wood and leaf litter
-            double woodAdded = (double)((1 - WoodReductionFrac) * cohort.Wood * frac);
-            double rootAdded = (double)((1 - RootReductionFrac) * cohort.Root * frac);
-            double folAdded = (double)((1 - FolReductionFrac) * cohort.Fol * frac);
+            double woodAdded = (1 - WoodReductionFrac) * cohort.Wood * frac;
+            double rootAdded = (1 - RootReductionFrac) * cohort.Root * frac;
+            double folAdded = (1 - FolReductionFrac) * cohort.Fol * frac;
             // Using Canopy fractioning
             ((SiteCohorts)sitecohorts).AddWoodDebris(woodAdded * cohort.CanopyLayerFrac, cohort.PnETSpecies.WoodDebrisDecompRate);
             ((SiteCohorts)sitecohorts).AddWoodDebris(rootAdded * cohort.CanopyLayerFrac, cohort.PnETSpecies.WoodDebrisDecompRate);
