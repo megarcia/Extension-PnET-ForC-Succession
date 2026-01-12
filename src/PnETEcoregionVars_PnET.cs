@@ -191,14 +191,18 @@ namespace Landis.Extension.Succession.PnETForC
             else
                 pnetspeciesvars.PsnFTemp = Photosynthesis.CurvilinearPsnTempResponse(Tday, spc.PsnTopt, spc.PsnTmin, spc.PsnTmax); // Modified 051216(BRM)
             // Respiration gC/timestep (RespTempResponses[0] = day respiration factor)
-            // Respiration acclimation subroutine From: Tjoelker, M.G., Oleksyn, J., Reich, P.B. 1999.
-            // Acclimation of respiration to temperature and C02 in seedlings of boreal tree species
-            // in relation to plant size and relative growth rate. Global Change Biology. 49:679-691,
-            // and Tjoelker, M.G., Oleksyn, J., Reich, P.B. 2001. Modeling respiration of vegetation:
-            // evidence for a general temperature-dependent Q10. Global Change Biology. 7:223-230.
-            // This set of algorithms resets the veg parameter "BaseFoliarRespirationFrac" from
-            // the static vegetation parameter, then recalculates BaseFoliarRespiration based on the adjusted
-            // BaseFoliarRespirationFrac
+            // Respiration acclimation subroutine from:
+            //      Tjoelker, M.G., Oleksyn, J., Reich, P.B. 1999: Acclimation of 
+            //      respiration to temperature and C02 in seedlings of boreal tree 
+            //      species in relation to plant size and relative growth rate. 
+            //      Global Change Biology. 49:679-691.
+            // and 
+            //      Tjoelker, M.G., Oleksyn, J., Reich, P.B. 2001. Modeling 
+            //      respiration of vegetation: evidence for a general temperature-
+            //      dependent Q10. Global Change Biology. 7:223-230.
+            // This set of algorithms resets the veg parameter "BaseFoliarRespirationFrac"
+            // from the static vegetation parameter, then recalculates 
+            // BaseFoliarRespiration based on the adjusted BaseFoliarRespirationFrac
             //
             // Base parameter in Q10 temperature dependency calculation
             double Q10base;
