@@ -6,40 +6,40 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Unitless respiration adjustment based on temperature: for output only
         /// </summary>
-        public float RespirationFTemp; 
+        public double RespirationFTemp; 
 
         /// <summary>
         /// Scaling factor of respiration given day and night temperature and day and night length
         /// </summary>
-        public float MaintenanceRespirationFTemp; 
+        public double MaintenanceRespirationFTemp; 
 
         /// <summary>
         /// Respiration Q10 factor
         /// </summary>
-        public float RespirationFQ10;  
+        public double RespirationFQ10;  
 
         /// <summary>
         /// Base foliar respiration fraction (using Wythers when selected)
         /// </summary>
-        public float BaseFoliarRespirationFrac; 
+        public double BaseFoliarRespirationFrac; 
 
         /// <summary>
         /// Photosynthesis reduction factor due to temperature: for output only
         /// </summary>
-        public float PsnFTemp; 
+        public double PsnFTemp; 
 
         /// <summary>
         /// Adjustment to Amax based on CO2: for output only
         /// </summary>
-        public float DelAmax;  
+        public double DelAmax;  
 
-        public float JH2O;
+        public double JH2O;
 
-        public float AmaxB_CO2;
+        public double AmaxB_CO2;
 
         /// <summary>
         /// Gradient of effect of vapor pressure deficit on growth
         /// </summary>
-        public float DVPD; 
+        public double DVPD; 
     }
 }

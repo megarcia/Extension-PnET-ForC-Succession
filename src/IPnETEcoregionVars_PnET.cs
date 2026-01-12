@@ -6,39 +6,39 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Photosynthetically active radiation, average daily during the month (umol/m2*s)
         /// </summary>
-        float PAR0 { get; } 
+        double PAR0 { get; } 
 
         /// <summary>
         /// Precipitation (mm/mo)
         /// </summary>
-        float Prec { get; } 
+        double Prec { get; } 
 
         /// <summary>
         /// Monthly average daytime air temp: (Tmax + Tavg)/2
         /// </summary>
-        float Tday { get; } 
+        double Tday { get; } 
 
         /// <summary>
         /// Vapor pressure deficit
         /// </summary>
-        float VPD { get; } 
+        double VPD { get; } 
 
         /// <summary>
         /// Decimal year and month
         /// </summary>
-        float Time { get; } 
+        double Time { get; } 
 
         int Year { get; }
 
         /// <summary>
         /// Number of days in the month
         /// </summary>
-        float DaySpan { get; }
+        double DaySpan { get; }
 
         /// <summary>
         /// Length of daylight in seconds
         /// </summary>
-        float DayLength { get; } 
+        double DayLength { get; } 
 
         /// <summary>
         /// Numeric month
@@ -48,32 +48,32 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Monthly average air temp: (Tmin + Tmax)/2
         /// </summary>
-        float Tavg { get; } 
+        double Tavg { get; } 
 
         /// <summary>
         /// Monthly min air temp
         /// </summary>
-        float Tmin { get; } 
+        double Tmin { get; } 
 
         /// <summary>
         /// Monthly max air temp
         /// </summary>
-        float Tmax { get; } 
+        double Tmax { get; } 
 
         /// <summary>
         /// Atmospheric CO2 concentration (ppm)
         /// </summary>
-        float CO2 { get; } 
+        double CO2 { get; } 
 
         /// <summary>
         /// Atmospheric O3 concentration, acumulated during growing season (AOT40) (ppb h)
         /// </summary>
-        float O3 { get; } 
+        double O3 { get; } 
 
         /// <summary>
         /// SPEI
         /// </summary>
-        float SPEI { get; }  
+        double SPEI { get; }  
 
         PnETSpeciesVars this[string species] { get; }
     }

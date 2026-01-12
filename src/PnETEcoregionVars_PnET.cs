@@ -7,13 +7,13 @@ namespace Landis.Extension.Succession.PnETForC
     {
         private DateTime _date;
         private IObservedClimate obs_clim;
-        private float _vpd;
-        private float _dayspan;
-        private float _tavg;
-        private float _tday;
-        private float _dayLength;
+        private double _vpd;
+        private double _dayspan;
+        private double _tavg;
+        private double _tday;
+        private double _dayLength;
 
-        public float VPD
+        public double VPD
         {
             get
             {
@@ -29,7 +29,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float Tday
+        public double Tday
         {
             get
             {
@@ -37,7 +37,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float Prec
+        public double Prec
         {
             get
             {
@@ -45,7 +45,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float O3
+        public double O3
         {
             get
             {
@@ -53,7 +53,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float CO2
+        public double CO2
         {
             get
             {
@@ -61,7 +61,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float SPEI
+        public double SPEI
         {
             get
             {
@@ -69,7 +69,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float PAR0
+        public double PAR0
         {
             get
             {
@@ -88,7 +88,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Number of days in the month
         /// </summary>
-        public float DaySpan
+        public double DaySpan
         {
             get
             {
@@ -110,15 +110,15 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Time (decimal year)
         /// </summary>
-        public float Time
+        public double Time
         {
             get
             {
-                return _date.Year + 1F / 12F * (_date.Month - 1);
+                return _date.Year + 1.0 / 12.0 * (_date.Month - 1);
             }
         }
 
-        public float Tavg
+        public double Tavg
         {
             get
             {
@@ -126,7 +126,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float Tmin
+        public double Tmin
         {
             get
             {
@@ -134,7 +134,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float Tmax
+        public double Tmax
         {
             get
             {
@@ -142,7 +142,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float DayLength
+        public double DayLength
         {
             get
             {
@@ -160,16 +160,16 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public PnETEcoregionVars(IObservedClimate climate_dataset, DateTime Date, bool Wythers, bool DTemp, List<IPnETSpecies> Species, float Latitude)
+        public PnETEcoregionVars(IObservedClimate climate_dataset, DateTime Date, bool Wythers, bool DTemp, List<IPnETSpecies> Species, double Latitude)
         {
             _date = Date;
             obs_clim = climate_dataset;
             speciesVariables = new Dictionary<string, PnETSpeciesVars>();
             _tavg = Weather.CalcTavg(climate_dataset.Tmin, climate_dataset.Tmax);
             _dayspan = Calendar.CalcDaySpan(Date.Month);
-            float hr = Calendar.CalcDaylightHrs(Date.DayOfYear, Latitude); //hours of daylight
+            double hr = Calendar.CalcDaylightHrs(Date.DayOfYear, Latitude); //hours of daylight
             _dayLength = Calendar.CalcDayLength(hr);
-            float nightLength = Calendar.CalcNightLength(hr);
+            double nightLength = Calendar.CalcNightLength(hr);
             _tday = Weather.CalcTday(Tavg, climate_dataset.Tmax);
             _vpd = Weather.CalcVPD(Tday, climate_dataset.Tmin);
             foreach (IPnETSpecies pnetspecies in Species)
@@ -179,7 +179,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        private PnETSpeciesVars GetSpeciesVariables(ref IObservedClimate climate_dataset, bool Wythers, bool DTemp, float dayLength, float nightLength, IPnETSpecies spc)
+        private PnETSpeciesVars GetSpeciesVariables(ref IObservedClimate climate_dataset, bool Wythers, bool DTemp, double dayLength, double nightLength, IPnETSpecies spc)
         {
             // Class that contains species specific PnET variables for a certain month
             PnETSpeciesVars pnetspeciesvars = new PnETSpeciesVars();
@@ -201,7 +201,7 @@ namespace Landis.Extension.Succession.PnETForC
             // BaseFoliarRespirationFrac
             //
             // Base parameter in Q10 temperature dependency calculation
-            float Q10base;
+            double Q10base;
             if (Wythers)
             {
                 pnetspeciesvars.BaseFoliarRespirationFrac = Respiration.CalcBaseFolRespFrac_Wythers(Tavg);
@@ -215,7 +215,7 @@ namespace Landis.Extension.Succession.PnETForC
             // Respiration Q10 factor
             pnetspeciesvars.RespirationFQ10 = Respiration.CalcFQ10(Q10base, Tavg, spc.PsnTopt);
             // Respiration adjustment for temperature
-            float RespFTemp = Respiration.CalcFTemp(Q10base, Tday, Tmin, spc.PsnTopt, dayLength, nightLength);
+            double RespFTemp = Respiration.CalcFTemp(Q10base, Tday, Tmin, spc.PsnTopt, dayLength, nightLength);
             pnetspeciesvars.RespirationFTemp = RespFTemp;
             // Scaling factor of respiration given day and night temperature and day and night length
             pnetspeciesvars.MaintenanceRespirationFTemp = spc.MaintResp * RespFTemp;

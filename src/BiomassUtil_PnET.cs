@@ -4,11 +4,11 @@ namespace Landis.Extension.Succession.PnETForC
 {
     public class BiomassUtil
     {
-        private float[] biomassData;
+        private double[] biomassData;
         private int biomassNum;
-        private float biomassThreshold;
+        private double biomassThreshold;
 
-        public float BiomassThreshold
+        public double BiomassThreshold
         {
             get
             {
@@ -24,14 +24,14 @@ namespace Landis.Extension.Succession.PnETForC
         {
         }
 
-        public float GetBiomassData(int i, int j)
+        public double GetBiomassData(int i, int j)
         {
             if (i > biomassNum || j < 1 || j > 2)
                 throw new Exception("index error at GetBiomass");
             return biomassData[(i - 1) * 2 + j - 1];
         }
 
-        public void SetBiomassData(int i, int j, float value)
+        public void SetBiomassData(int i, int j, double value)
         {
             if (i > biomassNum || j < 1 || j > 2)
                 throw new Exception("index error at SetBiomass");
@@ -42,7 +42,7 @@ namespace Landis.Extension.Succession.PnETForC
         {
             biomassNum = num;
             biomassData = null;
-            biomassData = new float[num * 2];
+            biomassData = new double[num * 2];
         }
     }
 }

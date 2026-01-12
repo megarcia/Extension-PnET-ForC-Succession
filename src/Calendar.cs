@@ -52,7 +52,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// </summary>
         /// <param name="Hrs"></param>
         /// <returns></returns>
-        public static float CalcNightLength(float Hrs)
+        public static double CalcNightLength(double Hrs)
         {
             return 60 * 60 * (24 - Hrs);
         }
@@ -62,7 +62,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// </summary>
         /// <param name="Hrs"></param>
         /// <returns></returns>
-        public static float CalcDayLength(float Hrs)
+        public static double CalcDayLength(double Hrs)
         {
             return 60 * 60 * Hrs;
         }
@@ -73,48 +73,48 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="DOY"></param>
         /// <param name="Latitude"></param>
         /// <returns></returns>
-        public static float CalcDaylightHrs(int DOY, double Latitude)
+        public static double CalcDaylightHrs(int DOY, double Latitude)
         {
-            float TA;
-            float AC;
-            float LatRad;
-            float r;
-            float z;
-            float decl;
-            float z2;
-            float h;
-            LatRad = (float)Latitude * (2.0f * (float)Math.PI) / 360.0f;
-            r = 1.0f - (0.0167f * (float)Math.Cos(0.0172f * (float)(DOY - 3)));
-            z = 0.39785f * (float)Math.Sin(4.868961f + 0.017203f * (float)DOY + 0.033446f * (float)Math.Sin(6.224111f + 0.017202f * (float)DOY));
-            if ((float)Math.Abs(z) < 0.7f)
-                decl = (float)Math.Atan(z / ((float)Math.Sqrt(1.0f - z * z)));
+            double TA;
+            double AC;
+            double LatRad;
+            double r;
+            double z;
+            double decl;
+            double z2;
+            double h;
+            LatRad = Latitude * (2.0 * Math.PI) / 360.0;
+            r = 1.0 - (0.0167 * Math.Cos(0.017203 * (DOY - 3.0)));
+            z = 0.39785 * Math.Sin(4.868961 + 0.017203 * DOY + 0.033446 * Math.Sin(6.224111 + 0.017202 * DOY));
+            if (Math.Abs(z) < 0.7)
+                decl = Math.Atan(z / Math.Sqrt(1.0 - z * z));
             else
-                decl = (float)Math.PI / 2.0f - (float)Math.Atan((float)Math.Sqrt(1.0f - z * z) / z);
-            if ((float)Math.Abs(LatRad) >= (float)Math.PI / 2.0)
+                decl = Math.PI / 2.0 - Math.Atan(Math.Sqrt(1.0 - z * z) / z);
+            if (Math.Abs(LatRad) >= Math.PI / 2.0)
             {
                 if (Latitude < 0)
-                    LatRad = (-1.0f) * ((float)Math.PI / 2.0f - 0.01f);
+                    LatRad = -1.0 * (Math.PI / 2.0 - 0.01);
                 else
-                    LatRad = 1.0f * ((float)Math.PI / 2.0f - 0.01f);
+                    LatRad = 1.0 * (Math.PI / 2.0 - 0.01);
             }
-            z2 = -(float)Math.Tan(decl) * (float)Math.Tan(LatRad);
+            z2 = -Math.Tan(decl) * Math.Tan(LatRad);
             if (z2 >= 1.0)
-                h = 0;
+                h = 0.0;
             else if (z2 <= -1.0)
-                h = (float)Math.PI;
+                h = Math.PI;
             else
             {
-                TA = (float)Math.Abs(z2);
+                TA = Math.Abs(z2);
                 if (TA < 0.7)
-                    AC = 1.570796f - (float)Math.Atan(TA / (float)Math.Sqrt(1.0f - TA * TA));
+                    AC = (Math.PI / 2.0) - Math.Atan(TA / Math.Sqrt(1.0 - TA * TA));
                 else
-                    AC = (float)Math.Atan((float)Math.Sqrt(1.0f - TA * TA) / TA);
+                    AC = Math.Atan(Math.Sqrt(1.0 - TA * TA) / TA);
                 if (z2 < 0)
-                    h = 3.141593f - AC;
+                    h = Math.PI - AC;
                 else
                     h = AC;
             }
-            return 2.0f * (h * 24.0f) / (2.0f * (float)Math.PI);
+            return 2.0 * h * 24.0 / (2.0 * Math.PI);
         }
     }
 }

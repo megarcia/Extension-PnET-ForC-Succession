@@ -17,72 +17,72 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Carbon fraction in biomass 
         /// </summary>
-        float CFracBiomass { get; }
+        double CFracBiomass { get; }
 
         /// <summary>
         /// Fraction of non-soluble carbon to active biomass
         /// </summary>
-        float NSCFrac { get; }
+        double NSCFrac { get; }
 
         /// <summary>
         /// Fraction of species biomass that is below ground
         /// </summary>
-        float BGBiomassFrac { get; }
+        double BGBiomassFrac { get; }
 
         /// <summary>
         /// Fraction of species biomass that is above ground
         /// </summary>
-        float AGBiomassFrac { get; }
+        double AGBiomassFrac { get; }
 
         /// <summary>
         /// Fraction foliage biomass of active biomass
         /// </summary>
-        float FolBiomassFrac { get; }
+        double FolBiomassFrac { get; }
 
         /// <summary>
         /// Fraction active wood biomass of total biomass 
         /// </summary>
-        float LiveWoodBiomassFrac { get; }
+        double LiveWoodBiomassFrac { get; }
 
         /// <summary>
         /// Water stress parameter for excess water: pressure head below which growth halts
         /// </summary>
-        float H1 { get; }
+        double H1 { get; }
 
         /// <summary>
         /// Water stress parameter for excess water: pressure head below which growth declines
         /// </summary>
-        float H2 { get; }
+        double H2 { get; }
 
         /// <summary>
         /// Water stress parameter for water shortage: pressure head above which growth declines
         /// </summary>
-        float H3 { get; }
+        double H3 { get; }
 
         /// <summary>
         /// Water stress parameter for water shortage: pressure head above growth halts (= wilting point)
         /// </summary>
-        float H4 { get; }
+        double H4 { get; }
 
         /// <summary>
         /// Initial NSC for new cohort
         /// </summary>
-        float InitialNSC { get; }
+        double InitialNSC { get; }
 
         /// <summary>
         /// Half saturation value for radiation (W/m2)
         /// </summary>
-        float HalfSat { get; }
+        double HalfSat { get; }
 
         /// <summary>
         /// Radiation extinction rate through the canopy (LAI-1)
         /// </summary>
-        float K { get; }
+        double K { get; }
 
         /// <summary>
         /// Decomposition constant of wood litter (yr-1)
         /// </summary>
-        float WoodDebrisDecompRate { get; }
+        double WoodDebrisDecompRate { get; }
 
         /// <summary>
         /// Species longevity (yr)
@@ -92,52 +92,52 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Growth reduction parameter with age
         /// </summary>
-        float PhotosynthesisFAge { get; }
+        double PhotosynthesisFAge { get; }
 
         /// <summary>
         /// Reduction of specific leaf weight throughout the canopy (g/m2/g)
         /// </summary>
-        float SLWDel { get; }
+        double SLWDel { get; }
 
         /// <summary>
         /// Max specific leaf weight (g/m2)
         /// </summary>
-        float SLWmax { get; }
+        double SLWmax { get; }
 
         /// <summary>
         /// Foliage turnover (g/g/y)
         /// </summary>
-        float FolTurnoverRate { get; }
+        double FolTurnoverRate { get; }
 
         /// <summary>
         /// Root turnover (g/g/y)
         /// </summary>
-        float RootTurnoverRate { get; }
+        double RootTurnoverRate { get; }
 
         /// <summary>
         /// Wood turnover (g/g/y)
         /// </summary>
-        float WoodTurnoverRate { get; }
+        double WoodTurnoverRate { get; }
 
         /// <summary>
         /// Establishment factor related to light - fRad value that equates to optimal light for establishment
         /// </summary>
-        float EstablishmentFRad { get; }
+        double EstablishmentFRad { get; }
 
         /// <summary>
         /// Establishment factor related to moisture - fWater value that equates to optimal water for establishment
         /// </summary>
-        float EstablishmentFWater { get; }
+        double EstablishmentFWater { get; }
 
         /// <summary>
         /// Mamximum total probability of establishment under optimal conditions
         /// </summary>
-        float MaxProbEstablishment { get; }
+        double MaxProbEstablishment { get; }
 
         /// <summary>
         /// Lignin concentration in foliage
         /// </summary>
-        float FolLignin { get; }
+        double FolLignin { get; }
 
         /// <summary>
         /// Prevent establishment 
@@ -147,72 +147,72 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Optimal temperature for photosynthesis
         /// </summary>
-        float PsnTopt { get; }
+        double PsnTopt { get; }
 
         /// <summary>
         /// Temperature response factor for respiration
         /// </summary>
-        float Q10 { get; }
+        double Q10 { get; }
 
         /// <summary>
         /// Base foliar respiration (g respired / g photosynthesis)
         /// </summary>
-        float BaseFoliarRespiration { get; }
+        double BaseFoliarRespiration { get; }
 
         /// <summary>
         /// Minimum temperature for photosynthesis
         /// </summary>
-        float PsnTmin { get; }
+        double PsnTmin { get; }
 
         /// <summary>
         /// Maximum temperature for photosynthesis
         /// </summary>
-        float PsnTmax { get; }
+        double PsnTmax { get; }
 
         /// <summary>
         /// Foliar ratio of nitrogen to carbon  (gN/gC)
         /// </summary>
-        float FolN { get; }
+        double FolN { get; }
 
         /// <summary>
         /// Vapor pressure deficit response parameter 
         /// </summary>
-        float DVPD1 { get; }
+        double DVPD1 { get; }
 
         /// <summary>
         /// Vapor pressure deficit response parameter 
         /// </summary>
-        float DVPD2 { get; }
+        double DVPD2 { get; }
 
         /// <summary>
         /// Reference photosynthesis (g)
         /// </summary>
-        float AmaxA { get; }
+        double AmaxA { get; }
 
         /// <summary>
         /// Response parameter for photosynthesis to N
         /// </summary>
-        float AmaxB { get; }
+        double AmaxB { get; }
 
         /// <summary>
         /// Modifier of AmaxA due to averaging non-linear Amax data
         /// </summary>
-        float AmaxAmod { get; }
+        double AmaxAmod { get; }
 
         /// <summary>
         /// Reference maintenance respiration 
         /// </summary>
-        float MaintResp { get; }
+        double MaintResp { get; }
 
         /// <summary>
         /// Effect of CO2 on AMaxB (change in AMaxB with increase of 200 ppm CO2)
         /// </summary>
-        float AMaxBFCO2 { get; }
+        double AMaxBFCO2 { get; }
 
         /// <summary>
         /// Effect of CO2 on HalfSat (change in HalfSat with increase of 1 ppm CO2 [slope])
         /// </summary>
-        float HalfSatFCO2 { get; }
+        double HalfSatFCO2 { get; }
 
         /// <summary>
         /// Stomatal ozone sensitivity class (Sensitive, Intermediate, Tolerant)
@@ -222,38 +222,38 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Slope for linear FolN relationship
         /// </summary>
-        float FolN_slope { get; }
+        double FolN_slope { get; }
 
         /// <summary>
         /// Intercept for linear FolN relationship
         /// </summary>
-        float FolN_intercept { get; }
+        double FolN_intercept { get; }
 
         /// <summary>
         /// Slope for linear FolBiomassFrac relationship
         /// </summary>
-        float FolBiomassFrac_slope { get; }
+        double FolBiomassFrac_slope { get; }
 
         /// <summary>
         /// Intercept for linear FolBiomassFrac relationship
         /// </summary>
-        float FolBiomassFrac_intercept { get; }
+        double FolBiomassFrac_intercept { get; }
 
         /// <summary>
         /// Slope coefficient for FOzone
         /// </summary>
-        float FOzone_slope { get; }
+        double FOzone_slope { get; }
 
         /// <summary>
         /// Cold tolerance
         /// </summary>
-        float ColdTolerance { get; }
+        double ColdTolerance { get; }
 
         /// <summary>
         /// Mininum Temp for leaf-on (optional)
         /// If not provided, LeafOnMinT = PsnTmin
         /// </summary>
-        float LeafOnMinT { get; }
+        double LeafOnMinT { get; }
 
         /// <summary>
         /// Initial Biomass
@@ -263,7 +263,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Lower canopy NSC reserve 
         /// </summary>
-        float NSCReserve { get; }
+        double NSCReserve { get; }
 
         /// <summary>
         /// Lifeform
@@ -273,31 +273,31 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Minimum defoliation amount that triggers refoliation
         /// </summary>
-        float RefoliationMinimumTrigger { get; }
+        double RefoliationMinimumTrigger { get; }
 
         /// <summary>
         /// Maximum amount of refoliation
         /// </summary>
-        float MaxRefoliationFrac { get; }
+        double MaxRefoliationFrac { get; }
 
         /// <summary>
         /// Cost of refoliation
         /// </summary>
-        float RefoliationCost { get; }
+        double RefoliationCost { get; }
 
         /// <summary>
         /// Cost to NSC without refoliation
         /// </summary>
-        float NonRefoliationCost { get; }
+        double NonRefoliationCost { get; }
 
         /// <summary>
         /// Maximum LAI
         /// </summary>
-        float MaxLAI { get; }
+        double MaxLAI { get; }
 
         /// <summary>
         /// Scalar value for calculating species moss depth
         /// </summary>
-        float MossScalar { get; }
+        double MossScalar { get; }
     }
 }

@@ -7,36 +7,36 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Atmospheric O3 concentration, acumulated during growing season (AOT40) (ppb h)
         /// </summary>
-        float O3 { get; }
+        double O3 { get; }
 
         /// <summary>
         /// Atmospheric CO2 concentration (ppm)
         /// </summary>
-        float CO2 { get; } 
+        double CO2 { get; } 
 
         /// <summary>
         /// Photosynthetically active radiation, average daily during the month (W/m2)
         /// </summary>
-        float PAR0 { get; }
+        double PAR0 { get; }
 
         /// <summary>
         /// Precipitation (mm/mo)
         /// </summary>
-        float Prec { get; }
+        double Prec { get; }
 
         /// <summary>
         /// Maximum daily temperature
         /// </summary>
-        float Tmax { get; } 
+        double Tmax { get; } 
 
         /// <summary>
         /// Minimum daily temperature
         /// </summary>
-        float Tmin { get; }
+        double Tmin { get; }
 
         /// <summary>
         /// SPEI
         /// </summary>
-        float SPEI { get; } 
+        double SPEI { get; } 
     }
 }

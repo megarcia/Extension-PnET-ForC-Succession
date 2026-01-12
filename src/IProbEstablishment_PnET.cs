@@ -5,19 +5,19 @@ namespace Landis.Extension.Succession.PnETForC
 {
     public interface IProbEstablishment
     {
-        Library.Parameters.Species.AuxParm<float> SpeciesProbEstablishment { get; }
+        Library.Parameters.Species.AuxParm<double> SpeciesProbEstablishment { get; }
 
-        float GetSpeciesFWater(IPnETSpecies species);
+        double GetSpeciesFWater(IPnETSpecies species);
 
-        float GetSpeciesFRad(IPnETSpecies species);
+        double GetSpeciesFRad(IPnETSpecies species);
 
-        Dictionary<IPnETSpecies, float> CalcProbEstablishmentForMonth(IPnETEcoregionVars pnetvars, IPnETEcoregionData ecoregion, float PAR, IHydrology hydrology, float minHalfSat, float maxHalfSat, bool invertProbEstablishment, float fracRootAboveFrost);
+        Dictionary<IPnETSpecies, double> CalcProbEstablishmentForMonth(IPnETEcoregionVars pnetvars, IPnETEcoregionData ecoregion, double PAR, IHydrology hydrology, double minHalfSat, double maxHalfSat, bool invertProbEstablishment, double fracRootAboveFrost);
          
         bool IsEstablishedSpecies(IPnETSpecies species);
 
         void AddEstablishedSpecies(IPnETSpecies species);
 
-        void RecordProbEstablishment(int year, IPnETSpecies species, float annualProbEstablishment, float annualFWater, float annualFRad, bool established, int monthCount);
+        void RecordProbEstablishment(int year, IPnETSpecies species, double annualProbEstablishment, double annualFWater, double annualFRad, bool established, int monthCount);
 
         void Reset();
     }

@@ -13,7 +13,7 @@ namespace Landis.Extension.Succession.PnETForC
         public static void Initialize()
         {
             AnnualClimate = new Library.Parameters.Ecoregions.AuxParm<AnnualClimate>(Globals.ModelCore.Ecoregions);
-            Climate.Climate.GenerateEcoregionClimateData(((Parameter<float>)Names.GetParameter(Names.Latitude)).Value);
+            Climate.Climate.GenerateEcoregionClimateData(((Parameter<double>)Names.GetParameter(Names.Latitude)).Value);
             // grab the first year's spinup climate
             foreach (var ecoregion in Globals.ModelCore.Ecoregions.Where(x => x.Active))
             {

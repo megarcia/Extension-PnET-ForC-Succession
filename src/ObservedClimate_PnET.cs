@@ -15,18 +15,18 @@ namespace Landis.Extension.Succession.PnETForC
         private static Library.Parameters.Ecoregions.AuxParm<string> ClimateFileName; 
         private string year;
         private string month;
-        private float par0;
-        private float prec;
-        private float tmin;
-        private float tmax;
-        private float co2;
-        private float o3;
-        private float spei;
+        private double par0;
+        private double prec;
+        private double tmin;
+        private double tmax;
+        private double co2;
+        private double o3;
+        private double spei;
         private List<ObservedClimate> data_lines = new List<ObservedClimate>();
         #endregion
 
         #region public accessors
-        public float CO2
+        public double CO2
         {
             get
             {
@@ -50,7 +50,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float PAR0
+        public double PAR0
         {
             get
             {
@@ -58,7 +58,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float Prec
+        public double Prec
         {
             get
             {
@@ -66,7 +66,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float Tmin
+        public double Tmin
         {
             get
             {
@@ -74,7 +74,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float O3
+        public double O3
         {
             get
             {
@@ -82,7 +82,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float Tmax
+        public double Tmax
         {
             get
             {
@@ -90,7 +90,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float SPEI
+        public double SPEI
         {
             get
             {
@@ -245,12 +245,12 @@ namespace Landis.Extension.Succession.PnETForC
                 ObservedClimate climate = new ObservedClimate();
                 string[] terms = line.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
                 // Get one state of static information for the line in the climate file
-                climate.tmax = CheckInRange(float.Parse(terms[columns.Tmax]), -80, 80, "Tmax");
-                climate.tmin = CheckInRange(float.Parse(terms[columns.Tmin]), -80, climate.tmax, "TMin");
-                climate.co2 = CheckInRange(float.Parse(terms[columns.CO2]), 0, float.MaxValue, "CO2");
-                climate.par0 = (ushort)CheckInRange(float.Parse(terms[columns.PAR0]), 0, float.MaxValue, "PAR0");
-                climate.prec = CheckInRange(float.Parse(terms[columns.Prec]), 0, float.MaxValue, "PREC");
-                climate.o3 = columns.O3 > 0 ? CheckInRange(float.Parse(terms[columns.O3]), 0, float.MaxValue, "O3") : 0;
+                climate.tmax = CheckInRange(double.Parse(terms[columns.Tmax]), -80, 80, "Tmax");
+                climate.tmin = CheckInRange(double.Parse(terms[columns.Tmin]), -80, climate.tmax, "TMin");
+                climate.co2 = CheckInRange(double.Parse(terms[columns.CO2]), 0, double.MaxValue, "CO2");
+                climate.par0 = (ushort)CheckInRange(double.Parse(terms[columns.PAR0]), 0, double.MaxValue, "PAR0");
+                climate.prec = CheckInRange(double.Parse(terms[columns.Prec]), 0, double.MaxValue, "PREC");
+                climate.o3 = columns.O3 > 0 ? CheckInRange(double.Parse(terms[columns.O3]), 0, double.MaxValue, "O3") : 0;
                 climate.year = terms[columns.Year];
                 climate.month = terms[columns.Month];
                 data_lines.Add(climate);

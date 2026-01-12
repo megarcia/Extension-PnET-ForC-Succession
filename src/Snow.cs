@@ -20,7 +20,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// </summary>
         /// <param name="DaysOfWinter"></param>
         /// <returns></returns>
-        public static float CalcDensity(int DaysOfWinter)
+        public static double CalcDensity(int DaysOfWinter)
         {
             return Constants.DensitySnow_intercept + (Constants.DensitySnow_slope * DaysOfWinter);
         }
@@ -31,7 +31,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="DaysOfWinter"></param>
         /// <param name="Snowpack"></param>
         /// <returns></returns>
-        public static float CalcDepth(float DensitySnow_kg_m3, float Snowpack)
+        public static double CalcDepth(double DensitySnow_kg_m3, double Snowpack)
         {
             return Constants.DensityWater * Snowpack / DensitySnow_kg_m3 / 1000F;
         }
@@ -44,9 +44,9 @@ namespace Landis.Extension.Succession.PnETForC
         /// </summary>
         /// <param name="DensitySnow_kg_m3"></param>
         /// <returns></returns>
-        public static float CalcThermalConductivity(float DensitySnow_kg_m3)
+        public static double CalcThermalConductivity(double DensitySnow_kg_m3)
         {
-            return (float)(Constants.ThermalConductivityAir_Watts + ((0.0000775 * DensitySnow_kg_m3) + (0.000001105 * Math.Pow(DensitySnow_kg_m3, 2))) * (Constants.ThermalConductivityIce_Watts - Constants.ThermalConductivityAir_Watts)) * 3.6F * 24F;
+            return (Constants.ThermalConductivityAir_Watts + ((0.0000775 * DensitySnow_kg_m3) + (0.000001105 * Math.Pow(DensitySnow_kg_m3, 2))) * (Constants.ThermalConductivityIce_Watts - Constants.ThermalConductivityAir_Watts)) * 3.6 * 24.0;
         }
 
         /// <summary>
@@ -56,9 +56,9 @@ namespace Landis.Extension.Succession.PnETForC
         /// </summary>
         /// <param name="ThermalConductivity_Snow"></param>
         /// <returns></returns>
-        public static float CalcThermalDamping(float ThermalConductivity_Snow)
+        public static double CalcThermalDamping(double ThermalConductivity_Snow)
         {
-            return (float)Math.Sqrt(Constants.omega / (2.0F * ThermalConductivity_Snow));
+            return Math.Sqrt(Constants.omega / (2.0 * ThermalConductivity_Snow));
         }
 
         /// <summary>
@@ -70,9 +70,9 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="SnowDepth"></param>
         /// <param name="ThermalDamping"></param>
         /// <returns></returns>
-        public static float CalcDampingRatio(float SnowDepth, float ThermalDamping)
+        public static double CalcDampingRatio(double SnowDepth, double ThermalDamping)
         {
-            return (float)Math.Exp(-1.0F * SnowDepth * ThermalDamping);
+            return Math.Exp(-1.0F * SnowDepth * ThermalDamping);
         }
 
         /// <summary>
@@ -81,9 +81,9 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="Tavg"></param>
         /// <param name="DaySpan"></param>
         /// <returns></returns>
-        public static float CalcMaxSnowMelt(float Tavg, float DaySpan)
+        public static double CalcMaxSnowMelt(double Tavg, double DaySpan)
         {
-            return (float)2.74f * Math.Max(0F, Tavg) * DaySpan;
+            return 2.74 * Math.Max(0.0, Tavg) * DaySpan;
         }
 
         /// <summary>
@@ -96,10 +96,10 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="Location"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static float CalcMelt(float Snowpack, float Tavg, float DaySpan, string Name, string Location)
+        public static double CalcMelt(double Snowpack, double Tavg, double DaySpan, string Name, string Location)
         {
-            float Snowmelt = Math.Min(Snowpack, CalcMaxSnowMelt(Tavg, DaySpan)); // mm
-            if (Snowmelt < 0)
+            double Snowmelt = Math.Min(Snowpack, CalcMaxSnowMelt(Tavg, DaySpan)); // mm
+            if (Snowmelt < 0.0)
                 throw new Exception("Error, snowmelt = " + Snowmelt + "; ecoregion = " + Name + "; site = " + Location);
             return Snowmelt;
         }
@@ -109,16 +109,16 @@ namespace Landis.Extension.Succession.PnETForC
         /// </summary>
         /// <param name="Tavg"></param>
         /// <returns></returns>
-        public static float CalcSnowFrac(float Tavg)
+        public static double CalcSnowFrac(double Tavg)
         {
-            return (float)Math.Max(0F, Math.Min(1F, (Tavg - 2F) / -7F));
+            return Math.Max(0.0, Math.Min(1F, (Tavg - 2.0) / -7.0));
         }
 
         // Calculate depth of new snow
-        public static float CalcNewSnowDepth(float Tavg, float Prec, float SublimationFrac)
+        public static double CalcNewSnowDepth(double Tavg, double Prec, double SublimationFrac)
         {
-            float NewSnow = CalcSnowFrac(Tavg) * Prec;
-            float NewSnowDepth = NewSnow * (1 - SublimationFrac); // (mm) Account for sublimation here
+            double NewSnow = CalcSnowFrac(Tavg) * Prec;
+            double NewSnowDepth = NewSnow * (1 - SublimationFrac); // (mm) Account for sublimation here
             if (NewSnowDepth < 0 || NewSnowDepth > Prec)
                 throw new Exception("Error, newSnowDepth = " + NewSnowDepth + " availablePrecipitation = " + Prec);
             return NewSnowDepth;

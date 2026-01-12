@@ -15,47 +15,47 @@ namespace Landis.Extension.Succession.PnETForC
     public class PnETSpecies : IPnETSpecies
     {
         static List<Tuple<ISpecies, IPnETSpecies>> SpeciesCombinations;
-        private float _halfSatFCO2;
-        private float _cfracbiomass;
-        private float _wooddebrisdecomprate;
-        private float _nscfrac;
-        private float _bgbiomassfrac;
-        private float _agbiomassfrac;
-        private float _folbiomassfrac;
-        private float _liveWoodBiomassFrac;
-        private float _photosynthesisfage;
-        private float _h1;
-        private float _h2;
-        private float _h3;
-        private float _h4;
-        private float _slwdel;
-        private float _slwmax;
-        private float _folturnoverrate;
-        private float _rootturnoverrate;
-        private float _halfsat;
-        private float _initialnsc;
-        private float _k;
-        private float _woodturnoverrate;
-        private float _establishmentfrad;
-        private float _establishmentfwater;
-        private float _maxProbEstablishment;
-        private float _follignin;
+        private double _halfSatFCO2;
+        private double _cfracbiomass;
+        private double _wooddebrisdecomprate;
+        private double _nscfrac;
+        private double _bgbiomassfrac;
+        private double _agbiomassfrac;
+        private double _folbiomassfrac;
+        private double _liveWoodBiomassFrac;
+        private double _photosynthesisfage;
+        private double _h1;
+        private double _h2;
+        private double _h3;
+        private double _h4;
+        private double _slwdel;
+        private double _slwmax;
+        private double _folturnoverrate;
+        private double _rootturnoverrate;
+        private double _halfsat;
+        private double _initialnsc;
+        private double _k;
+        private double _woodturnoverrate;
+        private double _establishmentfrad;
+        private double _establishmentfwater;
+        private double _maxProbEstablishment;
+        private double _follignin;
         private bool _preventestablishment;
-        private float _psntopt;
-        private float _q10;
-        private float _psntmin;
-        private float _psntmax;
-        private float _dvpd1;
-        private float _foln;
-        private float _dvpd2;
-        private float _amaxa;
-        private float _amaxb;
-        private float _amaxamod;
-        private float _aMaxBFCO2;
-        private float _maintresp;
-        private float _baseFoliarRespiration;
+        private double _psntopt;
+        private double _q10;
+        private double _psntmin;
+        private double _psntmax;
+        private double _dvpd1;
+        private double _foln;
+        private double _dvpd2;
+        private double _amaxa;
+        private double _amaxb;
+        private double _amaxamod;
+        private double _aMaxBFCO2;
+        private double _maintresp;
+        private double _baseFoliarRespiration;
         private string _ozoneSens;
-        private float _coldTolerance;
+        private double _coldTolerance;
         private int _initBiomass;
         private string name;
         private int index;        
@@ -64,158 +64,158 @@ namespace Landis.Extension.Succession.PnETForC
         private PostFireRegeneration postfireregeneration;
         private int maxSeedDist;
         private int effectiveSeedDist;
-        private float vegReprodProb;
+        private double vegReprodProb;
         private byte fireTolerance;
         private byte shadeTolerance;
         int maturity;
         int longevity;
-        private float _folN_slope;
-        private float _folN_intercept;
-        private float _folBiomassFrac_slope;
-        private float _folBiomassFrac_intercept;
-        private float _o3Coeff;
-        private float _leafOnMinT;
-        private float _NSCreserve;
+        private double _folN_slope;
+        private double _folN_intercept;
+        private double _folBiomassFrac_slope;
+        private double _folBiomassFrac_intercept;
+        private double _o3Coeff;
+        private double _leafOnMinT;
+        private double _NSCreserve;
         private string _lifeform;
-        private float _refoliationMinimumTrigger;
-        private float _maxRefoliationFrac;
-        private float _refoliationCost;
-        private float _nonRefoliationCost;
-        private float _maxLAI;
-        private float _mossScalar;
-        private static Library.Parameters.Species.AuxParm<float> halfSatFCO2;
-        private static Library.Parameters.Species.AuxParm<float> nscfrac;
-        private static Library.Parameters.Species.AuxParm<float> cfracbiomass;
-        private static Library.Parameters.Species.AuxParm<float> wooddebrisdecomprate;
-        private static Library.Parameters.Species.AuxParm<float> bgbiomassfrac;
-        private static Library.Parameters.Species.AuxParm<float> folbiomassfrac;
-        private static Library.Parameters.Species.AuxParm<float> liveWoodBiomassFrac;
-        private static Library.Parameters.Species.AuxParm<float> photosynthesisfage;
-        private static Library.Parameters.Species.AuxParm<float> h1;
-        private static Library.Parameters.Species.AuxParm<float> h2;
-        private static Library.Parameters.Species.AuxParm<float> h3;
-        private static Library.Parameters.Species.AuxParm<float> h4;
-        private static Library.Parameters.Species.AuxParm<float> slwdel;
-        private static Library.Parameters.Species.AuxParm<float> slwmax;    
-        private static Library.Parameters.Species.AuxParm<float> folturnoverrate;
-        private static Library.Parameters.Species.AuxParm<float> halfsat;
-        private static Library.Parameters.Species.AuxParm<float> rootturnoverrate;
-        private static Library.Parameters.Species.AuxParm<float> initialnsc;
-        private static Library.Parameters.Species.AuxParm<float> k;
-        private static Library.Parameters.Species.AuxParm<float> woodturnoverrate;
-        private static Library.Parameters.Species.AuxParm<float> establishmentfrad;
-        private static Library.Parameters.Species.AuxParm<float> establishmentfwater;
-        private static Library.Parameters.Species.AuxParm<float> maxProbEstablishment;
-        private static Library.Parameters.Species.AuxParm<float> follignin;
+        private double _refoliationMinimumTrigger;
+        private double _maxRefoliationFrac;
+        private double _refoliationCost;
+        private double _nonRefoliationCost;
+        private double _maxLAI;
+        private double _mossScalar;
+        private static Library.Parameters.Species.AuxParm<double> halfSatFCO2;
+        private static Library.Parameters.Species.AuxParm<double> nscfrac;
+        private static Library.Parameters.Species.AuxParm<double> cfracbiomass;
+        private static Library.Parameters.Species.AuxParm<double> wooddebrisdecomprate;
+        private static Library.Parameters.Species.AuxParm<double> bgbiomassfrac;
+        private static Library.Parameters.Species.AuxParm<double> folbiomassfrac;
+        private static Library.Parameters.Species.AuxParm<double> liveWoodBiomassFrac;
+        private static Library.Parameters.Species.AuxParm<double> photosynthesisfage;
+        private static Library.Parameters.Species.AuxParm<double> h1;
+        private static Library.Parameters.Species.AuxParm<double> h2;
+        private static Library.Parameters.Species.AuxParm<double> h3;
+        private static Library.Parameters.Species.AuxParm<double> h4;
+        private static Library.Parameters.Species.AuxParm<double> slwdel;
+        private static Library.Parameters.Species.AuxParm<double> slwmax;    
+        private static Library.Parameters.Species.AuxParm<double> folturnoverrate;
+        private static Library.Parameters.Species.AuxParm<double> halfsat;
+        private static Library.Parameters.Species.AuxParm<double> rootturnoverrate;
+        private static Library.Parameters.Species.AuxParm<double> initialnsc;
+        private static Library.Parameters.Species.AuxParm<double> k;
+        private static Library.Parameters.Species.AuxParm<double> woodturnoverrate;
+        private static Library.Parameters.Species.AuxParm<double> establishmentfrad;
+        private static Library.Parameters.Species.AuxParm<double> establishmentfwater;
+        private static Library.Parameters.Species.AuxParm<double> maxProbEstablishment;
+        private static Library.Parameters.Species.AuxParm<double> follignin;
         private static Library.Parameters.Species.AuxParm<bool> preventestablishment;
-        private static Library.Parameters.Species.AuxParm<float> psntopt;
-        private static Library.Parameters.Species.AuxParm<float> q10;
-        private static Library.Parameters.Species.AuxParm<float> psntmin;
-        private static Library.Parameters.Species.AuxParm<float> psntmax;
-        private static Library.Parameters.Species.AuxParm<float> dvpd1;
-        private static Library.Parameters.Species.AuxParm<float> dvpd2;
-        private static Library.Parameters.Species.AuxParm<float> foln;
-        private static Library.Parameters.Species.AuxParm<float> amaxa;
-        private static Library.Parameters.Species.AuxParm<float> amaxb;
-        private static Library.Parameters.Species.AuxParm<float> amaxamod;
-        private static Library.Parameters.Species.AuxParm<float> aMaxBFCO2;
-        private static Library.Parameters.Species.AuxParm<float> maintresp;
-        private static Library.Parameters.Species.AuxParm<float> baseFoliarRespiration;
-        private static Library.Parameters.Species.AuxParm<float> coldTolerance;
+        private static Library.Parameters.Species.AuxParm<double> psntopt;
+        private static Library.Parameters.Species.AuxParm<double> q10;
+        private static Library.Parameters.Species.AuxParm<double> psntmin;
+        private static Library.Parameters.Species.AuxParm<double> psntmax;
+        private static Library.Parameters.Species.AuxParm<double> dvpd1;
+        private static Library.Parameters.Species.AuxParm<double> dvpd2;
+        private static Library.Parameters.Species.AuxParm<double> foln;
+        private static Library.Parameters.Species.AuxParm<double> amaxa;
+        private static Library.Parameters.Species.AuxParm<double> amaxb;
+        private static Library.Parameters.Species.AuxParm<double> amaxamod;
+        private static Library.Parameters.Species.AuxParm<double> aMaxBFCO2;
+        private static Library.Parameters.Species.AuxParm<double> maintresp;
+        private static Library.Parameters.Species.AuxParm<double> baseFoliarRespiration;
+        private static Library.Parameters.Species.AuxParm<double> coldTolerance;
         private static Library.Parameters.Species.AuxParm<string> ozoneSens;
-        private static Library.Parameters.Species.AuxParm<float> folN_slope;
-        private static Library.Parameters.Species.AuxParm<float> folN_intercept;
-        private static Library.Parameters.Species.AuxParm<float> folBiomassFrac_slope;
-        private static Library.Parameters.Species.AuxParm<float> folBiomassFrac_intercept;
-        private static Library.Parameters.Species.AuxParm<float> o3Coeff;
-        private static Library.Parameters.Species.AuxParm<float> leafOnMinT;
-        private static Library.Parameters.Species.AuxParm<float> NSCreserve;
+        private static Library.Parameters.Species.AuxParm<double> folN_slope;
+        private static Library.Parameters.Species.AuxParm<double> folN_intercept;
+        private static Library.Parameters.Species.AuxParm<double> folBiomassFrac_slope;
+        private static Library.Parameters.Species.AuxParm<double> folBiomassFrac_intercept;
+        private static Library.Parameters.Species.AuxParm<double> o3Coeff;
+        private static Library.Parameters.Species.AuxParm<double> leafOnMinT;
+        private static Library.Parameters.Species.AuxParm<double> NSCreserve;
         private static Library.Parameters.Species.AuxParm<string> lifeform;
-        private static Library.Parameters.Species.AuxParm<float> refoliationMinimumTrigger;
-        private static Library.Parameters.Species.AuxParm<float> maxRefoliationFrac;
-        private static Library.Parameters.Species.AuxParm<float> refoliationCost;
-        private static Library.Parameters.Species.AuxParm<float> nonRefoliationCost;
-        private static Library.Parameters.Species.AuxParm<float> maxlai;
-        private static Library.Parameters.Species.AuxParm<float> mossScalar;
-        private static Dictionary<ISpecies,float> maxLAI;
+        private static Library.Parameters.Species.AuxParm<double> refoliationMinimumTrigger;
+        private static Library.Parameters.Species.AuxParm<double> maxRefoliationFrac;
+        private static Library.Parameters.Species.AuxParm<double> refoliationCost;
+        private static Library.Parameters.Species.AuxParm<double> nonRefoliationCost;
+        private static Library.Parameters.Species.AuxParm<double> maxlai;
+        private static Library.Parameters.Species.AuxParm<double> mossScalar;
+        private static Dictionary<ISpecies,double> maxLAI;
         private static Dictionary<ISpecies, string> lifeForm;
 
         public PnETSpecies()
         {
-            halfSatFCO2 = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("HalfSatFCO2");
-            nscfrac = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("NSCFrac");
-            cfracbiomass = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("CFracBiomass");
-            wooddebrisdecomprate = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("wooddebrisdecomprate");
-            bgbiomassfrac = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("bgbiomassfrac");
-            /// agbiomassfrac = (Library.Parameters.Species.AuxParm<float>)(1.0F - BGBiomassFrac);
-            folbiomassfrac = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("folbiomassfrac");
-            liveWoodBiomassFrac = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("liveWoodBiomassFrac");
-            photosynthesisfage = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("photosynthesisfage");
-            h1 = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("h1");
-            h2 = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("h2");
-            h3 = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("h3");
-            h4 = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("h4");
-            slwdel = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("slwdel");
-            slwmax = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("slwmax");
-            folturnoverrate = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("folturnoverrate");
-            halfsat = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("halfsat");
-            rootturnoverrate = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("rootturnoverrate");
-            initialnsc = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("initialnsc"); ;
-            k = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("k"); ;
-            woodturnoverrate = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("woodturnoverrate"); ;
-            establishmentfrad = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("establishmentfrad"); ;
-            establishmentfwater = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("establishmentfwater");
-            maxProbEstablishment = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("MaxProbEstablishment");
-            follignin = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("follignin");
+            halfSatFCO2 = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("HalfSatFCO2");
+            nscfrac = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("NSCFrac");
+            cfracbiomass = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("CFracBiomass");
+            wooddebrisdecomprate = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("wooddebrisdecomprate");
+            bgbiomassfrac = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("bgbiomassfrac");
+            /// agbiomassfrac = (Library.Parameters.Species.AuxParm<double>)(1.0F - BGBiomassFrac);
+            folbiomassfrac = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("folbiomassfrac");
+            liveWoodBiomassFrac = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("liveWoodBiomassFrac");
+            photosynthesisfage = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("photosynthesisfage");
+            h1 = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("h1");
+            h2 = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("h2");
+            h3 = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("h3");
+            h4 = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("h4");
+            slwdel = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("slwdel");
+            slwmax = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("slwmax");
+            folturnoverrate = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("folturnoverrate");
+            halfsat = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("halfsat");
+            rootturnoverrate = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("rootturnoverrate");
+            initialnsc = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("initialnsc"); ;
+            k = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("k"); ;
+            woodturnoverrate = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("woodturnoverrate"); ;
+            establishmentfrad = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("establishmentfrad"); ;
+            establishmentfwater = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("establishmentfwater");
+            maxProbEstablishment = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("MaxProbEstablishment");
+            follignin = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("follignin");
             preventestablishment = (Library.Parameters.Species.AuxParm<bool>)(Parameter<bool>)Names.GetParameter("preventestablishment");
-            psntopt = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("psntopt");
-            q10 = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("q10");
-            psntmin = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("psntmin");
-            psntmax = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("psntmax");
-            dvpd1 = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("dvpd1");
-            dvpd2 = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("dvpd2");
-            foln = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("foln");
-            amaxa = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("amaxa");
-            amaxb = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("amaxb");
-            amaxamod = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("AmaxAmod");
-            aMaxBFCO2 = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("AMaxBFCO2");
-            maintresp = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("maintresp");
-            baseFoliarRespiration = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("baseFoliarRespiration");
-            ozoneSens = (Library.Parameters.Species.AuxParm<string>)(Parameter<string>)Names.GetParameter("StomataO3Sensitivity");
-            folN_slope = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("FolN_slope");
-            folN_intercept = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("FolN_intercept"); //Optional
+            psntopt = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("psntopt");
+            q10 = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("q10");
+            psntmin = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("psntmin");
+            psntmax = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("psntmax");
+            dvpd1 = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("dvpd1");
+            dvpd2 = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("dvpd2");
+            foln = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("foln");
+            amaxa = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("amaxa");
+            amaxb = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("amaxb");
+            amaxamod = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("AmaxAmod");
+            aMaxBFCO2 = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("AMaxBFCO2");
+            maintresp = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("maintresp");
+            baseFoliarRespiration = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("baseFoliarRespiration");
+            ozoneSens = (Library.Parameters.Species.AuxParm<string>)Names.GetParameter("StomataO3Sensitivity");
+            folN_slope = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("FolN_slope");
+            folN_intercept = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("FolN_intercept"); //Optional
             // If FolN_intercept is not provided, then set to foln
             if (folN_intercept[this] == -9999F)
                 folN_intercept = foln;
-            folBiomassFrac_slope = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("FolBiomassFrac_slope");
-            folBiomassFrac_intercept = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("FolBiomassFrac_intercept"); //Optional
+            folBiomassFrac_slope = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("FolBiomassFrac_slope");
+            folBiomassFrac_intercept = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("FolBiomassFrac_intercept"); //Optional
             // If FolBiomassFrac_intercept is not provided, then set to folbiomassfrac
             if (folBiomassFrac_intercept[this] == -9999F)
                 folBiomassFrac_intercept = folbiomassfrac;
-            o3Coeff = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("FOzone_slope");
-            coldTolerance = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("ColdTolerance");
-            leafOnMinT = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("LeafOnMinT"); //Optional
+            o3Coeff = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("FOzone_slope");
+            coldTolerance = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("ColdTolerance");
+            leafOnMinT = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("LeafOnMinT"); //Optional
             // If LeafOnMinT is not provided, then set to PsnMinT
             if (leafOnMinT[this] == -9999F)
                 leafOnMinT = psntmin;
-            NSCreserve = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("NSCReserve");
-            refoliationMinimumTrigger = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("RefolMinimumTrigger");
-            maxRefoliationFrac = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("RefolMaximum");
-            refoliationCost = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("RefolCost");
-            nonRefoliationCost = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("NonRefolCost");
-            maxlai = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("MaxLAI"); //Optional
-            mossScalar = (Library.Parameters.Species.AuxParm<float>)(Parameter<float>)Names.GetParameter("MossScalar"); //Optional
-            maxLAI = new Dictionary<ISpecies, float>();
+            NSCreserve = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("NSCReserve");
+            refoliationMinimumTrigger = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("RefolMinimumTrigger");
+            maxRefoliationFrac = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("RefolMaximum");
+            refoliationCost = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("RefolCost");
+            nonRefoliationCost = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("NonRefolCost");
+            maxlai = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("MaxLAI"); //Optional
+            mossScalar = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("MossScalar"); //Optional
+            maxLAI = new Dictionary<ISpecies, double>();
             foreach (ISpecies species in Globals.ModelCore.Species)
             {
                 if (maxlai[species] == -9999F)
                 {
                     // Calculate MaxLAI
-                    float peakBiomass = 1f / liveWoodBiomassFrac[species];
-                    float peakFoliage = peakBiomass * folbiomassfrac[species] * (float)Math.Exp(-1f * liveWoodBiomassFrac[species] * peakBiomass);
-                    float tempLAI = 0;
+                    double peakBiomass = 1f / liveWoodBiomassFrac[species];
+                    double peakFoliage = peakBiomass * folbiomassfrac[species] * (double)Math.Exp(-1f * liveWoodBiomassFrac[species] * peakBiomass);
+                    double tempLAI = 0;
                     for (int i = 0; i < Globals.IMAX; i++)
-                        tempLAI += (float)Math.Max(0.01, peakFoliage / Globals.IMAX / (slwmax[species] - (slwdel[species] * i * (peakFoliage / Globals.IMAX))));
+                        tempLAI += (double)Math.Max(0.01, peakFoliage / Globals.IMAX / (slwmax[species] - (slwdel[species] * i * (peakFoliage / Globals.IMAX))));
                     maxLAI.Add(species, tempLAI);
                 }
                 else
@@ -244,29 +244,29 @@ namespace Landis.Extension.Succession.PnETForC
         }
 
         PnETSpecies(PostFireRegeneration postFireRegeneration,
-                    float nscfrac, float cfracbiomass, float wooddebrisdecomprate,
-                    float bgbiomassfrac, float folbiomassfrac, float liveWoodBiomassFrac,
-                    float photosynthesisfage, float h1, float h2, float h3,
-                    float h4, float slwdel, float slwmax, float folturnoverrate,
-                    float rootturnoverrate, float halfsat, float initialnsc,
-                    float k, float woodturnoverrate, float establishmentfrad, float establishmentfwater,
-                    float maxprobestablishment, float follignin, bool preventestablishment,
-                    float psntopt, float q10, float psntmin, float psntmax,
-                    float dvpd1, float dvpd2, float foln, float amaxa,
-                    float amaxb, float amaxamod, float aMaxBFCO2,
-                    float maintresp, float baseFoliarRespiration, float coldTolerance,
+                    double nscfrac, double cfracbiomass, double wooddebrisdecomprate,
+                    double bgbiomassfrac, double folbiomassfrac, double liveWoodBiomassFrac,
+                    double photosynthesisfage, double h1, double h2, double h3,
+                    double h4, double slwdel, double slwmax, double folturnoverrate,
+                    double rootturnoverrate, double halfsat, double initialnsc,
+                    double k, double woodturnoverrate, double establishmentfrad, double establishmentfwater,
+                    double maxprobestablishment, double follignin, bool preventestablishment,
+                    double psntopt, double q10, double psntmin, double psntmax,
+                    double dvpd1, double dvpd2, double foln, double amaxa,
+                    double amaxb, double amaxamod, double aMaxBFCO2,
+                    double maintresp, double baseFoliarRespiration, double coldTolerance,
                     string ozoneSens, int Index, string name,
                     int maxSproutAge, int minSproutAge, int maxSeedDist,
-                    int effectiveSeedDist, float vegReprodProb,
+                    int effectiveSeedDist, double vegReprodProb,
                     byte fireTolerance, byte shadeTolerance, int maturity,
-                    int longevity, float folN_slope, float folN_intercept,
-                    float folBiomassFrac_slope, float folBiomassFrac_intercept, float o3Coeff,
-                    float leafOnMinT, float NSCreserve, string lifeForm,
-                    float refoliationMinimumTrigger, float maxRefoliationFrac,
-                    float refoliationCost, float nonRefoliationCost,
-                    float maxLAI)
+                    int longevity, double folN_slope, double folN_intercept,
+                    double folBiomassFrac_slope, double folBiomassFrac_intercept, double o3Coeff,
+                    double leafOnMinT, double NSCreserve, string lifeForm,
+                    double refoliationMinimumTrigger, double maxRefoliationFrac,
+                    double refoliationCost, double nonRefoliationCost,
+                    double maxLAI)
         {
-            float initBiomass = initialnsc / (nscfrac * cfracbiomass);
+            double initBiomass = initialnsc / (nscfrac * cfracbiomass);
             _bgbiomassfrac = bgbiomassfrac;
             _agbiomassfrac = 1F - bgbiomassfrac;
             _initBiomass = (int)(initBiomass * (1F - (bgbiomassfrac * rootturnoverrate) - (_agbiomassfrac * woodturnoverrate)));
@@ -337,7 +337,7 @@ namespace Landis.Extension.Succession.PnETForC
 
         private PnETSpecies(ISpecies species)
         {
-            float initBiomass = initialnsc[species] / (nscfrac[species] * cfracbiomass[species]);
+            double initBiomass = initialnsc[species] / (nscfrac[species] * cfracbiomass[species]);
             _bgbiomassfrac = bgbiomassfrac[species];
             _agbiomassfrac = 1F - bgbiomassfrac[species];
             _initBiomass = (int)(initBiomass * (1F - (bgbiomassfrac[species] * rootturnoverrate[species]) - (_agbiomassfrac * woodturnoverrate[species])));
@@ -438,7 +438,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float BaseFoliarRespiration
+        public double BaseFoliarRespiration
         {
             get
             {
@@ -446,7 +446,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float ColdTolerance
+        public double ColdTolerance
         {
             get
             {
@@ -454,7 +454,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float AmaxA
+        public double AmaxA
         {
             get
             {
@@ -462,7 +462,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float AmaxB
+        public double AmaxB
         {
             get
             {
@@ -470,7 +470,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float AmaxAmod
+        public double AmaxAmod
         {
             get
             {
@@ -478,7 +478,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float AMaxBFCO2
+        public double AMaxBFCO2
         {
             get
             {
@@ -486,7 +486,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float MaintResp
+        public double MaintResp
         {
             get
             {
@@ -494,7 +494,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float PsnTmin
+        public double PsnTmin
         {
             get
             {
@@ -502,18 +502,18 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float PsnTmax
+        public double PsnTmax
         {
             get
             {
-                if (_psntmax == -9999F)
+                if (_psntmax == -9999)
                     return _psntopt + (_psntopt - _psntmin);
                 else
                     return _psntmax;
             }
         }
 
-        public float DVPD1
+        public double DVPD1
         {
             get
             {
@@ -521,7 +521,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float FolN
+        public double FolN
         {
             get
             {
@@ -529,7 +529,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float DVPD2
+        public double DVPD2
         {
             get
             {
@@ -538,7 +538,7 @@ namespace Landis.Extension.Succession.PnETForC
 
         }
 
-        public float PsnTopt
+        public double PsnTopt
         {
             get
             {
@@ -546,7 +546,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float Q10
+        public double Q10
         {
             get
             {
@@ -554,7 +554,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float EstablishmentFRad
+        public double EstablishmentFRad
         {
             get
             {
@@ -570,7 +570,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float FolLignin
+        public double FolLignin
         {
             get
             {
@@ -578,7 +578,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float EstablishmentFWater
+        public double EstablishmentFWater
         {
             get
             {
@@ -586,7 +586,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float MaxProbEstablishment
+        public double MaxProbEstablishment
         {
             get
             {
@@ -594,7 +594,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float WoodTurnoverRate
+        public double WoodTurnoverRate
         {
             get
             {
@@ -602,7 +602,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float K
+        public double K
         {
             get
             {
@@ -610,7 +610,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float InitialNSC
+        public double InitialNSC
         {
             get
             {
@@ -618,7 +618,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float HalfSat
+        public double HalfSat
         {
             get
             {
@@ -626,7 +626,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float RootTurnoverRate
+        public double RootTurnoverRate
         {
             get
             {
@@ -634,7 +634,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float FolTurnoverRate
+        public double FolTurnoverRate
         {
             get
             {
@@ -642,7 +642,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float SLWDel
+        public double SLWDel
         {
             get
             {
@@ -650,7 +650,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float SLWmax
+        public double SLWmax
         {
             get
             {
@@ -658,7 +658,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float H4
+        public double H4
         {
             get
             {
@@ -666,7 +666,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float H3
+        public double H3
         {
             get
             {
@@ -674,7 +674,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float H2
+        public double H2
         {
             get
             {
@@ -682,7 +682,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float H1
+        public double H1
         {
             get
             {
@@ -690,7 +690,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float PhotosynthesisFAge
+        public double PhotosynthesisFAge
         {
             get
             {
@@ -698,7 +698,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float WoodDebrisDecompRate
+        public double WoodDebrisDecompRate
         {
             get
             {
@@ -706,7 +706,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float LiveWoodBiomassFrac
+        public double LiveWoodBiomassFrac
         {
             get
             {
@@ -714,7 +714,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float FolBiomassFrac
+        public double FolBiomassFrac
         {
             get
             {
@@ -722,7 +722,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float BGBiomassFrac
+        public double BGBiomassFrac
         {
             get
             {
@@ -730,7 +730,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float AGBiomassFrac
+        public double AGBiomassFrac
         {
             get
             {
@@ -738,7 +738,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float NSCFrac
+        public double NSCFrac
         {
             get
             {
@@ -754,7 +754,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float CFracBiomass
+        public double CFracBiomass
         {
             get
             {
@@ -785,7 +785,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float HalfSatFCO2
+        public double HalfSatFCO2
         {
             get
             {
@@ -817,7 +817,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float VegReprodProb
+        public double VegReprodProb
         {
             get
             {
@@ -865,7 +865,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float FolN_slope
+        public double FolN_slope
         {
             get
             {
@@ -873,7 +873,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float FolN_intercept
+        public double FolN_intercept
         {
             get
             {
@@ -881,7 +881,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float FolBiomassFrac_slope
+        public double FolBiomassFrac_slope
         {
             get
             {
@@ -889,7 +889,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float FolBiomassFrac_intercept
+        public double FolBiomassFrac_intercept
         {
             get
             {
@@ -897,7 +897,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float FOzone_slope
+        public double FOzone_slope
         {
             get
             {
@@ -905,7 +905,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float LeafOnMinT
+        public double LeafOnMinT
         {
             get
             {
@@ -913,7 +913,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float NSCReserve
+        public double NSCReserve
         {
             get
             {
@@ -929,7 +929,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float RefoliationMinimumTrigger
+        public double RefoliationMinimumTrigger
         {
             get
             {
@@ -937,7 +937,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float MaxRefoliationFrac
+        public double MaxRefoliationFrac
         {
             get
             {
@@ -945,7 +945,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float RefoliationCost
+        public double RefoliationCost
         {
             get
             {
@@ -953,7 +953,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float NonRefoliationCost
+        public double NonRefoliationCost
         {
             get
             {
@@ -961,7 +961,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float MaxLAI
+        public double MaxLAI
         {
             get
             {
@@ -969,7 +969,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public float MossScalar
+        public double MossScalar
         {
             get
             {

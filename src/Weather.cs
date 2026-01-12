@@ -17,9 +17,10 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="Tmin"></param>
         /// <param name="Tmax"></param>
         /// <returns></returns>
-        public static float CalcTavg(float Tmin, float Tmax)
+        public static double CalcTavg(double Tmin,
+                                      double Tmax)
         {
-            return (float)((Tmin + Tmax) / 2.0f);
+            return (Tmin + Tmax) / 2.0;
         }
 
         /// <summary>
@@ -28,9 +29,10 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="Tavg"></param>
         /// <param name="Tmax"></param>
         /// <returns></returns>
-        public static float CalcTday(float Tavg, float Tmax)
+        public static double CalcTday(double Tavg,
+                                      double Tmax)
         {
-            return (float)((Tavg + Tmax) / 2.0f);
+            return (Tavg + Tmax) / 2.0;
         }
 
         /// <summary>
@@ -39,15 +41,13 @@ namespace Landis.Extension.Succession.PnETForC
         ///     see https://en.wikipedia.org/wiki/Tetens_equation
         /// </summary>
         /// <param name="T">Air temperature (°C)</param>
-        public static float CalcVaporPressure(float T)
+        public static double CalcVaporPressure(double T)
         {
-            float es;
-            if (T >= 0f)
-                // above freezing point -- vapor pressure over water
-                es = 0.61078f * (float)Math.Exp(17.26939f * T / (T + 237.3f));
-            else
-                // below freezing point -- vapor pressure over ice
-                es = 0.61078f * (float)Math.Exp(21.87456f * T / (T + 265.5f));
+            double es;
+            if (T >= 0.0)  // above freezing point -- vapor pressure over water
+                es = 0.61078 * Math.Exp(17.26939 * T / (T + 237.3));
+            else  // below freezing point -- vapor pressure over ice
+                es = 0.61078 * Math.Exp(21.87456 * T / (T + 265.5));
             return es;
         }
 
@@ -57,19 +57,20 @@ namespace Landis.Extension.Succession.PnETForC
         /// </summary>
         /// <param name="T">Temperature (C)</param>
         /// <returns></returns>
-        public static float CalcVaporPressureCurveSlope(float T)
+        public static double CalcVaporPressureCurveSlope(double T)
         {
-            float Slope = 4098F * CalcVaporPressure(T) / (float)Math.Pow(T + 237.3, 2);
+            double Slope = 4098.0 * CalcVaporPressure(T) / Math.Pow(T + 237.3, 2);
             return Slope;
         }
 
         /// <summary>
         /// Calculate vapor pressure deficit for daytime temperature
         /// </summary>
-        public static float CalcVPD(float Tday, float Tmin)
+        public static double CalcVPD(double Tday,
+                                     double Tmin)
         {
-            float es = CalcVaporPressure(Tday);
-            float emean = CalcVaporPressure(Tmin);
+            double es = CalcVaporPressure(Tday);
+            double emean = CalcVaporPressure(Tmin);
             return es - emean;
         }
     }

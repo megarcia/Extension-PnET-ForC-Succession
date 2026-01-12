@@ -30,12 +30,12 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// The cohort's live aboveground biomass (g/m2).
         /// </summary>
-        public float AGBiomass;
+        public double AGBiomass;
 
         /// <summary>
         /// The cohort's live total biomass (wood + root) (g/m2).
         /// </summary>
-        public float TotalBiomass;
+        public double TotalBiomass;
 
         /// <summary>
         /// Are trees phsyiologically active
@@ -49,62 +49,62 @@ namespace Landis.Extension.Succession.PnETForC
         /// it prevents that a cohort could descent in the canopy when 
         /// it declines (g/m2)
         /// </summary>
-        public float MaxBiomass;
+        public double MaxBiomass;
 
         /// <summary>
         /// Foliage (g/m2)
         /// </summary>
-        public float Fol;
+        public double Fol;
 
         /// <summary>
         /// Maximum Foliage For The Year (g/m2)
         /// </summary>
-        public float MaxFolYear;
+        public double MaxFolYear;
 
         /// <summary>
         /// Non-Soluble Carbons
         /// </summary>
-        public float NSC;
+        public double NSC;
 
         /// <summary>
         /// Defoliation Fraction
         /// </summary>
-        public float DefoliationFrac;
+        public double DefoliationFrac;
 
         /// <summary>
         /// Annual Wood Senescence (g/m2)
         /// </summary>
-        public float LastWoodSenescence;
+        public double LastWoodSenescence;
 
         /// <summary>
         /// Annual Foliage Senescence (g/m2)
         /// </summary>
-        public float LastFolSenescence;
+        public double LastFolSenescence;
 
         /// <summary>
         /// Last Average FRad
         /// </summary>
-        public float LastFRad;
+        public double LastFRad;
 
         /// <summary>
         /// Last Growing Season FRad
         /// </summary>
-        public List<float> LastSeasonFRad;
+        public List<double> LastSeasonFRad;
 
         /// <summary>
         /// Adjusted Fraction of Foliage
         /// </summary>
-        public float adjFolBiomassFrac;
+        public double adjFolBiomassFrac;
 
         /// <summary>
         /// Adjusted Half Sat
         /// </summary>
-        public float AdjHalfSat;
+        public double AdjHalfSat;
 
         /// <summary>
         /// Adjusted Foliage Carbons
         /// </summary>
-        public float adjFolN;
+        public double adjFolN;
 
         /// <summary>
         /// Boolean whether cohort has been killed by cold temp relative to cold tolerance
@@ -119,67 +119,67 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Leaf area index per subcanopy layer (m/m)
         /// </summary>
-        public float[] LAI;
+        public double[] LAI;
 
         /// <summary>
         /// Leaf area index (m/m) maximum last year
         /// </summary>
-        public float LastLAI;
+        public double LastLAI;
 
         /// <summary>
         /// Aboveground Biomass last year
         /// </summary>
-        public float LastAGBio;
+        public double LastAGBio;
 
         /// <summary>
         /// Gross photosynthesis (gC/mo)
         /// </summary>
-        public float[] GrossPsn;
+        public double[] GrossPsn;
 
         /// <summary>
         /// Foliar respiration (gC/mo)
         /// </summary>
-        public float[] FoliarRespiration;
+        public double[] FoliarRespiration;
 
         /// <summary>
         /// Net photosynthesis (gC/mo)
         /// </summary>
-        public float[] NetPsn;
+        public double[] NetPsn;
 
         /// <summary>
         /// Mainenance respiration (gC/mo)
         /// </summary>
-        public float[] MaintenanceRespiration;
+        public double[] MaintenanceRespiration;
 
         /// <summary>
         /// Transpiration (mm/mo)
         /// </summary>
-        public float[] Transpiration;
+        public double[] Transpiration;
 
         /// <summary>
         /// PotentialTranspiration (mm/mo)
         /// </summary>
-        public float[] PotentialTranspiration;
+        public double[] PotentialTranspiration;
 
         /// <summary>
         /// Reduction factor for suboptimal radiation on growth
         /// </summary>
-        public float[] FRad;
+        public double[] FRad;
 
         /// <summary>
         /// Reduction factor for suboptimal or supra optimal water 
         /// </summary>
-        public float[] FWater;
+        public double[] FWater;
 
         /// <summary>
         /// Actual water used to calculate FWater
         /// </summary>
-        public float[] SoilWaterContent;
+        public double[] SoilWaterContent;
 
         /// <summary>
         /// Actual pressurehead used to calculate FWater
         /// </summary>
-        public float[] PressHead;
+        public double[] PressHead;
 
         /// <summary>
         /// Number of precip events allocated to sublayer
@@ -189,47 +189,47 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Reduction factor for ozone 
         /// </summary>
-        public float[] FOzone;
+        public double[] FOzone;
 
         /// <summary>
         /// Interception (mm/mo)
         /// </summary>
-        public float[] Interception;
+        public double[] Interception;
 
         /// <summary>
         /// Adjustment folN based on fRad
         /// </summary>
-        public float[] AdjFolN;
+        public double[] AdjFolN;
 
         /// <summary>
         /// Adjustment folBiomassFrac based on fRad
         /// </summary>
-        public float[] AdjFolBiomassFrac;
+        public double[] AdjFolBiomassFrac;
 
         /// <summary>
         /// Modifier of CiCa ratio based on fWater and Ozone
         /// </summary>
-        public float[] CiModifier;
+        public double[] CiModifier;
 
         /// <summary>
         /// Adjustment to Amax based on CO2
         /// </summary>
-        public float[] DelAmax;
+        public double[] DelAmax;
 
         /// <summary>
         /// Fraction of layer biomass attributed to cohort
         /// </summary>
-        public float BiomassLayerFrac;
+        public double BiomassLayerFrac;
 
         /// <summary>
         /// Fraction of layer canopy (foliage) attributed to cohort
         /// </summary>
-        public float CanopyLayerFrac;
+        public double CanopyLayerFrac;
 
         /// <summary>
         /// Fraction of layer canopy growing space available to cohort
         /// </summary>
-        public float CanopyGrowingSpace;
+        public double CanopyGrowingSpace;
 
         /// <summary>
         /// CohortData constructor #1
@@ -293,12 +293,12 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="totalANPP"></param>
         /// <param name="species"></param>
         /// <param name="cohortStacking"></param>
-        public CohortData(ushort age, byte successionTimestep, float totalBiomass, double totalANPP, ISpecies species, bool cohortStacking)
+        public CohortData(ushort age, byte successionTimestep, double totalBiomass, double totalANPP, ISpecies species, bool cohortStacking)
         {
             SuccessionTimestep = successionTimestep;
-            AdjFolN = new float[Globals.IMAX];
+            AdjFolN = new double[Globals.IMAX];
             adjFolN = 0; ;
-            AdjFolBiomassFrac = new float[Globals.IMAX];
+            AdjFolBiomassFrac = new double[Globals.IMAX];
             adjFolBiomassFrac = 0;
             AdjHalfSat = 0;
             UniversalData.Age = age;
@@ -308,37 +308,37 @@ namespace Landis.Extension.Succession.PnETForC
             UniversalData.Biomass = (int)AGBiomass;
             TotalBiomass = totalBiomass;
             MaxBiomass = totalBiomass;
-            CiModifier = new float[Globals.IMAX];
+            CiModifier = new double[Globals.IMAX];
             ColdKill = int.MaxValue;
             DefoliationFrac = 0;
-            DelAmax = new float[Globals.IMAX];
+            DelAmax = new double[Globals.IMAX];
             Fol = 0;
             MaxFolYear = 0;
-            FoliarRespiration = new float[Globals.IMAX];
-            FOzone = new float[Globals.IMAX];
-            FRad = new float[Globals.IMAX];
-            FWater = new float[Globals.IMAX];
-            GrossPsn = new float[Globals.IMAX];
-            Interception = new float[Globals.IMAX];
-            LAI = new float[Globals.IMAX];
+            FoliarRespiration = new double[Globals.IMAX];
+            FOzone = new double[Globals.IMAX];
+            FRad = new double[Globals.IMAX];
+            FWater = new double[Globals.IMAX];
+            GrossPsn = new double[Globals.IMAX];
+            Interception = new double[Globals.IMAX];
+            LAI = new double[Globals.IMAX];
             LastFolSenescence = 0;
             LastFRad = 0;
-            LastSeasonFRad = new List<float>();
+            LastSeasonFRad = new List<double>();
             LastWoodSenescence = 0;
             LastAGBio = AGBiomass;
             Layer = 0;
             IsLeafOn = false;
-            MaintenanceRespiration = new float[Globals.IMAX];
-            NetPsn = new float[Globals.IMAX];
+            MaintenanceRespiration = new double[Globals.IMAX];
+            NetPsn = new double[Globals.IMAX];
             NSC = 0;
-            PressHead = new float[Globals.IMAX];
+            PressHead = new double[Globals.IMAX];
             NumPrecipEvents = new int[Globals.IMAX];
-            Transpiration = new float[Globals.IMAX];
-            PotentialTranspiration = new float[Globals.IMAX];
-            SoilWaterContent = new float[Globals.IMAX];
+            Transpiration = new double[Globals.IMAX];
+            PotentialTranspiration = new double[Globals.IMAX];
+            SoilWaterContent = new double[Globals.IMAX];
             BiomassLayerFrac = 1.0f;
-            float cohortIdealFol = pnetspecies.FolBiomassFrac * (float)Math.Exp(-pnetspecies.LiveWoodBiomassFrac * MaxBiomass) * TotalBiomass;
-            float cohortLAI = Canopy.CalcCohortLAI(pnetspecies, cohortIdealFol);
+            double cohortIdealFol = pnetspecies.FolBiomassFrac * (double)Math.Exp(-pnetspecies.LiveWoodBiomassFrac * MaxBiomass) * TotalBiomass;
+            double cohortLAI = Canopy.CalcCohortLAI(pnetspecies, cohortIdealFol);
             LastLAI = cohortLAI;
             CanopyLayerFrac = LastLAI / pnetspecies.MaxLAI;
             if (cohortStacking)

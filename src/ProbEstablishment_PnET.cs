@@ -10,16 +10,16 @@ namespace Landis.Extension.Succession.PnETForC
     public class ProbEstablishment : IProbEstablishment
     {
         private List<IPnETSpecies> establishedSpecies;
-        private Dictionary<IPnETSpecies, float> speciesProbEstablishment;
-        private Dictionary<IPnETSpecies, float> speciesFWater;
-        private Dictionary<IPnETSpecies, float> speciesFRad;
+        private Dictionary<IPnETSpecies, double> speciesProbEstablishment;
+        private Dictionary<IPnETSpecies, double> speciesFWater;
+        private Dictionary<IPnETSpecies, double> speciesFRad;
         private LocalOutput probEstablishmentSiteOutput;
 
-        public Library.Parameters.Species.AuxParm<float> SpeciesProbEstablishment
+        public Library.Parameters.Species.AuxParm<double> SpeciesProbEstablishment
         {
             get
             {
-                Library.Parameters.Species.AuxParm<float> SpeciesProbEstablishment = new Library.Parameters.Species.AuxParm<float>(Globals.ModelCore.Species);
+                Library.Parameters.Species.AuxParm<double> SpeciesProbEstablishment = new Library.Parameters.Species.AuxParm<double>(Globals.ModelCore.Species);
                 foreach (ISpecies species in Globals.ModelCore.Species)
                 {
                     IPnETSpecies pnetspecies = SpeciesParameters.PnETSpecies[species];
@@ -36,14 +36,14 @@ namespace Landis.Extension.Succession.PnETForC
                 probEstablishmentSiteOutput = new LocalOutput(SiteOutputName, "Establishment.csv", OutputHeader);
         }
 
-        public float GetSpeciesFWater(IPnETSpecies species)
+        public double GetSpeciesFWater(IPnETSpecies species)
         {
             {
                 return speciesFWater[species];
             }
         }
 
-        public float GetSpeciesFRad(IPnETSpecies species)
+        public double GetSpeciesFRad(IPnETSpecies species)
         {
             {
                 return speciesFRad[species];
@@ -58,31 +58,31 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public Dictionary<IPnETSpecies,float> CalcProbEstablishmentForMonth(IPnETEcoregionVars pnetvars, IPnETEcoregionData ecoregion, float PAR, IHydrology hydrology,float minHalfSat, float maxHalfSat, bool invertProbEstablishment, float fracRootAboveFrost)
+        public Dictionary<IPnETSpecies,double> CalcProbEstablishmentForMonth(IPnETEcoregionVars pnetvars, IPnETEcoregionData ecoregion, double PAR, IHydrology hydrology,double minHalfSat, double maxHalfSat, bool invertProbEstablishment, double fracRootAboveFrost)
         {
-            Dictionary<IPnETSpecies, float> speciesProbEstablishment = new Dictionary<IPnETSpecies, float>();
-            float rangeHalfSat = maxHalfSat - minHalfSat;
+            Dictionary<IPnETSpecies, double> speciesProbEstablishment = new Dictionary<IPnETSpecies, double>();
+            double rangeHalfSat = maxHalfSat - minHalfSat;
             foreach (IPnETSpecies species in SpeciesParameters.PnETSpecies.AllSpecies)
             {
                 if (pnetvars.Tmin > species.PsnTmin && pnetvars.Tmax < species.PsnTmax && fracRootAboveFrost > 0)
                 {
                     // Adjust HalfSat for CO2 effect
-                    float halfSat_intercept = species.HalfSat - Constants.CO2RefConc * species.HalfSatFCO2;
-                    float halfSat_adj = species.HalfSatFCO2 * pnetvars.CO2 + halfSat_intercept;
-                    float fRad = (float)Math.Min(1.0, Math.Pow(Photosynthesis.CalcFRad(PAR, halfSat_adj), 2) * (1 / Math.Pow(species.EstablishmentFRad, 2)));
-                    float fRad_adj = fRad;
+                    double halfSat_intercept = species.HalfSat - Constants.CO2RefConc * species.HalfSatFCO2;
+                    double halfSat_adj = species.HalfSatFCO2 * pnetvars.CO2 + halfSat_intercept;
+                    double fRad = Math.Min(1.0, Math.Pow(Photosynthesis.CalcFRad(PAR, halfSat_adj), 2) * (1.0 / Math.Pow(species.EstablishmentFRad, 2)));
+                    double fRad_adj = fRad;
                     // Optional adjustment to invert ProbEstablishment based on relative halfSat
                     if (invertProbEstablishment && rangeHalfSat > 0)
                     {
-                        float fRad_adj_intercept = (species.HalfSat - minHalfSat) / rangeHalfSat;
-                        float fRad_adj_slope = (fRad_adj_intercept * 2) - 1;
+                        double fRad_adj_intercept = (species.HalfSat - minHalfSat) / rangeHalfSat;
+                        double fRad_adj_slope = (fRad_adj_intercept * 2) - 1;
                         fRad_adj = 1 - fRad_adj_intercept + fRad * fRad_adj_slope;
                     }
                     speciesFRad[species] = fRad_adj;
-                    float soilWaterPressureHead = hydrology.PressureHeadTable.CalcSoilWaterContent(hydrology.SoilWaterContent, ecoregion.SoilType);
-                    float fWater = (float)Math.Min(1.0, Math.Pow(Photosynthesis.CalcFWater(species.H1, species.H2, species.H3, species.H4, soilWaterPressureHead), 2) * (1 / Math.Pow(species.EstablishmentFWater, 2)));
+                    double soilWaterPressureHead = hydrology.PressureHeadTable.CalcSoilWaterContent(hydrology.SoilWaterContent, ecoregion.SoilType);
+                    double fWater = Math.Min(1.0, Math.Pow(Photosynthesis.CalcFWater(species.H1, species.H2, species.H3, species.H4, soilWaterPressureHead), 2) * (1.0 / Math.Pow(species.EstablishmentFWater, 2)));
                     speciesFWater[species] = fWater;
-                    float probEstablishment = (float)Math.Min(1.0, fRad_adj * fWater);
+                    double probEstablishment = Math.Min(1.0, fRad_adj * fWater);
                     speciesProbEstablishment[species] = probEstablishment;
                 }                
             }
@@ -99,7 +99,7 @@ namespace Landis.Extension.Succession.PnETForC
             establishedSpecies.Add(species);
         }
         
-        public void RecordProbEstablishment(int year, IPnETSpecies species, float annualProbEstablishment, float annualFWater, float annualFRad, bool established, int monthCount)
+        public void RecordProbEstablishment(int year, IPnETSpecies species, double annualProbEstablishment, double annualFWater, double annualFRad, bool established, int monthCount)
         {
             if (established)
             {
@@ -120,15 +120,15 @@ namespace Landis.Extension.Succession.PnETForC
 
         public void Reset()
         {
-            speciesProbEstablishment = new Dictionary<IPnETSpecies, float>();
-            speciesFWater = new Dictionary<IPnETSpecies, float>();
-            speciesFRad = new Dictionary<IPnETSpecies, float>();
+            speciesProbEstablishment = new Dictionary<IPnETSpecies, double>();
+            speciesFWater = new Dictionary<IPnETSpecies, double>();
+            speciesFRad = new Dictionary<IPnETSpecies, double>();
             establishedSpecies = new List<IPnETSpecies>();
             foreach (IPnETSpecies species in SpeciesParameters.PnETSpecies.AllSpecies)
             {
-                speciesProbEstablishment.Add(species, 0F);
-                speciesFWater.Add(species, 0F);
-                speciesFRad.Add(species, 0F);
+                speciesProbEstablishment.Add(species, 0.0);
+                speciesFWater.Add(species, 0.0);
+                speciesFRad.Add(species, 0.0);
             }
         }
     }

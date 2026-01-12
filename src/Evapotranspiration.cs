@@ -24,17 +24,20 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="DaySpan">Days in the month</param>
         /// <param name="DayLength">Length of daylight (s)</param>
         /// <returns></returns>
-        public static float CalcPotentialEvaporation_umol(double PAR, double Tair, float DaySpan, float DayLength)
+        public static double CalcPotentialEvaporation_umol(double PAR,
+                                                           double Tair,
+                                                           double DaySpan,
+                                                           double DayLength)
         {
             // convert PAR (umol/m2.s) to total solar radiation (W/m2) (Reis and Ribeiro, 2019, eq. 39)  
             // convert Rs_W (W/m2) to Rs (MJ/m2.d) (Reis and Ribeiro, 2019, eq. 13)
-            float Rs = (float)PAR / 2.02F * Constants.SecondsPerDay / 1000000F;
+            double Rs = PAR / 2.02 * Constants.SecondsPerDay / 1000000.0;
             // get slope of vapor pressure curve at Tair
-            float VPSlope = Weather.CalcVaporPressureCurveSlope((float)Tair);
+            double VPSlope = Weather.CalcVaporPressureCurveSlope(Tair);
             // calculate potential evaporation (Stewart & Rouse, 1976, eq. 11)
-            float PotentialEvaporation_MJ = VPSlope / (VPSlope + Constants.PsychrometricCoeff) * (1.624F + 0.9265F * Rs); // MJ/m2.day 
+            double PotentialEvaporation_MJ = VPSlope / (VPSlope + Constants.PsychrometricCoeff) * (1.624 + 0.9265 * Rs); // MJ/m2.day 
             // convert MJ/m2.day to mm/day (http://www.fao.org/3/x0490e/x0490e0i.htm)
-            float PotentialEvaporation = PotentialEvaporation_MJ * 0.408F;
+            double PotentialEvaporation = PotentialEvaporation_MJ * 0.408;
             return PotentialEvaporation * DaySpan;  // mm/month 
         }
 
@@ -48,26 +51,30 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="T">Average monthly temperature (C)</param>
         /// <param name="DaySpan">Days in the month</param>
         /// <returns></returns>
-        public static float CalcPotentialGroundET_Radiation_umol(float AboveCanopyPAR, float SubCanopyPAR, float DayLength, float T, float DaySpan)
+        public static double CalcPotentialGroundET_Radiation_umol(double AboveCanopyPAR,
+                                                                  double SubCanopyPAR,
+                                                                  double DayLength,
+                                                                  double T,
+                                                                  double DaySpan)
         {
             // convert daytime PAR (umol/m2*s) to total daily PAR (umol/m2*s)
-            float Rs_daily = (float)(AboveCanopyPAR / Constants.SecondsPerDay / DayLength); 
+            double Rs_daily = AboveCanopyPAR / Constants.SecondsPerDay / DayLength; 
             // convert daily PAR (umol/m2*s) to total solar radiation (W/m2)
             //     Reis and Ribeiro 2019 (Consants and Values)  
-            float Rs_W = (float)(Rs_daily / 2.02f); 
+            double Rs_W = Rs_daily / 2.02; 
             // Back-calculate LAI from aboveCanopyPAR and subCanopyPAR
-            float k = 0.3038f;
-            float LAI = (float)Math.Log(SubCanopyPAR / AboveCanopyPAR) / (-1.0f * k);
-            float AboveCanopyNetRad = 0f;
+            double k = 0.3038;
+            double LAI = Math.Log(SubCanopyPAR / AboveCanopyPAR) / (-1.0 * k);
+            double AboveCanopyNetRad;
             if (LAI < 2.4)
-                AboveCanopyNetRad = -26.8818f + 0.693066f * Rs_W;
+                AboveCanopyNetRad = -26.8818 + 0.693066 * Rs_W;
             else
-                AboveCanopyNetRad = -33.2467f + 0.741644f * Rs_W;
-            float SubCanopyNetRad = AboveCanopyNetRad * (float)Math.Exp(-1.0f * k * LAI);
-            float alpha = 1.0f;
-            float VPSlope = Weather.CalcVaporPressureCurveSlope((float)T);
+                AboveCanopyNetRad = -33.2467 + 0.741644 * Rs_W;
+            double SubCanopyNetRad = AboveCanopyNetRad * Math.Exp(-1.0 * k * LAI);
+            double alpha = 1.0;
+            double VPSlope = Weather.CalcVaporPressureCurveSlope(T);
             // conversion W/m2 to MJ/m2.d
-            float PotentialET_ground = alpha * (VPSlope / (VPSlope + Constants.PsychrometricCoeff)) / Constants.LatentHeatVaporWater * SubCanopyNetRad * Constants.SecondsPerDay / 1000000F; // m/day
+            double PotentialET_ground = alpha * (VPSlope / (VPSlope + Constants.PsychrometricCoeff)) / Constants.LatentHeatVaporWater * SubCanopyNetRad * Constants.SecondsPerDay / 1000000.0; // m/day
             return PotentialET_ground * 1000 * DaySpan; //mm/month
         }
 
@@ -78,14 +85,15 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="T">Average monthly temperature (C)</param>
         /// <param name="DayLength">Daytime length (s)</param>
         /// <returns></returns>
-        public static float CalcReferenceET_Hamon(float T, float DayLength)
+        public static double CalcReferenceET_Hamon(double T,
+                                                   double DayLength)
         {
-            if (T < 0)
-                return 0f;
-            float k = 1.2f;   // proportionality coefficient
-            float es = Weather.CalcVaporPressure(T);
-            float N = DayLength / Constants.SecondsPerHour / 12f;
-            float ReferenceET = k * 0.165f * 216.7f * N * (10f * es / (T + 273.3f)); // TODO: verify the 10x factor
+            if (T < 0.0)
+                return 0.0;
+            double k = 1.2;   // proportionality coefficient
+            double es = Weather.CalcVaporPressure(T);
+            double N = DayLength / Constants.SecondsPerHour / 12.0;
+            double ReferenceET = k * 0.165 * 216.7 * N * (10.0 * es / (T + 273.3)); // TODO: verify the 10x factor
             return ReferenceET; // mm/day
         }
 
@@ -98,10 +106,13 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="DayLength">Daytime length (s)</param>
         /// <param name="DaySpan">Days in the month</param>
         /// <returns></returns>
-        public static float CalcPotentialGroundET_LAI_WATER(float LAI, float T, float DayLength, float DaySpan)
+        public static double CalcPotentialGroundET_LAI_WATER(double LAI,
+                                                             double T,
+                                                             double DayLength,
+                                                             double DaySpan)
         {
-            float ReferenceET = CalcReferenceET_Hamon(T, DayLength); // mm/day
-            float Egp = 0.8f * ReferenceET * (float)Math.Exp(-0.695f * LAI); // mm/day
+            double ReferenceET = CalcReferenceET_Hamon(T, DayLength); // mm/day
+            double Egp = 0.8 * ReferenceET * Math.Exp(-0.695 * LAI); // mm/day
             return Egp * DaySpan; //mm/month
         }
 
@@ -114,10 +125,13 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="DayLength">Daytime length (s)</param>
         /// <param name="DaySpan">Days in the month</param>
         /// <returns></returns>
-        public static float CalcPotentialGroundET_LAI_WEPP(float LAI, float T, float DayLength, float DaySpan)
+        public static double CalcPotentialGroundET_LAI_WEPP(double LAI,
+                                                            double T,
+                                                            double DayLength,
+                                                            double DaySpan)
         {
-            float ReferenceET = CalcReferenceET_Hamon(T, DayLength); // mm/day
-            float Egp = ReferenceET * (float)Math.Exp(-0.4f * LAI); // mm/day
+            double ReferenceET = CalcReferenceET_Hamon(T, DayLength); // mm/day
+            double Egp = ReferenceET * Math.Exp(-0.4 * LAI); // mm/day
             return Egp * DaySpan; // mm/month
         }
 
@@ -131,11 +145,15 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="k">LAI extinction coefficient</param>
         /// <param name="cropCoeff">Crop coefficient (scalar adjustment)</param>
         /// <returns></returns>
-        public static float CalcPotentialGroundET_LAI(float LAI, float T, float DayLength, float DaySpan, float k)
+        public static double CalcPotentialGroundET_LAI(double LAI,
+                                                       double T,
+                                                       double DayLength,
+                                                       double DaySpan,
+                                                       double k)
         {
-            float CropCoeff = ((Parameter<float>)Names.GetParameter("ReferenceETCropCoeff")).Value;
-            float ReferenceET = CalcReferenceET_Hamon(T, DayLength); // mm/day
-            float Egp = CropCoeff * ReferenceET * (float)Math.Exp(-k * LAI); // mm/day
+            double CropCoeff = ((Parameter<double>)Names.GetParameter("ReferenceETCropCoeff")).Value;
+            double ReferenceET = CalcReferenceET_Hamon(T, DayLength); // mm/day
+            double Egp = CropCoeff * ReferenceET * Math.Exp(-k * LAI); // mm/day
             return Egp * DaySpan; // mm/month
         }
 
@@ -147,11 +165,14 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="CiElev"></param>
         /// <param name="netPsn"></param>
         /// <returns></returns>
-        public static float CalcWVConductance(float CO2, float Tavg, float CiElev, float netPsn)
+        public static double CalcWVConductance(double CO2,
+                                               double Tavg,
+                                               double CiElev,
+                                               double netPsn)
         {
-            float Ca_Ci = CO2 - CiElev;
-            float conductance_mol = (float)(netPsn / Ca_Ci * 1.6 * 1000);
-            float conductance = (float)(conductance_mol / (444.5 - 1.3667 * Tavg) * 10);
+            double Ca_Ci = CO2 - CiElev;
+            double conductance_mol = netPsn / Ca_Ci * 1.6 * 1000;
+            double conductance = conductance_mol / (444.5 - 1.3667 * Tavg) * 10.0;
             return conductance;
         }
 
@@ -163,12 +184,14 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="canopyLayerFrac"></param>
         /// <param name="transpiration"></param>
         /// <returns></returns>
-        public static float CalcWUE(float grossPsn, float canopyLayerFrac, float transpiration)
+        public static double CalcWUE(double grossPsn,
+                                     double canopyLayerFrac,
+                                     double transpiration)
         {
-            float JCO2_JH2O = 0F;
-            if (transpiration > 0)
-                JCO2_JH2O = (float)(0.0015f * grossPsn * canopyLayerFrac / transpiration);
-            float WUE = JCO2_JH2O * Constants.MCO2_MC;
+            double JCO2_JH2O = 0.0;
+            if (transpiration > 0.0)
+                JCO2_JH2O = 0.0015 * grossPsn * canopyLayerFrac / transpiration;
+            double WUE = JCO2_JH2O * Constants.MCO2_MC;
             return WUE;
         }
     }

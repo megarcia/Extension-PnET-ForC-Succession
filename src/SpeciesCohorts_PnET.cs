@@ -141,8 +141,8 @@ namespace Landis.Extension.Succession.PnETForC
             //  Work from the end of cohort data since the array is in old-to-
             //  young order.
             int youngCount = 0;
-            float totalBiomass = 0;
-            double totalANPP = 0;
+            double totalBiomass = 0.0;
+            double totalANPP = 0.0;
             for (int i = cohortData.Count - 1; i >= 0; i--)
             {
                 CohortData data = cohortData[i];
@@ -207,7 +207,7 @@ namespace Landis.Extension.Succession.PnETForC
             int biomassChange = cohort.CalcBiomassChange();
             Debug.Assert(-cohort.TotalBiomass <= biomassChange);  // Cohort can't lose more biomass than it has
             cohort.ChangeBiomass(biomassChange);
-            if (cohort.TotalBiomass > 0)
+            if (cohort.TotalBiomass > 0.0)
             {
                 cohortData[index] = cohort.Data;
                 return index + 1;
@@ -236,7 +236,7 @@ namespace Landis.Extension.Succession.PnETForC
             Cohort.Died(this, cohort, site, disturbanceType);
         }
 
-        private void ReduceCohort(ICohort cohort, ActiveSite site, ExtensionType disturbanceType, float reduction)
+        private void ReduceCohort(ICohort cohort, ActiveSite site, ExtensionType disturbanceType, double reduction)
         {
             Cohort.PartialMortality(this, cohort, site, disturbanceType, reduction);
         }

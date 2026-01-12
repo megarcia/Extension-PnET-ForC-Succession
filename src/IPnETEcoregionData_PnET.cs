@@ -19,17 +19,17 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Fraction of water above field capacity that drains out of the soil rooting zone immediately after entering the soil (fast leakage)
         /// </summary>
-        float LeakageFrac { get; }
+        double LeakageFrac { get; }
 
         /// <summary>
         /// Depth of surface water (mm) that can be held on site instead of running off
         /// </summary>
-        float RunoffCapture { get; }
+        double RunoffCapture { get; }
 
         /// <summary>
         /// Fraction of incoming precipitation that does not enter the soil - surface runoff due to impermeability, slope, etc.
         /// </summary>
-        float PrecLossFrac { get; }
+        double PrecLossFrac { get; }
 
         /// <summary>
         /// Ecoregion soil type descriptor 
@@ -39,55 +39,55 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Rate at which incoming precipitation is intercepted by foliage for each unit of LAI
         /// </summary>
-        float PrecIntConst { get; }
+        double PrecIntConst { get; }
 
         /// <summary>
         /// Depth of rooting zone in the soil (mm)
         /// </summary>
-        float RootingDepth { get; }
+        double RootingDepth { get; }
 
         /// <summary>
         /// Volumetric soil water content (mm/m) at field capacity
         /// </summary>
-        float FieldCapacity { get; set; }
+        double FieldCapacity { get; set; }
 
         /// <summary>
         /// Volumetric soil water content (mm/m) at wilting point
         /// </summary>
-        float WiltingPoint { get; set; }
+        double WiltingPoint { get; set; }
 
         /// <summary>
         /// Volumetric soil water content (mm/m) at porosity
         /// </summary>
-        float Porosity { get; set; }
+        double Porosity { get; set; }
 
         /// <summary>
         /// Fraction of snow pack that sublimates before melting
         /// </summary>
-        float SnowSublimFrac { get; }
+        double SnowSublimFrac { get; }
 
-        float LeakageFrostDepth { get; }
+        double LeakageFrostDepth { get; }
 
         int PrecipEvents { get; }
 
         /// <summary>
         /// Ecoregion latitude
         /// </summary>
-        float Latitude { get; }
+        double Latitude { get; }
 
-        float WinterSTD { get; }
+        double WinterSTD { get; }
 
-        float MossDepth { get; }
+        double MossDepth { get; }
 
         /// <summary>
         /// Maximum soil depth susceptible to surface evaporation
         /// </summary>
-        float EvapDepth { get; }
+        double EvapDepth { get; }
 
         /// <summary>
         /// Tuning parameter to adjust frost depth
         /// </summary>
-        float FrostFactor { get; }
+        double FrostFactor { get; }
 
         IPnETEcoregionVars Variables { get; set; }
     }

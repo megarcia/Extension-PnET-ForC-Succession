@@ -13,17 +13,17 @@ namespace Landis.Extension.Succession.PnETForC
         public static ISiteVar<Pool> WoodDebris;
         public static ISiteVar<Pool> LeafLitter;
         public static ISiteVar<double> FineFuels;
-        public static ISiteVar<float> PressureHead;
-        public static ISiteVar<float> ExtremeMinTemp;
+        public static ISiteVar<double> PressureHead;
+        public static ISiteVar<double> ExtremeMinTemp;
         public static ISiteVar<double> AnnualPotentialEvaporation;  //Annual Potential Evaporation
         public static ISiteVar<double> ClimaticWaterDeficit;
         public static ISiteVar<double> SmolderConsumption;
         public static ISiteVar<double> FlamingConsumption;
         public static ISiteVar<SiteCohorts> SiteCohorts;
         public static ISiteVar<Library.UniversalCohorts.SiteCohorts> UniversalCohorts;
-        public static ISiteVar<float[]> MonthlyPressureHead;
-        public static ISiteVar<SortedList<float, float>[]> MonthlySoilTemp;
-        public static ISiteVar<float> FieldCapacity;
+        public static ISiteVar<double[]> MonthlyPressureHead;
+        public static ISiteVar<SortedList<double, double>[]> MonthlySoilTemp;
+        public static ISiteVar<double> FieldCapacity;
 
         public static void Initialize()
         {
@@ -32,15 +32,15 @@ namespace Landis.Extension.Succession.PnETForC
             FineFuels = Globals.ModelCore.Landscape.NewSiteVar<Double>();
             SiteCohorts = Globals.ModelCore.Landscape.NewSiteVar<SiteCohorts>();
             UniversalCohorts = Globals.ModelCore.Landscape.NewSiteVar<Library.UniversalCohorts.SiteCohorts>();
-            PressureHead = Globals.ModelCore.Landscape.NewSiteVar<float>();
-            ExtremeMinTemp = Globals.ModelCore.Landscape.NewSiteVar<float>();
+            PressureHead = Globals.ModelCore.Landscape.NewSiteVar<double>();
+            ExtremeMinTemp = Globals.ModelCore.Landscape.NewSiteVar<double>();
             AnnualPotentialEvaporation = Globals.ModelCore.Landscape.NewSiteVar<Double>();
             ClimaticWaterDeficit = Globals.ModelCore.Landscape.NewSiteVar<Double>();
             SmolderConsumption = Globals.ModelCore.Landscape.NewSiteVar<Double>();
             FlamingConsumption = Globals.ModelCore.Landscape.NewSiteVar<Double>();
-            MonthlyPressureHead = Globals.ModelCore.Landscape.NewSiteVar<float[]>();
-            MonthlySoilTemp = Globals.ModelCore.Landscape.NewSiteVar<SortedList<float, float>[]>();
-            FieldCapacity = Globals.ModelCore.Landscape.NewSiteVar<float>();
+            MonthlyPressureHead = Globals.ModelCore.Landscape.NewSiteVar<double[]>();
+            MonthlySoilTemp = Globals.ModelCore.Landscape.NewSiteVar<SortedList<double, double>[]>();
+            FieldCapacity = Globals.ModelCore.Landscape.NewSiteVar<double>();
             Globals.ModelCore.RegisterSiteVar(WoodDebris, "Succession.WoodyDebris");
             Globals.ModelCore.RegisterSiteVar(LeafLitter, "Succession.Litter");
             Globals.ModelCore.RegisterSiteVar(FineFuels, "Succession.FineFuels");

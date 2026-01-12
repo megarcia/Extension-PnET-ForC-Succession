@@ -29,15 +29,17 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="PsnTmin"></param>
         /// <param name="PsnTmax"></param>
         /// <returns></returns>
-        public static float CurvilinearPsnTempResponse(float Tday, float PsnTopt,
-                                                       float PsnTmin, float PsnTmax)
+        public static double CurvilinearPsnTempResponse(double Tday,
+                                                        double PsnTopt,
+                                                        double PsnTmin,
+                                                        double PsnTmax)
         {
             if (Tday < PsnTmin)
-                return 0F;
+                return 0.0;
             else if (Tday > PsnTopt)
-                return 1F;
+                return 1.0;
             else
-                return (PsnTmax - Tday) * (Tday - PsnTmin) / (float)Math.Pow((PsnTmax - PsnTmin) / 2F, 2);
+                return (PsnTmax - Tday) * (Tday - PsnTmin) / Math.Pow((PsnTmax - PsnTmin) / 2.0, 2);
         }
 
         /// <summary>
@@ -48,22 +50,24 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="PsnTmin"></param>
         /// <param name="PsnTmax"></param>
         /// <returns></returns>
-        public static float DTempResponse(float Tday, float PsnTopt, float PsnTmin,
-                                          float PsnTmax)
+        public static double DTempResponse(double Tday,
+                                           double PsnTopt,
+                                           double PsnTmin,
+                                           double PsnTmax)
         {
             if (Tday < PsnTmin || Tday > PsnTmax)
-                return 0F;
+                return 0.0;
             else
             {
                 if (Tday <= PsnTopt)
                 {
-                    float PsnTmaxEst = PsnTopt + (PsnTopt - PsnTmin);
-                    return (float)Math.Max(0.0, (PsnTmaxEst - Tday) * (Tday - PsnTmin) / (float)Math.Pow((PsnTmaxEst - PsnTmin) / 2F, 2));
+                    double PsnTmaxEst = PsnTopt + (PsnTopt - PsnTmin);
+                    return Math.Max(0.0, (PsnTmaxEst - Tday) * (Tday - PsnTmin) / Math.Pow((PsnTmaxEst - PsnTmin) / 2.0, 2));
                 }
                 else
                 {
-                    float PsnTminEst = PsnTopt + (PsnTopt - PsnTmax);
-                    return (float)Math.Max(0.0, (PsnTmax - Tday) * (Tday - PsnTminEst) / (float)Math.Pow((PsnTmax - PsnTminEst) / 2F, 2));
+                    double PsnTminEst = PsnTopt + (PsnTopt - PsnTmax);
+                    return Math.Max(0.0, (PsnTmax - Tday) * (Tday - PsnTminEst) / Math.Pow((PsnTmax - PsnTminEst) / 2.0, 2));
                 }
             }
         }
@@ -76,9 +80,11 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="DVPD1"></param>
         /// <param name="DVPD2"></param>
         /// <returns></returns>
-        public static float CalcDVPD(float VPD, float DVPD1, float DVPD2)
+        public static double CalcDVPD(double VPD,
+                                      double DVPD1,
+                                      double DVPD2)
         {
-            float DVPD = Math.Max(0, 1.0F - DVPD1 * (float)Math.Pow(VPD, DVPD2));
+            double DVPD = Math.Max(0, 1.0 - DVPD1 * Math.Pow(VPD, DVPD2));
             return DVPD;
         }
 
@@ -88,9 +94,10 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="Tmin"></param>
         /// <param name="VPD"></param>
         /// <returns></returns>
-        public static float CalcJH2O(float Tmin, float VPD)
+        public static double CalcJH2O(double Tmin,
+                                      double VPD)
         {
-            float JH2O = (float)(Constants.CalperJ * (VPD / (Constants.GasConst_JperkmolK * (Tmin + Constants.Tref_K))));
+            double JH2O = Constants.CalperJ * (VPD / (Constants.GasConst_JperkmolK * (Tmin + Constants.Tref_K)));
             return JH2O;
         }
 
@@ -102,13 +109,15 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="AmaxB"></param>
         /// <param name="AMaxBFCO2"></param>
         /// <returns></returns>
-        public static float CalcAmaxB_CO2(float CO2, float AmaxB, float AMaxBFCO2)
+        public static double CalcAmaxB_CO2(double CO2,
+                                           double AmaxB,
+                                           double AMaxBFCO2)
         {
             // AmaxB_slope = [(AmaxB * AMaxBFCO2) - AmaxB] / [550 - 350]
-            float AmaxB_slope = (float)((AMaxBFCO2 - 1.0) * AmaxB / 200.0F);
+            double AmaxB_slope = (AMaxBFCO2 - 1.0) * AmaxB / 200.0;
             // AmaxB_intercept = AmaxB - (AmaxB_slope * 350)
-            float AmaxB_intercept = (float)(-1.0 * (((AMaxBFCO2 - 1.0) * 1.75) - 1.0) * AmaxB);
-            float AmaxB_CO2 = (float)(AmaxB_slope * CO2 + AmaxB_intercept);
+            double AmaxB_intercept = -1.0 * (((AMaxBFCO2 - 1.0) * 1.75) - 1.0) * AmaxB;
+            double AmaxB_CO2 = AmaxB_slope * CO2 + AmaxB_intercept;
             return AmaxB_CO2;
         }
 
@@ -123,22 +132,23 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="FWaterOzone"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static float CalcCiModifier(float CumulativeO3, string StomataO3Sens,
-                                           float FWaterOzone)
+        public static double CalcCiModifier(double CumulativeO3,
+                                            string StomataO3Sens,
+                                            double FWaterOzone)
         {
-            float CiModifier = 1.0f; // if no ozone, ciModifier defaults to 1
+            double CiModifier = 1.0; // if no ozone, ciModifier defaults to 1
             if (CumulativeO3 > 0)
             {
                 if (StomataO3Sens == "Sensitive" || StomataO3Sens == "Sens")
-                    CiModifier = (float)(FWaterOzone + (-0.0176 * FWaterOzone + 0.0118) * CumulativeO3);
+                    CiModifier = FWaterOzone + (-0.0176 * FWaterOzone + 0.0118) * CumulativeO3;
                 else if (StomataO3Sens == "Intermediate" || StomataO3Sens == "Int")
-                    CiModifier = (float)(FWaterOzone + (-0.0148 * FWaterOzone + 0.0062) * CumulativeO3);
+                    CiModifier = FWaterOzone + (-0.0148 * FWaterOzone + 0.0062) * CumulativeO3;
                 else if (StomataO3Sens == "Tolerant" || StomataO3Sens == "Tol")
-                    CiModifier = (float)(FWaterOzone + (-0.021 * FWaterOzone + 0.0087) * CumulativeO3);
+                    CiModifier = FWaterOzone + (-0.021 * FWaterOzone + 0.0087) * CumulativeO3;
                 else
                     throw new Exception("O3 data provided, but species StomataO3Sensitivity is not set to Sensitive, Intermediate, or Tolerant");
             }
-            CiModifier = Math.Max(0.00001F, Math.Min(CiModifier, 1.0F));
+            CiModifier = Math.Max(0.00001, Math.Min(CiModifier, 1.0));
             return CiModifier;
         }
 
@@ -149,10 +159,12 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="CiModifier"></param>
         /// <param name="CO2"></param>
         /// <returns></returns>
-        public static float CalcCiElev(float Ci_Ca, float CiModifier, float CO2)
+        public static double CalcCiElev(double Ci_Ca,
+                                        double CiModifier,
+                                        double CO2)
         {
-            float modCi_Ca = Ci_Ca * CiModifier;
-            float CiElev = CO2 * modCi_Ca;
+            double modCi_Ca = Ci_Ca * CiModifier;
+            double CiElev = CO2 * modCi_Ca;
             return CiElev;
         }
 
@@ -163,14 +175,14 @@ namespace Landis.Extension.Succession.PnETForC
         /// </summary>
         /// <param name="CiElev"></param>
         /// <returns></returns>
-        public static float CalcDelAmaxCi(float CiElev)
+        public static double CalcDelAmaxCi(double CiElev)
         {
             // the CO2 compensation point at which photorespiration balances 
             // exactly with photosynthesis.  Assumed to be 40 based on leaf 
             // Temp = 25ºC
-            float Gamma = 40;
-            float DelAmaxCi = (CiElev - Gamma) / (CiElev + 2 * Gamma) * (Constants.CO2RefConc + 2 * Gamma) / (Constants.CO2RefConc - Gamma);
-            DelAmaxCi = Math.Max(DelAmaxCi, 0F);
+            double Gamma = 40;
+            double DelAmaxCi = (CiElev - Gamma) / (CiElev + 2 * Gamma) * (Constants.CO2RefConc + 2 * Gamma) / (Constants.CO2RefConc - Gamma);
+            DelAmaxCi = Math.Max(DelAmaxCi, 0.0);
             return DelAmaxCi;
         }
 
@@ -181,11 +193,12 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="HalfSat"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static float CalcFRad(float Rad, float HalfSat)
+        public static double CalcFRad(double Rad,
+                                      double HalfSat)
         {
             if (HalfSat <= 0)
                 throw new Exception("HalfSat <= 0. Cannot calculate fRad.");
-            float FRad = (float)(1F - Math.Exp(-1F * Rad * Math.Log(2F) / HalfSat));
+            double FRad = 1.0 - Math.Exp(-1.0 * Rad * Math.Log(2.0) / HalfSat);
             return FRad;
         }
 
@@ -202,18 +215,23 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="FAge"></param>
         /// <param name="Fol"></param>
         /// <returns></returns>
-        public static float CalcPotentialGrossPsn(float AmaxAdj, float BaseFolResp,
-                                                  float DaySpan, float DVPD, float DayLength,
-                                                  float PsnFTemp, float FRad, float FAge,
-                                                  float Fol)
+        public static double CalcPotentialGrossPsn(double AmaxAdj,
+                                                   double BaseFolResp,
+                                                   double DaySpan,
+                                                   double DVPD,
+                                                   double DayLength,
+                                                   double PsnFTemp,
+                                                   double FRad,
+                                                   double FAge,
+                                                   double Fol)
         {
-            float GrossAmax = AmaxAdj + BaseFolResp;
+            double GrossAmax = AmaxAdj + BaseFolResp;
             // Reference gross Psn (lab conditions) in gC/g Fol/month
-            float RefGrossPsn = DaySpan * (GrossAmax * DVPD * DayLength * Constants.MC) / Constants.billion;
+            double RefGrossPsn = DaySpan * (GrossAmax * DVPD * DayLength * Constants.MC) / Constants.billion;
             // Calculate gross psn from stress factors and reference gross psn (gC/g Fol/month)
             // Reduction factors include temperature (PsnFTemp), water (FWater), light (FRad), age (FAge)
             // Remove FWater from psn reduction because it is accounted for in WUE through ciModifier [mod2, mod3]
-            float PotentialGrossPsn = 1 / (float)Globals.IMAX * PsnFTemp * FRad * FAge * RefGrossPsn * Fol;
+            double PotentialGrossPsn = 1.0 / Globals.IMAX * PsnFTemp * FRad * FAge * RefGrossPsn * Fol;
             return PotentialGrossPsn;
         }
 
@@ -226,22 +244,26 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="H4"></param>
         /// <param name="pressureHead"></param>
         /// <returns></returns>
-        public static float CalcFWater(float H1, float H2, float H3, float H4, float pressureHead)
+        public static double CalcFWater(double H1,
+                                        double H2,
+                                        double H3,
+                                        double H4,
+                                        double pressureHead)
         {
-            float minThreshold = H1;
+            double minThreshold = H1;
             if (H2 <= H1)
                 minThreshold = H2;
             // Calculate water stress
             if (pressureHead <= H1)
-                return 0F;
+                return 0.0;
             else if (pressureHead < minThreshold || pressureHead >= H4)
-                return 0F;
+                return 0.0;
             else if (pressureHead > H3)
-                return 1F - ((pressureHead - H3) / (H4 - H3));
+                return 1.0 - ((pressureHead - H3) / (H4 - H3));
             else if (pressureHead < H2)
-                return 1F / (H2 - H1) * pressureHead - (H1 / (H2 - H1));
+                return 1.0 / (H2 - H1) * pressureHead - (H1 / (H2 - H1));
             else
-                return 1F;
+                return 1.0;
         }
 
         /// <summary>
@@ -255,15 +277,21 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="WVConductance"></param>
         /// <param name="FOzone_slope"></param>
         /// <returns></returns>
-        public static float CalcFOzone(float O3, int Layer, int nLayers, float FolMass, float LastFOzone, float WVConductance, float FOzone_slope)
+        public static double CalcFOzone(double O3,
+                                        int Layer,
+                                        int nLayers,
+                                        double FolMass,
+                                        double LastFOzone,
+                                        double WVConductance,
+                                        double FOzone_slope)
         {
-            float DroughtO3Frac = 1.0F; // Not using DroughtO3Frac from PnET code per M. Kubiske and A. Chappelka
-            float kO3Eff = 0.0026F * FOzone_slope;  // Scaled by species using input parameters
-            float O3Prof = (float)(0.6163F + (0.00105F * FolMass));
-            float RelLayer = Layer / (float)nLayers;
-            float RelO3 = (float)Math.Min(1F, 1F - RelLayer * O3Prof * Math.Pow(RelLayer * O3Prof, 2));
+            double DroughtO3Frac = 1.0; // Not using DroughtO3Frac from PnET code per M. Kubiske and A. Chappelka
+            double kO3Eff = 0.0026 * FOzone_slope;  // Scaled by species using input parameters
+            double O3Prof = 0.6163 + (0.00105 * FolMass);
+            double RelLayer = (double)(Layer / (double)nLayers);
+            double RelO3 = Math.Min(1.0, 1.0 - RelLayer * O3Prof * Math.Pow(RelLayer * O3Prof, 2));
             // Kubiske method (using water vapor conductance in place of conductance
-            float FOzone = (float)Math.Min(1F, (LastFOzone * DroughtO3Frac) + (kO3Eff * WVConductance * O3 * RelO3));
+            double FOzone = Math.Min(1.0, (LastFOzone * DroughtO3Frac) + (kO3Eff * WVConductance * O3 * RelO3));
             return FOzone;
         }
 
@@ -274,10 +302,12 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="HalfSat"></param>
         /// <param name="HalfSatFCO2"></param>
         /// <returns></returns>
-        public static float CalcAdjHalfSat(float CO2, float HalfSat, float HalfSatFCO2)
+        public static double CalcAdjHalfSat(double CO2,
+                                            double HalfSat,
+                                            double HalfSatFCO2)
         {
-            float halfSatIntercept = HalfSat - Constants.CO2RefConc * HalfSatFCO2;
-            float AdjHalfSat = HalfSatFCO2 * CO2 + halfSatIntercept;
+            double halfSatIntercept = HalfSat - Constants.CO2RefConc * HalfSatFCO2;
+            double AdjHalfSat = HalfSatFCO2 * CO2 + halfSatIntercept;
             return AdjHalfSat;
         }
 
@@ -290,9 +320,12 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="FRad"></param>
         /// <returns></returns>
         /// via non-linear reduction in FolN with canopy depth via FRad
-        public static float CalcAdjFolN(float FolN_shape, float FolN_intercept, float FolN, float FRad)
+        public static double CalcAdjFolN(double FolN_shape,
+                                         double FolN_intercept,
+                                         double FolN,
+                                         double FRad)
         {
-            float adjFolN = FolN + ((FolN_intercept - FolN) * (float)Math.Pow(FRad, FolN_shape));
+            double adjFolN = FolN + ((FolN_intercept - FolN) * Math.Pow(FRad, FolN_shape));
             return adjFolN;
         }
 
@@ -305,11 +338,15 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="JH2O"></param>
         /// <param name="CiModifier"></param>
         /// <returns></returns>
-        public static float CalcJCO2_JH2O(float JH2O, float Tmin, float CO2, float CiElev, float CiModifier)
+        public static double CalcJCO2_JH2O(double JH2O,
+                                           double Tmin,
+                                           double CO2,
+                                           double CiElev,
+                                           double CiModifier)
         {
-            float V = Constants.GasConst_JperkmolK * (Tmin + Constants.Tref_K) / Constants.Pref_kPa;
-            float JCO2 = (float)(0.139 * ((CO2 - CiElev) / V) * 0.000001);
-            float JCO2_JH2O = JCO2 / JH2O / CiModifier;
+            double V = Constants.GasConst_JperkmolK * (Tmin + Constants.Tref_K) / Constants.Pref_kPa;
+            double JCO2 = 0.139 * ((CO2 - CiElev) / V) * 0.000001;
+            double JCO2_JH2O = JCO2 / JH2O / CiModifier;
             return JCO2_JH2O;
         }
     }
