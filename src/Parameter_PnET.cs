@@ -89,6 +89,23 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
+        public static explicit operator Parameter<double>(Parameter<T> m)
+        {
+            try
+            {
+                Parameter<double> P = new Parameter<double>(m.p_label);
+                foreach (KeyValuePair<string, T> i in m.values)
+                {
+                    P.Add(i.Key, double.Parse(i.Value.ToString()));
+                }
+                return P;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Cannot parse parameter " + m.p_label + " " + e.Message);
+            }
+        }
+
         public static explicit operator Parameter<float>(Parameter<T> m)
         {
             try
