@@ -9,15 +9,15 @@ namespace Landis.Extension.Succession.PnETForC
 {
     public class Hydrology : IHydrology
     {
-        private float soilWaterContent;
-        private float frozenSoilWaterContent;
-        private float frozenSoilDepth;
+        private double soilWaterContent;
+        private double frozenSoilWaterContent;
+        private double frozenSoilDepth;
         public static Hydrology_SaxtonRawls pressureHeadTable;
 
         /// <summary>
         /// soil volumetric water content (mm/m)
         /// </summary>
-        public float SoilWaterContent
+        public double SoilWaterContent
         {
             get
             {
@@ -28,7 +28,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// frozen soil volumetric water content (mm/m)
         /// </summary>
-        public float FrozenSoilWaterContent
+        public double FrozenSoilWaterContent
         {
             get
             {
@@ -40,7 +40,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// Depth at which soil is frozen (mm)
         /// Rooting zone soil below this depth is frozen
         /// </summary>
-        public float FrozenSoilDepth
+        public double FrozenSoilDepth
         {
             get
             {
@@ -59,37 +59,37 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Actual Evaporation (mm)
         /// </summary>
-        public float Evaporation;
+        public double Evaporation;
 
         /// <summary>
         /// Leakage to groundwater (mm)
         /// </summary>
-        public float Leakage;
+        public double Leakage;
 
         /// <summary>
         /// Runoff (mm)
         /// </summary>
-        public float Runoff;
+        public double Runoff;
 
         /// <summary>
         /// Potential Evaporation (mm)
         /// </summary>
-        public float PotentialEvaporation;
+        public double PotentialEvaporation;
 
         /// <summary>
         /// Potential Evapotranspiration (mm)
         /// </summary>
-        public float PotentialET;
+        public double PotentialET;
 
         /// <summary>
         /// Volume of water captured on the surface
         /// </summary>
-        public float SurfaceWater = 0;
+        public double SurfaceWater = 0;
 
         /// <summary>
         /// ???
         /// </summary>
-        public static float DeliveryPotential;
+        public static double DeliveryPotential;
 
         /// <summary>
         /// thread lock utility
@@ -102,7 +102,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// </summary>
         /// <param name="ecoregion"></param>
         /// <returns></returns>
-        public float GetPressureHead(IPnETEcoregionData ecoregion)
+        public double GetPressureHead(IPnETEcoregionData ecoregion)
         {
             return pressureHeadTable[ecoregion, (int)Math.Round(soilWaterContent * 100.0)];
         }
@@ -114,7 +114,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="ecoregion"></param>
         /// <param name="_soilWaterContent"></param>
         /// <returns></returns>
-        public float GetPressureHead(IPnETEcoregionData ecoregion, float _soilWaterContent)
+        public double GetPressureHead(IPnETEcoregionData ecoregion, double _soilWaterContent)
         {
             return pressureHeadTable[ecoregion, (int)Math.Round(_soilWaterContent * 100.0)];
         }
@@ -126,9 +126,9 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="addWater"></param>
         /// <param name="activeSoilDepth"></param>
         /// <returns></returns>
-        public bool AddWater(float addWater, float activeSoilDepth)
+        public bool AddWater(double addWater, double activeSoilDepth)
         {
-            float adjSoilWaterContent = 0;
+            double adjSoilWaterContent = 0;
             if (activeSoilDepth > 0)
                 adjSoilWaterContent = addWater / activeSoilDepth;
             soilWaterContent += adjSoilWaterContent;
@@ -149,9 +149,9 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="addWater"></param>
         /// <param name="activeSoilDepth"></param>
         /// <returns></returns>
-        public float AddWater(float currentWater, float addWater, float activeSoilDepth)
+        public double AddWater(double currentWater, double addWater, double activeSoilDepth)
         {
-            float adjSoilWaterContent = 0;
+            double adjSoilWaterContent = 0;
             if (activeSoilDepth > 0)
                 adjSoilWaterContent = addWater / activeSoilDepth;
             currentWater += adjSoilWaterContent;
@@ -160,7 +160,7 @@ namespace Landis.Extension.Succession.PnETForC
             return currentWater;
         }
 
-        public Hydrology(float soilWaterContent)
+        public Hydrology(double soilWaterContent)
         {
             // mm of water per m of active soil (volumetric content)
             this.soilWaterContent = soilWaterContent;
@@ -171,7 +171,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// </summary>
         /// <param name="soilWaterContent"></param>
         /// <returns></returns>
-        public bool SetFrozenSoilWaterContent(float soilWaterContent)
+        public bool SetFrozenSoilWaterContent(double soilWaterContent)
         {
             frozenSoilWaterContent = soilWaterContent;
             if (soilWaterContent >= 0)
@@ -185,7 +185,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// </summary>
         /// <param name="depth"></param>
         /// <returns></returns>
-        public bool SetFrozenSoilDepth(float depth)
+        public bool SetFrozenSoilDepth(double depth)
         {
             frozenSoilDepth = depth;
             if (depth >= 0)
@@ -211,12 +211,12 @@ namespace Landis.Extension.Succession.PnETForC
             foreach (IPnETEcoregionData ecoregion in PnETEcoregionData.Ecoregions) if (ecoregion.Active)
                 {
                     // Volumetric soil water content (mm/m) at field capacity
-                    ecoregion.FieldCapacity = (float)pressureHeadTable.CalcSoilWaterContent(-Constants.FieldCapacity_kPa, ecoregion.SoilType);
+                    ecoregion.FieldCapacity = (double)pressureHeadTable.CalcSoilWaterContent(-Constants.FieldCapacity_kPa, ecoregion.SoilType);
                     // Volumetric soil water content (mm/m) at wilting point
-                    ecoregion.WiltingPoint = (float)pressureHeadTable.CalcSoilWaterContent(-Constants.WiltingPoint_kPa, ecoregion.SoilType);
+                    ecoregion.WiltingPoint = (double)pressureHeadTable.CalcSoilWaterContent(-Constants.WiltingPoint_kPa, ecoregion.SoilType);
                     // Volumetric soil water content (mm/m) at porosity
-                    ecoregion.Porosity = (float)pressureHeadTable.GetSoilPorosity(ecoregion.SoilType);
-                    float f = ecoregion.FieldCapacity - ecoregion.WiltingPoint;
+                    ecoregion.Porosity = (double)pressureHeadTable.GetSoilPorosity(ecoregion.SoilType);
+                    double f = ecoregion.FieldCapacity - ecoregion.WiltingPoint;
                     Globals.ModelCore.UI.WriteLine(ecoregion.Name + "\t" + ecoregion.SoilType + "\t\t" + ecoregion.WiltingPoint + "\t" + ecoregion.FieldCapacity + "\t" + f + "\t" + ecoregion.Porosity);
                 }
         }
@@ -227,19 +227,19 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="ecoregion"></param>
         /// <param name="potentialET"></param>
         /// <returns></returns>
-        public float CalcEvaporation(IPnETEcoregionData ecoregion, float potentialET)
+        public double CalcEvaporation(IPnETEcoregionData ecoregion, double potentialET)
         {
             lock (threadLock)
             {
                 // frozen soils
-                float frostFreeSoilDepth = ecoregion.RootingDepth - FrozenSoilDepth;
-                float frostFreeFrac = Math.Min(1.0F, frostFreeSoilDepth / ecoregion.RootingDepth);
+                double frostFreeSoilDepth = ecoregion.RootingDepth - FrozenSoilDepth;
+                double frostFreeFrac = Math.Min(1.0F, frostFreeSoilDepth / ecoregion.RootingDepth);
                 // Evaporation is limited to frost free soil above EvapDepth
-                float evapSoilDepth = Math.Min(ecoregion.RootingDepth * frostFreeFrac, ecoregion.EvapDepth);
+                double evapSoilDepth = Math.Min(ecoregion.RootingDepth * frostFreeFrac, ecoregion.EvapDepth);
                 // Maximum actual evaporation = Potential ET
-                float AEmax = potentialET; // Modified 11/4/22 in v 5.0-rc19; remove access limitation and only use physical limit at wilting point below
+                double AEmax = potentialET; // Modified 11/4/22 in v 5.0-rc19; remove access limitation and only use physical limit at wilting point below
                 // Evaporation cannot remove water below wilting point           
-                float evaporationEvent = Math.Min(AEmax, (soilWaterContent - ecoregion.WiltingPoint) * evapSoilDepth); // mm/month
+                double evaporationEvent = Math.Min(AEmax, (soilWaterContent - ecoregion.WiltingPoint) * evapSoilDepth); // mm/month
                 evaporationEvent = Math.Max(0f, evaporationEvent);  // evaporation cannot be negative
                 return evaporationEvent; // mm/month
             }
@@ -256,9 +256,9 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="PET"></param>
         /// <param name="location"></param>
         /// <exception cref="Exception"></exception>
-        public void CalcSoilEvaporation(IPnETEcoregionData ecoregion, float snowpack, float fracRootAboveFrost, float potentialET, string location)
+        public void CalcSoilEvaporation(IPnETEcoregionData ecoregion, double snowpack, double fracRootAboveFrost, double potentialET, string location)
         {
-            float EvaporationEvent = 0;
+            double EvaporationEvent = 0;
             if (fracRootAboveFrost > 0 && snowpack == 0)
                 EvaporationEvent = CalcEvaporation(ecoregion, potentialET); // mm
             bool success = AddWater(-1 * EvaporationEvent, ecoregion.RootingDepth * fracRootAboveFrost);
@@ -276,16 +276,16 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="fracRootAboveFrost"></param>
         /// <param name="location"></param>
         /// <exception cref="Exception"></exception>
-        public void CalcRunoff(IPnETEcoregionData ecoregion, float inputWater, float fracRootAboveFrost, string location)
+        public void CalcRunoff(IPnETEcoregionData ecoregion, double inputWater, double fracRootAboveFrost, string location)
         {
             if (ecoregion.RunoffCapture > 0)
             {
-                float capturedInput = Math.Min(inputWater, Math.Max(ecoregion.RunoffCapture - SurfaceWater, 0));
+                double capturedInput = Math.Min(inputWater, Math.Max(ecoregion.RunoffCapture - SurfaceWater, 0));
                 SurfaceWater += capturedInput;
                 inputWater -= capturedInput;
             }
-            float availableSoilCapacity = Math.Max(ecoregion.Porosity - SoilWaterContent, 0) * ecoregion.RootingDepth * fracRootAboveFrost; // mm
-            float runoff = Math.Max(inputWater - availableSoilCapacity, 0);
+            double availableSoilCapacity = Math.Max(ecoregion.Porosity - SoilWaterContent, 0) * ecoregion.RootingDepth * fracRootAboveFrost; // mm
+            double runoff = Math.Max(inputWater - availableSoilCapacity, 0);
             bool success = AddWater(inputWater - runoff, ecoregion.RootingDepth * fracRootAboveFrost);
             if (!success)
                 throw new Exception("Error adding water, InputWater = " + inputWater + "; soilWaterContent = " + SoilWaterContent + "; Runoff = " + runoff + "; ecoregion = " + ecoregion.Name + "; site = " + location);
@@ -299,9 +299,9 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="fracRootAboveFrost"></param>
         /// <param name="location"></param>
         /// <exception cref="Exception"></exception>
-        public void CalcInfiltration(IPnETEcoregionData ecoregion, float fracRootAboveFrost, string location)
+        public void CalcInfiltration(IPnETEcoregionData ecoregion, double fracRootAboveFrost, string location)
         {
-            float SurfaceInput = Math.Min(SurfaceWater, (ecoregion.Porosity - SoilWaterContent) * ecoregion.RootingDepth * fracRootAboveFrost);
+            double SurfaceInput = Math.Min(SurfaceWater, (ecoregion.Porosity - SoilWaterContent) * ecoregion.RootingDepth * fracRootAboveFrost);
             bool success = AddWater(SurfaceInput, ecoregion.RootingDepth * fracRootAboveFrost);
             if (!success)
                 throw new Exception("Error adding water, SurfaceWater = " + SurfaceWater + "; soilWaterContent = " + SoilWaterContent + "; ecoregion = " + ecoregion.Name + "; site = " + location);
@@ -316,9 +316,9 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="fracRootAboveFrost"></param>
         /// <param name="location"></param>
         /// <exception cref="Exception"></exception>
-        public void CalcLeakage(IPnETEcoregionData ecoregion, float leakageFrac, float fracRootAboveFrost, string location)
+        public void CalcLeakage(IPnETEcoregionData ecoregion, double leakageFrac, double fracRootAboveFrost, string location)
         {
-            float leakage = Math.Max(leakageFrac * (SoilWaterContent - ecoregion.FieldCapacity), 0) * ecoregion.RootingDepth * fracRootAboveFrost; //mm
+            double leakage = Math.Max(leakageFrac * (SoilWaterContent - ecoregion.FieldCapacity), 0) * ecoregion.RootingDepth * fracRootAboveFrost; //mm
             Leakage += leakage;
             bool success = AddWater(-1 * leakage, ecoregion.RootingDepth * fracRootAboveFrost);
             if (!success)
@@ -333,7 +333,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="fracRootAboveFrost"></param>
         /// <param name="location"></param>
         /// <exception cref="Exception"></exception>
-        public void SubtractTranspiration(IPnETEcoregionData ecoregion, float transpiration, float fracRootAboveFrost, string location)
+        public void SubtractTranspiration(IPnETEcoregionData ecoregion, double transpiration, double fracRootAboveFrost, string location)
         {
             bool success = AddWater(-1 * transpiration, ecoregion.RootingDepth * fracRootAboveFrost);
             if (!success)
@@ -350,11 +350,11 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="fracRootBelowFrost"></param>
         /// <param name="location"></param>
         /// <exception cref="Exception"></exception>
-        public void ThawFrozenSoil(IPnETEcoregionData ecoregion, float lastFracBelowFrost, float fracThawed, float fracRootAboveFrost, float fracRootBelowFrost, string location)
+        public void ThawFrozenSoil(IPnETEcoregionData ecoregion, double lastFracBelowFrost, double fracThawed, double fracRootAboveFrost, double fracRootBelowFrost, string location)
         {
-            float existingWater = (1 - lastFracBelowFrost) * SoilWaterContent;
-            float thawedWater = fracThawed * FrozenSoilWaterContent;
-            float newWaterContent = (existingWater + thawedWater) / fracRootAboveFrost;
+            double existingWater = (1 - lastFracBelowFrost) * SoilWaterContent;
+            double thawedWater = fracThawed * FrozenSoilWaterContent;
+            double newWaterContent = (existingWater + thawedWater) / fracRootAboveFrost;
             bool success = AddWater(newWaterContent - SoilWaterContent, ecoregion.RootingDepth * fracRootBelowFrost);
             if (!success)
                 throw new Exception("Error adding water, ThawedWater = " + thawedWater + " soilWaterContent = " + SoilWaterContent + "; ecoregion = " + ecoregion.Name + "; site = " + location);

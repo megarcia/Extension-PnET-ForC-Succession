@@ -25,46 +25,46 @@ namespace Landis.Extension.Succession.PnETForC
         public static Parameter<string> PctOM;
         public static Parameter<string> DensFactor;
         public static Parameter<string> Gravel;
-        static Dictionary<string, float> tensionA = new Dictionary<string, float>();
-        static Dictionary<string, float> tensionB = new Dictionary<string, float>();
-        static Dictionary<string, float> soilPorosity_OM_comp = new Dictionary<string, float>();
-        static Dictionary<string, float> clayFrac = new Dictionary<string, float>();
-        static Dictionary<string, float> cTheta = new Dictionary<string, float>();
-        static Dictionary<string, float> ThermalConductivitySoil = new Dictionary<string, float>();
-        static Dictionary<string, float> Fs = new Dictionary<string, float>();
-        Library.Parameters.Ecoregions.AuxParm<float[]> table = new Library.Parameters.Ecoregions.AuxParm<float[]>(Globals.ModelCore.Ecoregions);
+        static Dictionary<string, double> tensionA = new Dictionary<string, double>();
+        static Dictionary<string, double> tensionB = new Dictionary<string, double>();
+        static Dictionary<string, double> soilPorosity_OM_comp = new Dictionary<string, double>();
+        static Dictionary<string, double> clayFrac = new Dictionary<string, double>();
+        static Dictionary<string, double> cTheta = new Dictionary<string, double>();
+        static Dictionary<string, double> ThermalConductivitySoil = new Dictionary<string, double>();
+        static Dictionary<string, double> Fs = new Dictionary<string, double>();
+        Library.Parameters.Ecoregions.AuxParm<double[]> table = new Library.Parameters.Ecoregions.AuxParm<double[]>(Globals.ModelCore.Ecoregions);
 
         /// <summary>
         /// mm/m of active soil
         /// </summary>
         /// <param name="soilType"></param>
         /// <returns></returns>
-        public float GetSoilPorosity(string soilType)
+        public double GetSoilPorosity(string soilType)
         {
             return soilPorosity_OM_comp[soilType];
         }
 
-        public static float GetClayFrac(string soilType)
+        public static double GetClayFrac(string soilType)
         {
             return clayFrac[soilType];
         }
 
-        public static float GetFs(string soilType)
+        public static double GetFs(string soilType)
         {
             return Fs[soilType];
         }
 
-        public static float GetThermalConductivitySoil(string soilType)
+        public static double GetThermalConductivitySoil(string soilType)
         {
             return ThermalConductivitySoil[soilType];
         }
 
-        public static float GetCTheta(string soilType)
+        public static double GetCTheta(string soilType)
         {
             return cTheta[soilType];
         }
 
-        public float this[IPnETEcoregionData pnetecoregion, int soilWaterContent]
+        public double this[IPnETEcoregionData pnetecoregion, int soilWaterContent]
         {
             get
             {
@@ -87,21 +87,21 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="soilWaterContent"></param>
         /// <param name="soilType"></param>
         /// <returns></returns>
-        public float CalcSoilWaterPressureHead(double soilWaterContent, string soilType)
+        public double CalcSoilWaterPressureHead(double soilWaterContent, string soilType)
         {
             double tension = 0.0;
             if (soilWaterContent <= soilPorosity_OM_comp[soilType])
                 tension = tensionA[soilType] * Math.Pow(soilWaterContent, -tensionB[soilType]);
-            float pressureHead;
+            double pressureHead;
             if (double.IsInfinity(tension))
-                pressureHead = float.MaxValue;
+                pressureHead = double.MaxValue;
             else
             {
-                pressureHead = (float)(tension * 0.1019977334);
-                if (pressureHead > float.MaxValue)
-                    pressureHead = float.MaxValue;
+                pressureHead = (double)(tension * 0.1019977334);
+                if (pressureHead > double.MaxValue)
+                    pressureHead = double.MaxValue;
                 else
-                    pressureHead = (float)Math.Round(pressureHead, 2);
+                    pressureHead = (double)Math.Round(pressureHead, 2);
             }
             return pressureHead;
         }
@@ -109,20 +109,20 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Calculate volumetric soil water content (m3 H2O/m3 soil)
         /// </summary>
-        /// <param name="tension">float in kPa</param>
+        /// <param name="tension">double in kPa</param>
         /// <param name="soilType">string</param>
         /// <returns></returns>
-        public float CalcSoilWaterContent(float tension, string soilType)
+        public double CalcSoilWaterContent(double tension, string soilType)
         {
-            float soilWaterContent = (float)Math.Pow(tension / tensionA[soilType], 1.0 / -tensionB[soilType]);
+            double soilWaterContent = (double)Math.Pow(tension / tensionA[soilType], 1.0 / -tensionB[soilType]);
             return soilWaterContent;
         }
 
         public Hydrology_SaxtonRawls()
         {
             Library.Parameters.Ecoregions.AuxParm<string> SoilType = (Library.Parameters.Ecoregions.AuxParm<string>)Names.GetParameter(Names.SoilType);
-            Library.Parameters.Ecoregions.AuxParm<float> RootingDepth = (Library.Parameters.Ecoregions.AuxParm<float>)(Parameter<float>)Names.GetParameter(Names.RootingDepth, 0, float.MaxValue);
-            table = new Library.Parameters.Ecoregions.AuxParm<float[]>(Globals.ModelCore.Ecoregions);
+            Library.Parameters.Ecoregions.AuxParm<double> RootingDepth = (Library.Parameters.Ecoregions.AuxParm<double>)(Parameter<double>)Names.GetParameter(Names.RootingDepth, 0, double.MaxValue);
+            table = new Library.Parameters.Ecoregions.AuxParm<double[]>(Globals.ModelCore.Ecoregions);
             Sand = Names.GetParameter("sand");
             Clay = Names.GetParameter("clay");
             PctOM = Names.GetParameter("pctOM");
@@ -132,7 +132,7 @@ namespace Landis.Extension.Succession.PnETForC
             {
                 if (ecoregion.Active)
                 {
-                    List<float> PressureHead = new List<float>();
+                    List<double> PressureHead = new List<double>();
                     string soilType = SoilType[ecoregion];
                     if (tensionB.ContainsKey(soilType) == false)
                     {
@@ -154,7 +154,7 @@ namespace Landis.Extension.Succession.PnETForC
                         double sandAdjSat = satPor33 + satSandAdj;
                         double density_OM = (1.0 - sandAdjSat) * 2.65;
                         double density_comp = density_OM * densFactor;
-                        soilPorosity_OM_comp.Add(soilType, (float)(1.0 - (density_comp / 2.65)));
+                        soilPorosity_OM_comp.Add(soilType, (double)(1.0 - (density_comp / 2.65)));
                         double soilPorosity_change_comp = 1.0 - density_comp / 2.65 - (1.0 - density_OM / 2.65);
                         double moist33_comp = predMoist33Adj + 0.2 * soilPorosity_change_comp;
                         double soilPorosity_moist33_comp = soilPorosity_OM_comp[soilType] - moist33_comp;
@@ -163,19 +163,19 @@ namespace Landis.Extension.Succession.PnETForC
                         double satcond_mmhr = 1930 * Math.Pow(soilPorosity_moist33_comp, 3.0 - ThermalConductivity) * gravel_red_sat_cond;
                         double gravels_vol = density_comp / 2.65 * gravel / (1 - gravel * (1 - density_comp / 2.65));
                         double bulk_density = gravels_vol * 2.65 + (1 - gravels_vol) * density_comp; // g/cm3                      
-                        tensionB.Add(soilType, (float)((Math.Log(1500) - Math.Log(33.0)) / (Math.Log(moist33_comp) - Math.Log(predMoist1500adj))));
-                        tensionA.Add(soilType, (float)Math.Exp(Math.Log(33.0) + (tensionB[soilType] * Math.Log(moist33_comp))));
+                        tensionB.Add(soilType, (double)((Math.Log(1500) - Math.Log(33.0)) / (Math.Log(moist33_comp) - Math.Log(predMoist1500adj))));
+                        tensionA.Add(soilType, (double)Math.Exp(Math.Log(33.0) + (tensionB[soilType] * Math.Log(moist33_comp))));
                         // For frozen soil
-                        clayFrac.Add(soilType, (float)clay);
+                        clayFrac.Add(soilType, (double)clay);
                         double cTheta_temp = Constants.HeatCapacitySoil * (1.0 - soilPorosity_OM_comp[soilType]) + Constants.HeatCapacityWater * soilPorosity_OM_comp[soilType];  //specific heat of soil	kJ/m3/K
-                        cTheta.Add(soilType, (float)cTheta_temp);
+                        cTheta.Add(soilType, (double)cTheta_temp);
                         double ThermalConductivitySoil_temp = (1.0 - clay) * Constants.ThermalConductivitySandstone + clay * Constants.ThermalConductivityClay;   //thermal conductivity soil	kJ/m/d/K
-                        ThermalConductivitySoil.Add(soilType, (float)ThermalConductivitySoil_temp);
+                        ThermalConductivitySoil.Add(soilType, (double)ThermalConductivitySoil_temp);
                         double Fs_temp = (2.0 / 3.0 / (1.0 + Constants.gs * ((ThermalConductivitySoil_temp / Constants.ThermalConductivityWater_kJperday) - 1.0))) + (1.0 / 3.0 / (1.0 + (1.0 - 2.0 * Constants.gs) * ((ThermalConductivitySoil_temp / Constants.ThermalConductivityWater_kJperday) - 1.0)));  //ratio of solid temp gradient
-                        Fs.Add(soilType, (float)Fs_temp);
+                        Fs.Add(soilType, (double)Fs_temp);
                     }
                     double soilWaterContent = 0.0;
-                    float pressureHead = float.MaxValue;
+                    double pressureHead = double.MaxValue;
                     while (pressureHead > 0.01)
                     {
                         pressureHead = CalcSoilWaterPressureHead(soilWaterContent, soilType);

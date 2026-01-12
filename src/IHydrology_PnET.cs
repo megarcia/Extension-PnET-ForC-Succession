@@ -6,14 +6,14 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// volumetric soilWaterContent (mm/m)
         /// </summary>
-        float SoilWaterContent { get; } 
+        double SoilWaterContent { get; } 
 
         /// <summary>
         /// Get the pressurehead (mmH2O) for the current soil water content
         /// </summary>
         /// <param name="ecoregion"></param>
         /// <returns></returns>
-        float GetPressureHead(IPnETEcoregionData ecoregion); 
+        double GetPressureHead(IPnETEcoregionData ecoregion); 
 
         /// <summary>
         /// Add mm water to volumetric soil water content (mm/m) (considering activeSoilDepth - frozen soil cannot accept water)
@@ -21,33 +21,33 @@ namespace Landis.Extension.Succession.PnETForC
         /// <param name="soilWaterContent"></param>
         /// <param name="activeSoilDepth"></param>
         /// <returns></returns>
-        bool AddWater(float soilWaterContent, float activeSoilDepth); 
+        bool AddWater(double soilWaterContent, double activeSoilDepth); 
 
-        float CalcEvaporation(IPnETEcoregionData Ecoregion, float potentialET);
+        double CalcEvaporation(IPnETEcoregionData Ecoregion, double potentialET);
 
         /// <summary>
         /// volumetric soil water content (mm/m) of the frozen soil
         /// </summary>
-        float FrozenSoilWaterContent { get; } 
+        double FrozenSoilWaterContent { get; } 
 
         /// <summary>
         /// Depth at which soil is frozen (mm); Rooting zone soil below this depth is frozen
         /// </summary>
-        float FrozenSoilDepth { get; } 
+        double FrozenSoilDepth { get; } 
 
         /// <summary>
         /// Change FrozenSoilWaterContent
         /// </summary>
         /// <param name="soilWaterContent"></param>
         /// <returns></returns>
-        bool SetFrozenSoilWaterContent(float soilWaterContent);  
+        bool SetFrozenSoilWaterContent(double soilWaterContent);  
 
         /// <summary>
         /// Change FrozenSoilDepth
         /// </summary>
         /// <param name="depth"></param>
         /// <returns></returns>
-        bool SetFrozenSoilDepth(float depth); 
+        bool SetFrozenSoilDepth(double depth); 
 
         /// <summary>
         /// Get the PressureHeadTable object
