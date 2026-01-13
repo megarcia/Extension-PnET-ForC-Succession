@@ -19,16 +19,21 @@ namespace Landis.Extension.Succession.PnETForC
         /// Combined PnET-ForC parameters
         /// </summary>
         public const string ExtensionName = "PnET-ForC-Succession";  // combining PnET and ForC
-        public const string Timestep = "Timestep";  // from both PnET and ForC
-        public const string EcoregionParameters = "EcoregionParameters";  // from PnET
-        public const string SeedingAlgorithm = "SeedingAlgorithm";  // from both PnET and ForC
+        public const string Parallel = "Parallel";  // from PnET
         public const string StartYear = "StartYear";  // from PnET
+        public const string Timestep = "Timestep";  // from both PnET and ForC
+
+        /// <summary>
+        /// Domain mapping parameters
+        /// </summary>
+        public const string MapCoordinates = "MapCoordinates";  // from PnET
 
         /// <summary>
         /// PnET parameters
         /// </summary>
         public const string PnETGenericParameters = "PnETGenericParameters";  // from PnET
         public const string PnETGenericDefaultParameters = "PnETGenericDefaultParameters";  // from PnET
+        public const string EcoregionParameters = "EcoregionParameters";  // from PnET
         public const string PnETSpeciesParameters = "PnETSpeciesParameters";  // from PnET
 
         /// <summary>
@@ -39,16 +44,36 @@ namespace Landis.Extension.Succession.PnETForC
         public const string PrecipEventsWithReplacement = "PrecipEventsWithReplacement";  // from PnET
 
         /// <summary>
+        /// Cohort calculation methods and parameters
+        /// </summary>
+        public const string CohortBinSize = "CohortBinSize";  // from PnET
+        public const string CohortStacking = "CohortStacking";  // from PnET
+        public const string LayerThreshRatio = "LayerThreshRatio";  // from PnET
+
+        /// <summary>
         /// Canopy calculation methods and parameters
         /// </summary>
+        public const string IMAX = "IMAX";  // from PnET
         public const string MaxCanopyLayers = "MaxCanopyLayers";  // from PnET
         public const string MinFolRatioFactor = "MinFolRatioFactor";  // from PnET
         public const string CanopySumScale = "CanopySumScale";  // from PnET
 
         /// <summary>
-        /// Respiration calculation methods
+        /// Photosynthesis calculation methods and parameters 
+        /// </summary>
+        public const string DTemp = "DTemp";  // from PnET
+        public const string AMaxBFCO2 = "AMaxBFCO2";  // from PnET
+
+        /// <summary>
+        /// Respiration calculation methods and parameters 
         /// </summary>
         public const string Wythers = "Wythers";  // from PnET
+
+        /// <summary>
+        /// Evapotranspiration calculation methods and parameters 
+        /// </summary>
+        public const string ETExtCoeff = "ETExtCoeff";  // from PnET
+        public const string ReferenceETCropCoeff = "ReferenceETCropCoeff";  // from PnET
 
         /// <summary>
         /// Hydrology calculation methods and parameters
@@ -70,9 +95,15 @@ namespace Landis.Extension.Succession.PnETForC
         public const string InitialCommunities = "InitialCommunities";  // from PnET
         public const string InitialCommunitiesMap = "InitialCommunitiesMap";  // from PnET
         public const string InitialCommunitiesSpinup = "InitialCommunitiesSpinup";  // from PnET
+        public const string SpinUpWaterStress = "SpinUpWaterStress";  // from PnET
         public const string LeafLitterMap = "LeafLitterMap";  // from PnET
         public const string WoodDebrisMap = "WoodyDebrisMap";  // from PnET
-        public const string SpinUpWaterStress = "SpinUpWaterStress";  // from PnET
+
+        /// <summary>
+        /// Reproduction parameters
+        /// </summary>
+        public const string SeedingAlgorithm = "SeedingAlgorithm";  // from both PnET and ForC
+        public const string InvertPest = "InvertPest";  // from PnET
 
         /// <summary>
         /// Output parameters
@@ -82,21 +113,6 @@ namespace Landis.Extension.Succession.PnETForC
         public const string PnEToutputSiteLocation = "PnEToutputSiteLocation";  // from PnET
 
         /// <summary>
-        /// Parameters To Be Organized  
-        /// </summary>
-        public const string LayerThreshRatio = "LayerThreshRatio";  // from PnET
-        public const string IMAX = "IMAX";  // from PnET
-        public const string MapCoordinates = "MapCoordinates";  // from PnET
-        public const string DTemp = "DTemp";  // from PnET
-        public const string AMaxBFCO2 = "AMaxBFCO2";  // from PnET
-        public const string CohortBinSize = "CohortBinSize";  // from PnET
-        public const string InvertPest = "InvertPest";  // from PnET
-        public const string Parallel = "Parallel";  // from PnET
-        public const string CohortStacking = "CohortStacking";  // from PnET
-        public const string ETExtCoeff = "ETExtCoeff";  // from PnET
-        public const string ReferenceETCropCoeff = "ReferenceETCropCoeff";  // from PnET
-       
-        /// <summary>
         /// ForC parameters
         /// </summary>
         public const string ClimateTable = "ClimateTable";  // from ForC
@@ -104,7 +120,6 @@ namespace Landis.Extension.Succession.PnETForC
         public const string DisturbOtherTransferDOM = "DisturbOtherTransferDOM";  // from ForC
         public const string DisturbFireTransferBiomass = "DisturbFireTransferBiomass";  // from ForC
         public const string DisturbOtherTransferBiomass = "DisturbOtherTransferBiomass";  // from ForC
-        public const string SeedingAlgorithm = "SeedingAlgorithm";  // from ForC
         public const string CalibrateMode = "CalibrateMode";  // from ForC
         public const string ClimateFile = "ClimateFile";  // from ForC
         public const string ClimateFile2 = "ForCSClimateFile";  // from ForC
@@ -130,7 +145,7 @@ namespace Landis.Extension.Succession.PnETForC
         public const string DisturbTypeHarvest = "Harvest";  // from ForC
 
         /// <summary>
-        /// Ecoregion parameters
+        /// PnET Ecoregion parameters
         /// </summary>
         public const string LeakageFrac = "LeakageFrac";  // from PnET, at ecoregion level
         public const string RunoffCapture = "RunoffCapture";  // from PnET, at ecoregion level
@@ -148,7 +163,7 @@ namespace Landis.Extension.Succession.PnETForC
         public const string FrostFactor = "FrostFactor";  // from PnET, at ecoregion level
 
         /// <summary>
-        /// Species parameters
+        /// PnET Species parameters
         /// </summary>
         public const string FolN_slope = "FolN_slope";  // from PnET, at species level
         public const string FolN_intercept = "FolN_intercept";  // from PnET, at species level
