@@ -3319,8 +3319,8 @@ namespace Landis.Extension.Succession.PnETForC
                 // Calculate decomposition rate for species litter cohort based on AET and species-based lignin content
                 // based on Meentemeyer, 1978, Ecology, 59, 465-472.
                 // (this information copied from ForestFloor.cs in Extension-Biomass-Succession)
-                double LeafLitterDecompRate = Math.Max(0.3, -0.5365 + (0.00241 * ActualET.Sum()) - (-0.01586 + (0.000056 * ActualET.Sum())) * FolLignin * 100);
-                SiteVars.LeafLitter[Site].AddMass(NewLeafLitter, LeafLitterDecompRate);
+                double LeafLitterDecayRate = Math.Max(0.3, -0.5365 + (0.00241 * ActualET.Sum()) - (-0.01586 + (0.000056 * ActualET.Sum())) * FolLignin * 100);
+                SiteVars.LeafLitter[Site].AddMass(NewLeafLitter, LeafLitterDecayRate);
             }
         }
 
