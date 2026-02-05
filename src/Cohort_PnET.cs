@@ -254,7 +254,7 @@ namespace Landis.Extension.Succession.PnETForC
         {
             get
             {
-                return Math.Max(0, 1 - (double)Math.Pow(Age / (double)PnETspecies.Longevity, PnETspecies.PhotosynthesisFAge));
+                return Math.Max(0, 1.0 - Math.Pow(Age / (double)PnETspecies.Longevity, PnETspecies.PhotosynthesisFAge));
             }
         }
 
@@ -571,7 +571,7 @@ namespace Landis.Extension.Succession.PnETForC
         {
             get
             {
-                return (double)Math.Exp(-PnETspecies.LiveWoodBiomassFrac * data.MaxBiomass);
+                return Math.Exp(-PnETspecies.LiveWoodBiomassFrac * data.MaxBiomass);
             }
         }
 
@@ -583,7 +583,7 @@ namespace Landis.Extension.Succession.PnETForC
         {
             get
             {
-                return NSCfrac > 0.01F;
+                return NSCfrac > 0.01;
             }
         }
 
@@ -779,7 +779,7 @@ namespace Landis.Extension.Succession.PnETForC
         public new void ChangeBiomass(int dBiomass)  // also declared in UniversalCohorts.Cohort
         {
             double newTotalBiomass = data.TotalBiomass + dBiomass;
-            data.TotalBiomass = Math.Max(0, newTotalBiomass);
+            data.TotalBiomass = Math.Max(0.0, newTotalBiomass);
             data.AGBiomass = PnETSpecies.AGBiomassFrac * data.TotalBiomass + data.Fol;
             data.UniversalData.Biomass = (int)(data.AGBiomass * data.CanopyLayerFrac);
             data.MaxBiomass = Math.Max(data.MaxBiomass, data.TotalBiomass);
@@ -821,8 +821,8 @@ namespace Landis.Extension.Succession.PnETForC
             data.LastAGBio = data.AGBiomass;
             data.CanopyLayerFrac = data.LastLAI / PnETspecies.MaxLAI;
             if (cohortStacking)
-                data.CanopyLayerFrac = 1.0f;
-            data.CanopyGrowingSpace = 1.0f;
+                data.CanopyLayerFrac = 1.0;
+            data.CanopyGrowingSpace = 1.0;
             data.UniversalData.Biomass = (int)(data.AGBiomass * data.CanopyLayerFrac);
             data.UniversalData.ANPP = data.UniversalData.Biomass;
             // Then overwrite them if needed for output
