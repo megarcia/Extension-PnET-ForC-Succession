@@ -367,7 +367,7 @@ namespace Landis.Extension.Succession.PnETForC
             avgSoilWaterContent = hydrology.SoilWaterContent;
             subcanopypar = ecoregionInitializer[0].PAR0;
             maxsubcanopypar = subcanopypar;
-            SiteVars.WoodDebris[Site] = new Pool();
+            SiteVars.WoodyDebris[Site] = new Pool();
             SiteVars.LeafLitter[Site] = new Pool();
             SiteVars.FineFuels[Site] = SiteVars.LeafLitter[Site].Mass;
             List<double> cohortBiomassLayerFrac = new List<double>();
@@ -1067,7 +1067,7 @@ namespace Landis.Extension.Succession.PnETForC
                 maxsubcanopypar = initialSites[key].MaxSubCanopyPAR;
                 avgSoilWaterContent = initialSites[key].AvgSoilWaterContent;
                 hydrology = new Hydrology(initialSites[key].hydrology.SoilWaterContent);
-                SiteVars.WoodDebris[Site] = SiteVars.WoodDebris[initialSites[key].Site].Clone();
+                SiteVars.WoodyDebris[Site] = SiteVars.WoodyDebris[initialSites[key].Site].Clone();
                 SiteVars.LeafLitter[Site] = SiteVars.LeafLitter[initialSites[key].Site].Clone();
                 SiteVars.FineFuels[Site] = SiteVars.LeafLitter[Site].Mass;
                 SiteVars.MonthlyPressureHead[site] = (double[])SiteVars.MonthlyPressureHead[initialSites[key].Site].Clone();
@@ -2041,7 +2041,7 @@ namespace Landis.Extension.Succession.PnETForC
                 if (data[m].Month == (int)Calendar.Months.December)
                 {
                     //  Decompose litter
-                    HeterotrophicRespiration = (ushort)(SiteVars.LeafLitter[Site].Decompose() + SiteVars.WoodDebris[Site].Decompose());
+                    HeterotrophicRespiration = (ushort)(SiteVars.LeafLitter[Site].Decompose() + SiteVars.WoodyDebris[Site].Decompose());
                     // Calculate AdjFolFrac
                     AllCohorts.ForEach(x => x.CalcAdjFolBiomassFrac());
                     // Filter monthly pest values
@@ -2672,11 +2672,11 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public double WoodDebris 
+        public double WoodyDebris 
         {
             get
             {
-                return SiteVars.WoodDebris[Site].Mass;
+                return SiteVars.WoodyDebris[Site].Mass;
             }
         }
 
@@ -3296,19 +3296,19 @@ namespace Landis.Extension.Succession.PnETForC
             return species;
         }
 
-        public void AddWoodDebris(double NewWoodDebris, double WoodDebrisDecompRate)
+        public void AddWoodyDebris(double NewWoodyDebris, double WoodyDebrisDecompRate)
         {
-            lock (Globals.WoodDebrisThreadLock)
+            lock (Globals.WoodyDebrisThreadLock)
             {
-                SiteVars.WoodDebris[Site].AddMass(NewWoodDebris, WoodDebrisDecompRate);
+                SiteVars.WoodyDebris[Site].AddMass(NewWoodyDebris, WoodyDebrisDecompRate);
             }
         }
 
-        public void RemoveWoodDebris(double percentReduction)
+        public void RemoveWoodyDebris(double percentReduction)
         {
-            lock (Globals.WoodDebrisThreadLock)
+            lock (Globals.WoodyDebrisThreadLock)
             {
-                SiteVars.WoodDebris[Site].ReduceMass(percentReduction);
+                SiteVars.WoodyDebris[Site].ReduceMass(percentReduction);
             }
         }
 
@@ -3376,7 +3376,7 @@ namespace Landis.Extension.Succession.PnETForC
                        OutputHeaders.NSC + "," + 
                        OutputHeaders.HeteroResp + "," +
                        OutputHeaders.LeafLitter + "," + 
-                       OutputHeaders.WoodDebris + "," +
+                       OutputHeaders.WoodyDebris + "," +
                        OutputHeaders.WoodSenescence + "," + 
                        OutputHeaders.FolSenescence + "," +
                        OutputHeaders.SubCanopyPAR + ","+
@@ -3436,7 +3436,7 @@ namespace Landis.Extension.Succession.PnETForC
                        cohorts.Values.Sum(o => o.Sum(x => x.NSC * x.CanopyLayerFrac)) + "," +
                        HeterotrophicRespiration + "," +
                        SiteVars.LeafLitter[Site].Mass + "," +
-                       SiteVars.WoodDebris[Site].Mass + "," +
+                       SiteVars.WoodyDebris[Site].Mass + "," +
                        cohorts.Values.Sum(o => o.Sum(x => x.LastWoodSenescence * x.CanopyLayerFrac)) + "," +
                        cohorts.Values.Sum(o => o.Sum(x => x.LastFolSenescence * x.CanopyLayerFrac)) + "," +
                        subcanopypar + "," +

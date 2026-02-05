@@ -20,11 +20,11 @@ namespace Landis.Extension.Succession.PnETForC
     public static class MapReader
     {
         static private double maxLeafLitter = 5176.124;
-        static private double maxWoodDebris = 95007.64;
+        static private double maxWoodyDebris = 95007.64;
         static private double minLeafLitter = 0;
-        static private double minWoodDebris = 0;
+        static private double minWoodyDebris = 0;
 
-        public static void ReadWoodDebrisFromMap(string path)
+        public static void ReadWoodyDebrisFromMap(string path)
         {
             IInputRaster<DoublePixel> map = MakeDoubleMap(path);
             using (map)
@@ -36,12 +36,12 @@ namespace Landis.Extension.Succession.PnETForC
                     int mapValue = (int)pixel.MapCode.Value;
                     if (site.IsActive)
                     {
-                        if (mapValue < minWoodDebris || mapValue > maxWoodDebris)
+                        if (mapValue < minWoodyDebris || mapValue > maxWoodyDebris)
                             throw new InputValueException(mapValue.ToString(),
                                                           "Wood debris value {0} is not between {1:0.0} and {2:0.0}. Site_Row={3:0}, Site_Column={4:0}",
-                                                          mapValue, minWoodDebris, maxWoodDebris, site.Location.Row, site.Location.Column);
-                        SiteVars.WoodDebris[site].InitialMass = mapValue;
-                        SiteVars.WoodDebris[site].Mass = mapValue;
+                                                          mapValue, minWoodyDebris, maxWoodyDebris, site.Location.Row, site.Location.Column);
+                        SiteVars.WoodyDebris[site].InitialMass = mapValue;
+                        SiteVars.WoodyDebris[site].Mass = mapValue;
                     }
                 }
             }

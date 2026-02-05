@@ -82,7 +82,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Decomposition constant of wood litter (yr-1)
         /// </summary>
-        double WoodDebrisDecompRate { get; }
+        double WoodyDebrisDecompRate { get; }
 
         /// <summary>
         /// Species longevity (yr)

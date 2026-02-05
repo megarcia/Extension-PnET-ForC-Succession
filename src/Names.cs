@@ -97,7 +97,7 @@ namespace Landis.Extension.Succession.PnETForC
         public const string InitialCommunitiesSpinup = "InitialCommunitiesSpinup";  // from PnET
         public const string SpinUpWaterStress = "SpinUpWaterStress";  // from PnET
         public const string LeafLitterMap = "LeafLitterMap";  // from PnET
-        public const string WoodDebrisMap = "WoodyDebrisMap";  // from PnET
+        public const string WoodyDebrisMap = "WoodyDebrisMap";  // from PnET
 
         /// <summary>
         /// Reproduction parameters

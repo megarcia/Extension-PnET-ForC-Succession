@@ -71,6 +71,6 @@ SoilIceDepth                false
 SpinUpWaterStress           false  
 StomataO3Sensitivity        NA
 WinterSTD                   0.0
-WoodDebrisDecompRate        0.1
+WoodyDebrisDecompRate        0.1
 WoodTurnoverRate            0.01
 Wythers                     true

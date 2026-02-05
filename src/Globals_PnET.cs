@@ -18,7 +18,7 @@ namespace Landis.Extension.Succession.PnETForC
         public static int MaxFutureClimateYear { get; private set; }
         public static int MaxSpinUpIndex { get; private set; }
         public static int MaxFutureClimateIndex { get; private set; }
-        public static readonly object WoodDebrisThreadLock = new object();
+        public static readonly object WoodyDebrisThreadLock = new object();
         public static readonly object LeafLitterThreadLock = new object();
         public static readonly object DistributionThreadLock = new object();
         public static readonly object EcoregionDataThreadLock = new object();

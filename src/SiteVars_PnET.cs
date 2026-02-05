@@ -10,12 +10,12 @@ namespace Landis.Extension.Succession.PnETForC
 {
     public static class SiteVars
     {
-        public static ISiteVar<Pool> WoodDebris;
+        public static ISiteVar<Pool> WoodyDebris;
         public static ISiteVar<Pool> LeafLitter;
         public static ISiteVar<double> FineFuels;
         public static ISiteVar<double> PressureHead;
         public static ISiteVar<double> ExtremeMinTemp;
-        public static ISiteVar<double> AnnualPotentialEvaporation;  //Annual Potential Evaporation
+        public static ISiteVar<double> AnnualPotentialEvaporation;
         public static ISiteVar<double> ClimaticWaterDeficit;
         public static ISiteVar<double> SmolderConsumption;
         public static ISiteVar<double> FlamingConsumption;
@@ -27,7 +27,7 @@ namespace Landis.Extension.Succession.PnETForC
 
         public static void Initialize()
         {
-            WoodDebris = Globals.ModelCore.Landscape.NewSiteVar<Pool>();
+            WoodyDebris = Globals.ModelCore.Landscape.NewSiteVar<Pool>();
             LeafLitter = Globals.ModelCore.Landscape.NewSiteVar<Pool>();
             FineFuels = Globals.ModelCore.Landscape.NewSiteVar<Double>();
             SiteCohorts = Globals.ModelCore.Landscape.NewSiteVar<SiteCohorts>();
@@ -41,7 +41,7 @@ namespace Landis.Extension.Succession.PnETForC
             MonthlyPressureHead = Globals.ModelCore.Landscape.NewSiteVar<double[]>();
             MonthlySoilTemp = Globals.ModelCore.Landscape.NewSiteVar<SortedList<double, double>[]>();
             FieldCapacity = Globals.ModelCore.Landscape.NewSiteVar<double>();
-            Globals.ModelCore.RegisterSiteVar(WoodDebris, "Succession.WoodyDebris");
+            Globals.ModelCore.RegisterSiteVar(WoodyDebris, "Succession.WoodyDebris");
             Globals.ModelCore.RegisterSiteVar(LeafLitter, "Succession.Litter");
             Globals.ModelCore.RegisterSiteVar(FineFuels, "Succession.FineFuels");
             Globals.ModelCore.RegisterSiteVar(PressureHead, "Succession.PressureHead");

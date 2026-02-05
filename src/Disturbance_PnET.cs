@@ -16,7 +16,7 @@ namespace Landis.Extension.Succession.PnETForC
     {
         // These labels are used as input parameters in the input txt file
         private static readonly List<string> Disturbances = new List<string>() { "fire", "wind", "bda", "harvest" };
-        private static readonly List<string> Reductions = new List<string>() { "WoodReduction", "FolReduction", "RootReduction", "WoodDebrisReduction", "LeafLitterReduction" };
+        private static readonly List<string> Reductions = new List<string>() { "WoodReduction", "FolReduction", "RootReduction", "WoodyDebrisReduction", "LeafLitterReduction" };
 
         public static void Initialize(string fn, SortedDictionary<string, Parameter<string>> parameters)
         {
@@ -47,17 +47,17 @@ namespace Landis.Extension.Succession.PnETForC
         {
             if (sitecohorts == null)
                 throw new Exception("sitecohorts should not be null");
-            double WoodDebrisReductionFrac = 0.0;
+            double WoodyDebrisReductionFrac = 0.0;
             double LeafLitterReductionFrac = 0.0;
             if (disturbanceType != null && Names.TryGetParameter(disturbanceType.Name, out Parameter<string> parameter))
             {
                 // If parameters are available, then set the loss fractions here.
-                if (parameter.ContainsKey("WoodDebrisReduction"))
-                    WoodDebrisReductionFrac = double.Parse(parameter["WoodDebrisReduction"]);
+                if (parameter.ContainsKey("WoodyDebrisReduction"))
+                    WoodyDebrisReductionFrac = double.Parse(parameter["WoodyDebrisReduction"]);
                 if (parameter.ContainsKey("LeafLitterReduction"))
                     LeafLitterReductionFrac = double.Parse(parameter["LeafLitterReduction"]);
             }
-            ((SiteCohorts)sitecohorts).RemoveWoodDebris(WoodDebrisReductionFrac);
+            ((SiteCohorts)sitecohorts).RemoveWoodyDebris(WoodyDebrisReductionFrac);
             ((SiteCohorts)sitecohorts).RemoveLeafLitter(LeafLitterReductionFrac);
         }
 
@@ -84,8 +84,8 @@ namespace Landis.Extension.Succession.PnETForC
             double rootAdded = (1 - RootReductionFrac) * cohort.Root * frac;
             double folAdded = (1 - FolReductionFrac) * cohort.Fol * frac;
             // Using Canopy fractioning
-            ((SiteCohorts)sitecohorts).AddWoodDebris(woodAdded * cohort.CanopyLayerFrac, cohort.PnETSpecies.WoodDebrisDecompRate);
-            ((SiteCohorts)sitecohorts).AddWoodDebris(rootAdded * cohort.CanopyLayerFrac, cohort.PnETSpecies.WoodDebrisDecompRate);
+            ((SiteCohorts)sitecohorts).AddWoodyDebris(woodAdded * cohort.CanopyLayerFrac, cohort.PnETSpecies.WoodyDebrisDecompRate);
+            ((SiteCohorts)sitecohorts).AddWoodyDebris(rootAdded * cohort.CanopyLayerFrac, cohort.PnETSpecies.WoodyDebrisDecompRate);
             ((SiteCohorts)sitecohorts).AddLeafLitter(folAdded * cohort.CanopyLayerFrac, cohort.PnETSpecies.FolLignin);
             cohort.AccumulateWoodSenescence((int)((woodAdded + rootAdded) * cohort.CanopyLayerFrac));
             cohort.AccumulateFolSenescence((int)(folAdded * cohort.CanopyLayerFrac));

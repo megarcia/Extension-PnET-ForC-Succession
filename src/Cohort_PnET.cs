@@ -1093,7 +1093,7 @@ namespace Landis.Extension.Succession.PnETForC
                     }
                     double woodSenescence = WoodSenescence();
                     data.LastWoodSenescence = woodSenescence;
-                    siteCohort.AddWoodDebris(woodSenescence * data.CanopyLayerFrac, PnETspecies.WoodDebrisDecompRate); // Using Canopy fractioning
+                    siteCohort.AddWoodyDebris(woodSenescence * data.CanopyLayerFrac, PnETspecies.WoodyDebrisDecompRate); // Using Canopy fractioning
                     // Release of NSC, will be added to biomass components next year
                     // Assumed that NSC will have a minimum concentration, excess is allocated to biomass
                     double NSCallocation = Math.Max(NSC - (PnETspecies.NSCFrac * FActiveBiom * data.TotalBiomass * PnETspecies.CFracBiomass), 0);

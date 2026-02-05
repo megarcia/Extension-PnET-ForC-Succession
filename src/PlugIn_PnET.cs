@@ -65,6 +65,7 @@
 // NOTE: Landis.Data --> Landis.Core
 // NOTE: Names --> Library.PnETCohorts
 // NOTE: ObservedClimate --> Library.PnETCohorts
+// NOTE: Path --> System.IO
 // NOTE: PnETEcoregionData --> Library.PnETCohorts
 // NOTE: PnETSpecies --> Library.PnETCohorts
 // NOTE: Reproduction --> Library.Succession
@@ -127,7 +128,7 @@ namespace Landis.Extension.Succession.PnETForC
         {
             get
             {
-                string defaultPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Defaults");
+                string defaultPath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Defaults");
                 // If Linux, correct the path string
                 if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux))
                     defaultPath = defaultPath.Replace('\\', '/');
@@ -299,9 +300,9 @@ namespace Landis.Extension.Succession.PnETForC
             bool leafLitterMapFile = Names.TryGetParameter(Names.LeafLitterMap, out Parameter<string> LeafLitterMapFile);
             if (leafLitterMapFile)
                 MapReader.ReadLeafLitterFromMap(LeafLitterMapFile.Value);
-            bool woodDebrisMapFile = Names.TryGetParameter(Names.WoodDebrisMap, out Parameter<string> WoodDebrisMapFile);
-            if (woodDebrisMapFile)
-                MapReader.ReadWoodDebrisFromMap(WoodDebrisMapFile.Value);
+            bool woodyDebrisMapFile = Names.TryGetParameter(Names.WoodyDebrisMap, out Parameter<string> WoodyDebrisMapFile);
+            if (woodyDebrisMapFile)
+                MapReader.ReadWoodyDebrisFromMap(WoodyDebrisMapFile.Value);
             InitializeSites(InitialCommunitiesTxtFile, InitialCommunitiesMapFile, ModelCore);
             // Convert PnET cohorts to biomasscohorts
             foreach (ActiveSite site in ModelCore.Landscape)

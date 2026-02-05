@@ -53,7 +53,7 @@ namespace Landis.Extension.Succession.PnETForC
         double JulySubCanopyPAR { get; }
         double MaxSubCanopyPAR { get; }
         double LeafLitter { get; }
-        double WoodDebris { get; }
+        double WoodyDebris { get; }
         int AgeMax { get; }
         double AvgSoilWaterContent { get; }
         double BGBiomassSum { get; }

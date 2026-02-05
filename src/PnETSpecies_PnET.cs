@@ -17,7 +17,7 @@ namespace Landis.Extension.Succession.PnETForC
         static List<Tuple<ISpecies, IPnETSpecies>> SpeciesCombinations;
         private double _halfSatFCO2;
         private double _cfracbiomass;
-        private double _wooddebrisdecomprate;
+        private double _woodydebrisdecomprate;
         private double _nscfrac;
         private double _bgbiomassfrac;
         private double _agbiomassfrac;
@@ -86,7 +86,7 @@ namespace Landis.Extension.Succession.PnETForC
         private static Library.Parameters.Species.AuxParm<double> halfSatFCO2;
         private static Library.Parameters.Species.AuxParm<double> nscfrac;
         private static Library.Parameters.Species.AuxParm<double> cfracbiomass;
-        private static Library.Parameters.Species.AuxParm<double> wooddebrisdecomprate;
+        private static Library.Parameters.Species.AuxParm<double> woodydebrisdecomprate;
         private static Library.Parameters.Species.AuxParm<double> bgbiomassfrac;
         private static Library.Parameters.Species.AuxParm<double> folbiomassfrac;
         private static Library.Parameters.Species.AuxParm<double> liveWoodBiomassFrac;
@@ -145,7 +145,7 @@ namespace Landis.Extension.Succession.PnETForC
             halfSatFCO2 = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("HalfSatFCO2");
             nscfrac = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("NSCFrac");
             cfracbiomass = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("CFracBiomass");
-            wooddebrisdecomprate = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("wooddebrisdecomprate");
+            woodydebrisdecomprate = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("woodydebrisdecomprate");
             bgbiomassfrac = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("bgbiomassfrac");
             /// agbiomassfrac = (Library.Parameters.Species.AuxParm<double>)(1.0F - BGBiomassFrac);
             folbiomassfrac = (Library.Parameters.Species.AuxParm<double>)(Parameter<double>)Names.GetParameter("folbiomassfrac");
@@ -244,7 +244,7 @@ namespace Landis.Extension.Succession.PnETForC
         }
 
         PnETSpecies(PostFireRegeneration postFireRegeneration,
-                    double nscfrac, double cfracbiomass, double wooddebrisdecomprate,
+                    double nscfrac, double cfracbiomass, double woodydebrisdecomprate,
                     double bgbiomassfrac, double folbiomassfrac, double liveWoodBiomassFrac,
                     double photosynthesisfage, double h1, double h2, double h3,
                     double h4, double slwdel, double slwmax, double folturnoverrate,
@@ -272,7 +272,7 @@ namespace Landis.Extension.Succession.PnETForC
             _initBiomass = (int)(initBiomass * (1F - (bgbiomassfrac * rootturnoverrate) - (_agbiomassfrac * woodturnoverrate)));
             _nscfrac = nscfrac;
             _cfracbiomass = cfracbiomass;
-            _wooddebrisdecomprate = wooddebrisdecomprate;
+            _woodydebrisdecomprate = woodydebrisdecomprate;
             _folbiomassfrac = folbiomassfrac;
             _liveWoodBiomassFrac = liveWoodBiomassFrac;
             _photosynthesisfage = photosynthesisfage;
@@ -343,7 +343,7 @@ namespace Landis.Extension.Succession.PnETForC
             _initBiomass = (int)(initBiomass * (1F - (bgbiomassfrac[species] * rootturnoverrate[species]) - (_agbiomassfrac * woodturnoverrate[species])));
             _nscfrac = nscfrac[species];
             _cfracbiomass = cfracbiomass[species];
-            _wooddebrisdecomprate = wooddebrisdecomprate[species];
+            _woodydebrisdecomprate = woodydebrisdecomprate[species];
             _folbiomassfrac = folbiomassfrac[species];
             _liveWoodBiomassFrac = liveWoodBiomassFrac[species];
             _photosynthesisfage = photosynthesisfage[species];
@@ -698,11 +698,11 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public double WoodDebrisDecompRate
+        public double WoodyDebrisDecompRate
         {
             get
             {
-                return _wooddebrisdecomprate;
+                return _woodydebrisdecomprate;
             }
         }
 
