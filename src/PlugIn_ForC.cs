@@ -133,7 +133,7 @@ namespace Landis.Extension.Succession.PnETForC
             SiteVars.soilC[site] = new SoilC(initSiteBiomass.soilC);
             SiteVars.SoilOrganicMatterC[site] = initSiteBiomass.SoilOrganicMatterC;            
             SiteVars.WoodyDebris[site].Mass = initSiteBiomass.WoodyDebris;
-            SiteVars.LitterMass[site].Mass = initSiteBiomass.LitterMass;
+            SiteVars.LeafLitter[site].Mass = initSiteBiomass.LeafLitter;
             SiteVars.DeadWoodDecayRate[site] = initSiteBiomass.DeadWoodDecayRate;
             SiteVars.LitterDecayRate[site] = initSiteBiomass.LitterDecayRate;
             SiteVars.soilC[site].BiomassOutput(site, 1);

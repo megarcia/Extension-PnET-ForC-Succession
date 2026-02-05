@@ -790,7 +790,7 @@ namespace Landis.Extension.Succession.PnETForC
             // LastPass = 0 means all other.
             int i;
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            SiteVars.LitterMass[site].Mass = 0.0;
+            SiteVars.LeafLitter[site].Mass = 0.0;
             SiteVars.WoodyDebris[site].Mass = 0.0;
             foreach (ISpecies species in PlugIn.ModelCore.Species)
             {
@@ -818,7 +818,7 @@ namespace Landis.Extension.Succession.PnETForC
                 // for the last soil pass (the one where we capture the snags, if present
                 if ((PlugIn.ModelCore.CurrentTime == 0 && (LastSoilPass || LastPass == -1)) || (PlugIn.ModelCore.CurrentTime > 0))
                     DoSoilDynamics(ecoregion, species, site);
-                SiteVars.LitterMass[site].Mass += totalDOMC[0] + totalDOMC[1]; //litter = very fast above and below ground
+                SiteVars.LeafLitter[site].Mass += totalDOMC[0] + totalDOMC[1]; //litter = very fast above and below ground
                 if (totalDOMC[0] <= 0.01)
                     i = 0;
                 for (i = 0; i < Constants.NUMDOMPOOLS; i++)
@@ -831,7 +831,7 @@ namespace Landis.Extension.Succession.PnETForC
                 SoilOutput(site, species, 0);      // pool and flux output by species
             }
             if (LastPass == 0)  // Don't call the summary output if it is the last pass - we get the wrong root biomass values (or if it is soil spin-up)
-                SummaryOutput(site, totalBiomass, SiteVars.LitterMass[site].Mass + SiteVars.WoodyDebris[site].Mass, preGrowthBiomass);
+                SummaryOutput(site, totalBiomass, SiteVars.LeafLitter[site].Mass + SiteVars.WoodyDebris[site].Mass, preGrowthBiomass);
             for (i = 0; i < 5; i++)     // loop over disturbance types
             {
                 DistOccurred[i] = false;      // reset, ready for next year. Note that this must be done here, because it is not species specific

@@ -26,7 +26,7 @@ namespace Landis.Extension.Succession.PnETForC
 
         // Soil and litter variables:
         public static ISiteVar<Pool> WoodyDebris;
-        public static ISiteVar<Pool> LitterMass;
+        public static ISiteVar<Pool> LeafLitter;
         public static ISiteVar<double> SoilOrganicMatterC;
         public static ISiteVar<double> DeadWoodDecayRate;
         public static ISiteVar<double> LitterDecayRate;
@@ -150,7 +150,7 @@ namespace Landis.Extension.Succession.PnETForC
             currentYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             totalBiomass = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             WoodyDebris = PlugIn.ModelCore.Landscape.NewSiteVar<Pool>();
-            LitterMass = PlugIn.ModelCore.Landscape.NewSiteVar<Pool>();
+            LeafLitter = PlugIn.ModelCore.Landscape.NewSiteVar<Pool>();
             SoilOrganicMatterC = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             DeadWoodDecayRate = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             LitterDecayRate = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
@@ -168,11 +168,11 @@ namespace Landis.Extension.Succession.PnETForC
             {
                 //  site cohorts are initialized by the PlugIn.InitializeSite method
                 WoodyDebris[site] = new Pool();
-                LitterMass[site] = new Pool();
+                LeafLitter[site] = new Pool();
             }
             PlugIn.ModelCore.RegisterSiteVar(universalCohorts, "Succession.UniversalCohorts");
             PlugIn.ModelCore.RegisterSiteVar(WoodyDebris, "Succession.WoodyDebris");
-            PlugIn.ModelCore.RegisterSiteVar(LitterMass, "Succession.Litter");
+            PlugIn.ModelCore.RegisterSiteVar(LeafLitter, "Succession.Litter");
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
                 // Note: we need this both here and in Plug-in
