@@ -791,7 +791,7 @@ namespace Landis.Extension.Succession.PnETForC
             int i;
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             SiteVars.LitterMass[site].Mass = 0.0;
-            SiteVars.DeadWoodMass[site].Mass = 0.0;
+            SiteVars.WoodyDebris[site].Mass = 0.0;
             foreach (ISpecies species in PlugIn.ModelCore.Species)
             {
                 if (!SpeciesPresent[(int)species.Index])    // if the species has never been on the site, we don't want to bother processing it
@@ -826,12 +826,12 @@ namespace Landis.Extension.Succession.PnETForC
                     // totals for the flux summary table
                     TotTransfer[0, 1] += carbonToAir[i];     // 0=no dist, 1=toAir
                     if (i >= 2)
-                        SiteVars.DeadWoodMass[site].Mass += totalDOMC[i];
+                        SiteVars.WoodyDebris[site].Mass += totalDOMC[i];
                 }
                 SoilOutput(site, species, 0);      // pool and flux output by species
             }
             if (LastPass == 0)  // Don't call the summary output if it is the last pass - we get the wrong root biomass values (or if it is soil spin-up)
-                SummaryOutput(site, totalBiomass, SiteVars.LitterMass[site].Mass + SiteVars.DeadWoodMass[site].Mass, preGrowthBiomass);
+                SummaryOutput(site, totalBiomass, SiteVars.LitterMass[site].Mass + SiteVars.WoodyDebris[site].Mass, preGrowthBiomass);
             for (i = 0; i < 5; i++)     // loop over disturbance types
             {
                 DistOccurred[i] = false;      // reset, ready for next year. Note that this must be done here, because it is not species specific
