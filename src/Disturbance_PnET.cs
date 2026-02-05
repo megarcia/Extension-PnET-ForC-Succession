@@ -84,8 +84,8 @@ namespace Landis.Extension.Succession.PnETForC
             double rootAdded = (1 - RootReductionFrac) * cohort.Root * frac;
             double folAdded = (1 - FolReductionFrac) * cohort.Fol * frac;
             // Using Canopy fractioning
-            ((SiteCohorts)sitecohorts).AddWoodyDebris(woodAdded * cohort.CanopyLayerFrac, cohort.PnETSpecies.WoodyDebrisDecompRate);
-            ((SiteCohorts)sitecohorts).AddWoodyDebris(rootAdded * cohort.CanopyLayerFrac, cohort.PnETSpecies.WoodyDebrisDecompRate);
+            ((SiteCohorts)sitecohorts).AddWoodyDebris(woodAdded * cohort.CanopyLayerFrac, cohort.PnETSpecies.WoodyDebrisDecayRate);
+            ((SiteCohorts)sitecohorts).AddWoodyDebris(rootAdded * cohort.CanopyLayerFrac, cohort.PnETSpecies.WoodyDebrisDecayRate);
             ((SiteCohorts)sitecohorts).AddLeafLitter(folAdded * cohort.CanopyLayerFrac, cohort.PnETSpecies.FolLignin);
             cohort.AccumulateWoodSenescence((int)((woodAdded + rootAdded) * cohort.CanopyLayerFrac));
             cohort.AccumulateFolSenescence((int)(folAdded * cohort.CanopyLayerFrac));

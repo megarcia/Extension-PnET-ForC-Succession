@@ -3296,11 +3296,11 @@ namespace Landis.Extension.Succession.PnETForC
             return species;
         }
 
-        public void AddWoodyDebris(double NewWoodyDebris, double WoodyDebrisDecompRate)
+        public void AddWoodyDebris(double NewWoodyDebris, double WoodyDebrisDecayRate)
         {
             lock (Globals.WoodyDebrisThreadLock)
             {
-                SiteVars.WoodyDebris[Site].AddMass(NewWoodyDebris, WoodyDebrisDecompRate);
+                SiteVars.WoodyDebris[Site].AddMass(NewWoodyDebris, WoodyDebrisDecayRate);
             }
         }
 
