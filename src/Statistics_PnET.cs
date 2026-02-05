@@ -2,7 +2,7 @@
 
 namespace Landis.Extension.Succession.PnETForC
 {
-    public static class Statistics
+    public static class Distributions
     {
         /// <summary>
         /// Choose random integer between min and max (inclusive)

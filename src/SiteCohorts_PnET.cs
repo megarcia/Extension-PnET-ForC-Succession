@@ -1192,7 +1192,7 @@ namespace Landis.Extension.Succession.PnETForC
                     List<int> copy_range = new List<int>(bins[b]);
                     while (copy_range.Count() > 0)
                     {
-                        int k = Statistics.DiscreteUniformRandom(0, copy_range.Count()-1);
+                        int k = Distributions.DiscreteUniformRandom(0, copy_range.Count()-1);
                         random_range[b].Add(copy_range[k]);
                         copy_range.RemoveAt(k);
                     }
@@ -1645,7 +1645,7 @@ namespace Landis.Extension.Succession.PnETForC
                     // Sublayer selection with replacement    
                     while (randomNumbers.Count < numPrecipEvents)
                     {
-                        int rand = Statistics.DiscreteUniformRandom(1, SubCanopyCohorts.Count());
+                        int rand = Distributions.DiscreteUniformRandom(1, SubCanopyCohorts.Count());
                         randomNumbers.Add(rand);
                     }
                 }
@@ -1659,7 +1659,7 @@ namespace Landis.Extension.Succession.PnETForC
                             List<int> subCanopyList = Enumerable.Range(1, SubCanopyCohorts.Count()).ToList();
                             while ((randomNumbers.Count < numPrecipEvents) && (subCanopyList.Count() > 0))
                             {
-                                int rand = Statistics.DiscreteUniformRandom(0, subCanopyList.Count() - 1);
+                                int rand = Distributions.DiscreteUniformRandom(0, subCanopyList.Count() - 1);
                                 randomNumbers.Add(subCanopyList[rand]);
                                 subCanopyList.RemoveAt(rand);
                             }
@@ -2101,7 +2101,7 @@ namespace Landis.Extension.Succession.PnETForC
                     }                    
                     if (!pnetspecies.PreventEstablishment)
                     {
-                        if (pest > (double)Statistics.ContinuousUniformRandom())
+                        if (pest > (double)Distributions.ContinuousUniformRandom())
                         {
                             probEstablishment.AddEstablishedSpecies(pnetspecies);
                             estab = true;
@@ -2987,7 +2987,7 @@ namespace Landis.Extension.Succession.PnETForC
             int n = array.Count;
             while (n > 1)
             {
-                int k = Statistics.DiscreteUniformRandom(0, n);
+                int k = Distributions.DiscreteUniformRandom(0, n);
                 n--;
                 T temp = array[n];
                 array[n] = array[k];
@@ -3050,7 +3050,7 @@ namespace Landis.Extension.Succession.PnETForC
                     }
                 }
                 // Add a negligable value [-1e-10; + 1e-10] to ratio in order to prevent duplicate keys
-                double k = 1e-10 * 2.0 * (Statistics.ContinuousUniformRandom() - 0.5);
+                double k = 1e-10 * 2.0 * (Distributions.ContinuousUniformRandom() - 0.5);
                 layerThreshRatio.Add(ratio + k);
                 if (!CohortBins[0].Contains(cohortBio))
                     CohortBins[0].Add(cohortBio);
