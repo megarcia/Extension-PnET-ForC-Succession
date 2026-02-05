@@ -19,7 +19,7 @@ namespace Landis.Extension.Succession.PnETForC
     public static class SiteVars
     {
         private static ISiteVar<SiteCohorts> universalCohorts;
-        private static ISiteVar<int> timeOfLast; // Time of last succession simulation:
+        private static ISiteVar<int> lastSuccessionTime;
         private static ISiteVar<int> previousYearMortality;
         private static ISiteVar<int> currentYearMortality;
         private static ISiteVar<int> totalBiomass;
@@ -66,11 +66,11 @@ namespace Landis.Extension.Succession.PnETForC
         /// <summary>
         /// Time of last succession simulation (apparently unused).
         /// </summary>
-        public static ISiteVar<int> TimeOfLast
+        public static ISiteVar<int> LastSuccessionTime
         {
             get
             {
-                return timeOfLast;
+                return lastSuccessionTime;
             }
         }
 
@@ -145,7 +145,7 @@ namespace Landis.Extension.Succession.PnETForC
         {
             Debug.Assert(iParams != null);
             universalCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<SiteCohorts>();
-            timeOfLast = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
+            lastSuccessionTime = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             previousYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             currentYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             totalBiomass = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
@@ -180,8 +180,8 @@ namespace Landis.Extension.Succession.PnETForC
                 double totalMBOfPhysicalMemory = currentProcess.WorkingSet64 / 100000.0;
                 double totalMBOfVirtualMemory = currentProcess.VirtualMemorySize64 / 100000.0;
                 soilC[site] = new SoilC(iParams, site, iDMParams);
-                totalMBOfPhysicalMemory = currentProcess.WorkingSet64 / 100000.0;
-                totalMBOfVirtualMemory = currentProcess.VirtualMemorySize64 / 100000.0;
+                // totalMBOfPhysicalMemory = currentProcess.WorkingSet64 / 100000.0;
+                // totalMBOfVirtualMemory = currentProcess.VirtualMemorySize64 / 100000.0;
             }
         }
 
