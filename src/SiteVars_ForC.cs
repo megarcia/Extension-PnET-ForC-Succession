@@ -1,6 +1,7 @@
 // Authors: Robert M. Scheller, James B. Domingo
 
 // NOTE: ActiveSite --> Landis.SpatialModeling
+// NOTE: Debug --> System.Diagnostics
 // NOTE: ISiteVar --> Landis.SpatialModeling
 // NOTE: Pool --> Landis.Library.UniversalCohorts
 // NOTE: Process --> System.Diagnostics
@@ -48,11 +49,101 @@ namespace Landis.Extension.Succession.PnETForC
         public static ISiteVar<double> ToFPSC;
 
         /// <summary>
+        /// Biomass cohorts at site.
+        /// </summary>
+        public static ISiteVar<SiteCohorts> Cohorts
+        {
+            get
+            {
+                return universalCohorts;
+            }
+            set
+            {
+                universalCohorts = value;
+            }
+        }
+
+        /// <summary>
+        /// Time of last succession simulation (apparently unused).
+        /// </summary>
+        public static ISiteVar<int> TimeOfLast
+        {
+            get
+            {
+                return timeOfLast;
+            }
+        }
+
+        /// <summary>
+        /// Site fire severity.
+        /// </summary>
+        public static ISiteVar<byte> FireSeverity
+        {
+            get
+            {
+                return fireSeverity;
+            }
+            set
+            {
+                fireSeverity = value;
+            }
+
+        }
+
+        /// <summary>
+        /// Reduction fraction for maximum site biomass.
+        /// </summary>
+        public static ISiteVar<double> CapacityReduction
+        {
+            get
+            {
+                return capacityReduction;
+            }
+            set
+            {
+                capacityReduction = value;
+            }
+        }
+
+        /// <summary>
+        /// Site total biomass.
+        /// </summary>
+        public static ISiteVar<int> TotalBiomass
+        {
+            get
+            {
+                return totalBiomass;
+            }
+        }
+
+        /// <summary>
+        /// Previous year site mortality.
+        /// </summary>
+        public static ISiteVar<int> PreviousYearMortality
+        {
+            get
+            {
+                return previousYearMortality;
+            }
+        }
+
+        /// <summary>
+        /// Current year site mortality.
+        /// </summary>
+        public static ISiteVar<int> CurrentYearMortality
+        {
+            get
+            {
+                return currentYearMortality;
+            }
+        }
+
+        /// <summary>
         /// Initializes the module.
         /// </summary>
         public static void Initialize(IInputParams iParams, IInputDisturbanceMatrixParams iDMParams)
         {
-            System.Diagnostics.Debug.Assert(iParams != null);
+            Debug.Assert(iParams != null);
             universalCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<SiteCohorts>();
             timeOfLast = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             previousYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
@@ -101,84 +192,6 @@ namespace Landis.Extension.Succession.PnETForC
             TotalBiomass[site] = Library.UniversalCohorts.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]);
             PreviousYearMortality[site] = CurrentYearMortality[site];
             CurrentYearMortality[site] = 0;
-        }
-
-        /// <summary>
-        /// Biomass cohorts at each site.
-        /// </summary>
-        public static ISiteVar<SiteCohorts> Cohorts
-        {
-            get
-            {
-                return universalCohorts;
-            }
-            set
-            {
-                universalCohorts = value;
-            }
-        }
-
-        public static ISiteVar<int> TimeOfLast
-        {
-            get
-            {
-                return timeOfLast;
-            }
-        }
-
-        public static ISiteVar<byte> FireSeverity
-        {
-            get
-            {
-                return fireSeverity;
-            }
-            set
-            {
-                fireSeverity = value;
-            }
-
-        }
-
-        public static ISiteVar<double> CapacityReduction
-        {
-            get
-            {
-                return capacityReduction;
-            }
-            set
-            {
-                capacityReduction = value;
-            }
-        }
-
-        public static ISiteVar<int> TotalBiomass
-        {
-            get
-            {
-                return totalBiomass;
-            }
-        }
-
-        /// <summary>
-        /// Previous Year Site Mortality.
-        /// </summary>
-        public static ISiteVar<int> PreviousYearMortality
-        {
-            get
-            {
-                return previousYearMortality;
-            }
-        }
-
-        /// <summary>
-        /// Current Year Site Mortality.
-        /// </summary>
-        public static ISiteVar<int> CurrentYearMortality
-        {
-            get
-            {
-                return currentYearMortality;
-            }
         }
     }
 }
