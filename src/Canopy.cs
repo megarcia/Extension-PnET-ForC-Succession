@@ -26,10 +26,12 @@ namespace Landis.Extension.Succession.PnETForC
                                      int index,
                                      double LAISum)
         {
-            // Leaf area index for the subcanopy layer by index. Function of specific leaf weight SLWMAX and the depth of the canopy
-            // Depth of the canopy is expressed by the mass of foliage above this subcanopy layer (i.e. slwdel * index/imax *fol)
-            // double LAISum = cumulativeLAI;
-            // Cohort LAI is capped at 25; once LAI reaches 25, subsequent sublayers get LAI of 0.01
+            // Leaf area index for a subcanopy layer, a function of 
+            // specific leaf weight SLWMAX and the depth of the canopy.
+            // Canopy depth is expressed by the mass of foliage above 
+            // this subcanopy layer (i.e., slwdel * index/imax * fol)
+            // Total LAI is capped at 25; above that, additional 
+            // sublayers get LAI of 0.01
             double LAIlayerMax = Math.Max(0.01, 25.0 - LAISum);
             double LAIlayer = 1.0 / Globals.IMAX * fol / (species.SLWmax - species.SLWDel * index * (1 / Globals.IMAX) * fol);
             if (fol > 0.0 && LAIlayer <= 0.0)
