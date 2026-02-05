@@ -29,7 +29,7 @@ namespace Landis.Extension.Succession.PnETForC
         public static ISiteVar<Pool> LeafLitter;
         public static ISiteVar<double> SoilOrganicMatterC;
         public static ISiteVar<double> WoodyDebrisDecayRate;
-        public static ISiteVar<double> LitterDecayRate;
+        public static ISiteVar<double> LeafLitterDecayRate;
         public static ISiteVar<double> AbovegroundNPPcarbon;
 
         // Disturbance variables
@@ -153,7 +153,7 @@ namespace Landis.Extension.Succession.PnETForC
             LeafLitter = PlugIn.ModelCore.Landscape.NewSiteVar<Pool>();
             SoilOrganicMatterC = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             WoodyDebrisDecayRate = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            LitterDecayRate = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            LeafLitterDecayRate = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             AbovegroundNPPcarbon = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             NPP = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             RH = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
