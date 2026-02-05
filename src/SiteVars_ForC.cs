@@ -24,11 +24,11 @@ namespace Landis.Extension.Succession.PnETForC
         private static ISiteVar<int> currentYearMortality;
         private static ISiteVar<int> totalBiomass;
 
-        // Soil and litter variables:
+        // Soil and debris/litter variables:
         public static ISiteVar<Pool> WoodyDebris;
         public static ISiteVar<Pool> LeafLitter;
         public static ISiteVar<double> SoilOrganicMatterC;
-        public static ISiteVar<double> DeadWoodDecayRate;
+        public static ISiteVar<double> WoodyDebrisDecayRate;
         public static ISiteVar<double> LitterDecayRate;
         public static ISiteVar<double> AbovegroundNPPcarbon;
 
@@ -152,7 +152,7 @@ namespace Landis.Extension.Succession.PnETForC
             WoodyDebris = PlugIn.ModelCore.Landscape.NewSiteVar<Pool>();
             LeafLitter = PlugIn.ModelCore.Landscape.NewSiteVar<Pool>();
             SoilOrganicMatterC = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            DeadWoodDecayRate = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            WoodyDebrisDecayRate = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             LitterDecayRate = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             AbovegroundNPPcarbon = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             NPP = PlugIn.ModelCore.Landscape.NewSiteVar<double>();

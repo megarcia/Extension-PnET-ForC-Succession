@@ -25,7 +25,7 @@ namespace Landis.Extension.Succession.PnETForC
         public double SoilOrganicMatterC;
         public double WoodyDebris;
         public double LeafLitter;
-        public double DeadWoodDecayRate;
+        public double WoodyDebrisDecayRate;
         public double LitterDecayRate;
         private SiteCohorts cohorts;
 
@@ -45,7 +45,7 @@ namespace Landis.Extension.Succession.PnETForC
                             double soilOrganicMatterC,
                             double woodyDebris,
                             double leafLitter,
-                            double deadWoodDecayRate,
+                            double woodyDebrisDecayRate,
                             double litterDecayRate,
                             SoilC soilC)
         {
@@ -53,7 +53,7 @@ namespace Landis.Extension.Succession.PnETForC
             SoilOrganicMatterC = soilOrganicMatterC;
             WoodyDebris = woodyDebris;
             LeafLitter = leafLitter;
-            DeadWoodDecayRate = deadWoodDecayRate;
+            WoodyDebrisDecayRate = woodyDebrisDecayRate;
             LitterDecayRate = litterDecayRate;
             this.soilC = soilC;
         }
@@ -133,7 +133,7 @@ namespace Landis.Extension.Succession.PnETForC
                                               SiteVars.SoilOrganicMatterC[site],
                                               SiteVars.WoodyDebris[site].Mass,
                                               SiteVars.LeafLitter[site].Mass,
-                                              SiteVars.DeadWoodDecayRate[site],
+                                              SiteVars.WoodyDebrisDecayRate[site],
                                               SiteVars.LitterDecayRate[site],
                                               SiteVars.soilC[site]);
             initialSites[key] = initSiteBiomass;
