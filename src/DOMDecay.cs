@@ -70,7 +70,7 @@ namespace Landis.Extension.Succession.PnETForC
         /// </summary>
         /// <param name="precipitation"></param>
         /// <returns></returns>
-        public static double CalcDecayFPrecip(double precipitation)
+        public static double CalcDecayFPrecip()  // double precipitation)
         {
             // Currently, precipitation does not influence the decay rates.
             double decayFPrecip = 1.0;
