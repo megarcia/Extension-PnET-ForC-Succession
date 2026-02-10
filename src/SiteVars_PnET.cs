@@ -1,4 +1,6 @@
-﻿// NOTE: ISiteVar --> Landis.SpatialModeling
+﻿// deprecated in favor of merged PnET-ForC version of SiteVars class
+
+// NOTE: ISiteVar --> Landis.SpatialModeling
 // NOTE: Pool --> Landis.Library.UniversalCohorts
 
 using System;

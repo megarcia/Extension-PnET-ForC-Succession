@@ -1,3 +1,5 @@
+// deprecated in favor of merged PnET-ForC version of SiteVars class
+
 // Authors: Robert M. Scheller, James B. Domingo
 
 // NOTE: ActiveSite --> Landis.SpatialModeling
