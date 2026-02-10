@@ -74,9 +74,11 @@ namespace Landis.Extension.Succession.PnETForC
         /// Calculates the change in a cohort's biomass due to 
         /// Annual Net Primary Productivity (ANPP), age-related 
         /// mortality (M_AGE), and development-related mortality 
-        /// (M_BIO). Name is inherited from Succession Library,
-        /// so it's not renamed "CalcBiomassChange" as I (MG) 
-        /// would normally do.
+        /// (M_BIO). 
+        /// 
+        /// Name is inherited from Succession Library, so it's
+        /// not renamed "CalcBiomassChange" as I (MG) would 
+        /// normally do.
         /// </summary>
         public double ComputeChange(ICohort cohort,
                                     ActiveSite site,
@@ -157,7 +159,8 @@ namespace Landis.Extension.Succession.PnETForC
         }
 
         /// <summary>
-        /// Calculates M_AGE_ij: the mortality caused by the aging of the cohort.
+        /// Calculates M_AGE_ij: the mortality caused by the aging
+        /// of the cohort.
         /// See equation 6 in Scheller and Mladenoff, 2004.
         /// </summary>
         private double CalcAgeMortality(ICohort cohort)
