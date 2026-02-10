@@ -297,10 +297,10 @@ namespace Landis.Extension.Succession.PnETForC
         {
             SuccessionTimestep = successionTimestep;
             AdjFolN = new double[Globals.IMAX];
-            adjFolN = 0; ;
+            adjFolN = 0.0; ;
             AdjFolBiomassFrac = new double[Globals.IMAX];
-            adjFolBiomassFrac = 0;
-            AdjHalfSat = 0;
+            adjFolBiomassFrac = 0.0;
+            AdjHalfSat = 0.0;
             UniversalData.Age = age;
             IPnETSpecies pnetspecies = SpeciesParameters.PnETSpecies.AllSpecies[species.Index];
             Cohort = new Cohort(species, pnetspecies, 0, "", 1, cohortStacking, successionTimestep);
@@ -310,10 +310,10 @@ namespace Landis.Extension.Succession.PnETForC
             MaxBiomass = totalBiomass;
             CiModifier = new double[Globals.IMAX];
             ColdKill = int.MaxValue;
-            DefoliationFrac = 0;
+            DefoliationFrac = 0.0;
             DelAmax = new double[Globals.IMAX];
-            Fol = 0;
-            MaxFolYear = 0;
+            Fol = 0.0;
+            MaxFolYear = 0.0;
             FoliarRespiration = new double[Globals.IMAX];
             FOzone = new double[Globals.IMAX];
             FRad = new double[Globals.IMAX];
@@ -321,29 +321,29 @@ namespace Landis.Extension.Succession.PnETForC
             GrossPsn = new double[Globals.IMAX];
             Interception = new double[Globals.IMAX];
             LAI = new double[Globals.IMAX];
-            LastFolSenescence = 0;
-            LastFRad = 0;
+            LastFolSenescence = 0.0;
+            LastFRad = 0.0;
             LastSeasonFRad = new List<double>();
-            LastWoodSenescence = 0;
+            LastWoodSenescence = 0.0;
             LastAGBio = AGBiomass;
             Layer = 0;
             IsLeafOn = false;
             MaintenanceRespiration = new double[Globals.IMAX];
             NetPsn = new double[Globals.IMAX];
-            NSC = 0;
+            NSC = 0.0;
             PressHead = new double[Globals.IMAX];
             NumPrecipEvents = new int[Globals.IMAX];
             Transpiration = new double[Globals.IMAX];
             PotentialTranspiration = new double[Globals.IMAX];
             SoilWaterContent = new double[Globals.IMAX];
-            BiomassLayerFrac = 1.0f;
-            double cohortIdealFol = pnetspecies.FolBiomassFrac * (double)Math.Exp(-pnetspecies.LiveWoodBiomassFrac * MaxBiomass) * TotalBiomass;
+            BiomassLayerFrac = 1.0;
+            double cohortIdealFol = pnetspecies.FolBiomassFrac * Math.Exp(-pnetspecies.LiveWoodBiomassFrac * MaxBiomass) * TotalBiomass;
             double cohortLAI = Canopy.CalcCohortLAI(pnetspecies, cohortIdealFol);
             LastLAI = cohortLAI;
             CanopyLayerFrac = LastLAI / pnetspecies.MaxLAI;
             if (cohortStacking)
-                CanopyLayerFrac = 1.0f;
-            CanopyGrowingSpace = 1.0f;
+                CanopyLayerFrac = 1.0;
+            CanopyGrowingSpace = 1.0;
             UniversalData.ANPP = totalANPP;
         }
     }
