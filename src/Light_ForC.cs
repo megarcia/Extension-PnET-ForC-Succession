@@ -1,3 +1,4 @@
+// from ForC-Succession extension
 // Authors: Caren Dymond, Sarah Beukema
 
 // NOTE: ActiveSite --> Landis.SpatialModeling
