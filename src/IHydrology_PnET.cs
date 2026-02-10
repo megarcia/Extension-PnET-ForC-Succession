@@ -1,4 +1,5 @@
-﻿
+﻿// interface IHydrology, from PnET
+
 namespace Landis.Extension.Succession.PnETForC
 {
     public interface IHydrology
@@ -9,21 +10,10 @@ namespace Landis.Extension.Succession.PnETForC
         double SoilWaterContent { get; } 
 
         /// <summary>
-        /// Get the pressurehead (mmH2O) for the current soil water content
+        /// Depth at which soil is frozen (mm); Rooting zone soil
+        /// below this depth is frozen
         /// </summary>
-        /// <param name="ecoregion"></param>
-        /// <returns></returns>
-        double GetPressureHead(IPnETEcoregionData ecoregion); 
-
-        /// <summary>
-        /// Add mm water to volumetric soil water content (mm/m) (considering activeSoilDepth - frozen soil cannot accept water)
-        /// </summary>
-        /// <param name="soilWaterContent"></param>
-        /// <param name="activeSoilDepth"></param>
-        /// <returns></returns>
-        bool AddWater(double soilWaterContent, double activeSoilDepth); 
-
-        double CalcEvaporation(IPnETEcoregionData Ecoregion, double potentialET);
+        double FrozenSoilDepth { get; } 
 
         /// <summary>
         /// volumetric soil water content (mm/m) of the frozen soil
@@ -31,23 +21,44 @@ namespace Landis.Extension.Succession.PnETForC
         double FrozenSoilWaterContent { get; } 
 
         /// <summary>
-        /// Depth at which soil is frozen (mm); Rooting zone soil below this depth is frozen
+        /// Get the pressure head (mmH2O) for current soil water
+        /// content
         /// </summary>
-        double FrozenSoilDepth { get; } 
+        /// <param name="ecoregion"></param>
+        /// <returns></returns>
+        double GetPressureHead(IPnETEcoregionData ecoregion); 
 
         /// <summary>
-        /// Change FrozenSoilWaterContent
+        /// Add mm water to volumetric soil water content (mm/m)
+        /// (considering activeSoilDepth - frozen soil cannot
+        /// accept water)
         /// </summary>
         /// <param name="soilWaterContent"></param>
+        /// <param name="activeSoilDepth"></param>
         /// <returns></returns>
-        bool SetFrozenSoilWaterContent(double soilWaterContent);  
+        bool AddWater(double soilWaterContent, double activeSoilDepth); 
 
         /// <summary>
-        /// Change FrozenSoilDepth
+        /// Calculate soil surface evaporation
+        /// </summary>
+        /// <param name="ecoregion"></param>
+        /// <param name="potentialET"></param>
+        /// <returns></returns>
+        double CalcEvaporation(IPnETEcoregionData ecoregion, double potentialET);
+
+        /// <summary>
+        /// Change depth of frozen soil
         /// </summary>
         /// <param name="depth"></param>
         /// <returns></returns>
         bool SetFrozenSoilDepth(double depth); 
+
+        /// <summary>
+        /// Change water content of frozen soil
+        /// </summary>
+        /// <param name="soilWaterContent"></param>
+        /// <returns></returns>
+        bool SetFrozenSoilWaterContent(double soilWaterContent);  
 
         /// <summary>
         /// Get the PressureHeadTable object
