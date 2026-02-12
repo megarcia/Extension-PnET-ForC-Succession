@@ -100,7 +100,7 @@ namespace Landis.Extension.Succession.PnETForC
         public static ICore ModelCore;
         private static DateTime StartDate;
         private static Dictionary<ActiveSite, string> SiteOutputNames;
-        public static float FTimeStep;
+        public static double FTimeStep;
         public static bool UsingClimateLibrary;
         private Dictionary<ActiveSite, ICommunity> sitesAndCommunities;
         public static string InitialCommunitiesSpinup;
@@ -108,21 +108,8 @@ namespace Landis.Extension.Succession.PnETForC
         public static int ParallelThreads;
         private static readonly object threadLock = new object();
         private Dictionary<ActiveSite, uint> allKeys;
-        public static float MinFolRatioFactor;
+        public static double MinFolRatioFactor;
         MyClock m = null;
-
-        public void DeathEvent(object sender, DeathEventArgs eventArgs)
-        {
-            ExtensionType disturbanceType = eventArgs.DisturbanceType;
-            if (disturbanceType != null)
-            {
-                ActiveSite site = eventArgs.Site;
-                if (disturbanceType.IsMemberOf("disturbance:fire"))
-                    Reproduction.CheckForPostFireRegen(eventArgs.Cohort, site);
-                else
-                    Reproduction.CheckForResprouting(eventArgs.Cohort, site);
-            }
-        }
 
         string PnETDefaultsFolder
         {
@@ -136,6 +123,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
+        // to be merged with PlugIn in PlugIn_ForC.cs
         public PlugIn() : base(Names.ExtensionName)
         {
             LocalOutput.PnETOutputSites = Names.PnETOutputSites;
@@ -147,6 +135,7 @@ namespace Landis.Extension.Succession.PnETForC
             sitesAndCommunities = new Dictionary<ActiveSite, ICommunity>();
         }
 
+        // to be merged with LoadParameters in PlugIn_ForC.cs
         public override void LoadParameters(string InputParameterFile,
                                             ICore mCore)
         {
@@ -200,7 +189,7 @@ namespace Landis.Extension.Succession.PnETForC
                 foreach (KeyValuePair<string, Parameter<string>> par in genericparameters)
                 {
                     if (Names.parameters.ContainsKey(par.Key))
-                        throw new System.Exception("Parameter " + par.Key + " was provided twice");
+                        throw new Exception("Parameter " + par.Key + " was provided twice");
                     Names.parameters.Add(par.Key, par.Value);
                 }
             }
@@ -222,6 +211,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
+        // to be merged with Initialize in PlugIn_ForC.cs
         public override void Initialize()
         {
             ModelCore.UI.WriteLine("Initializing " + Names.ExtensionName + " version " + typeof(PlugIn).Assembly.GetName().Version);
@@ -238,16 +228,16 @@ namespace Landis.Extension.Succession.PnETForC
                 if (Int32.TryParse(CohortBinSizeParm.Value, out CohortBinSize))
                 {
                     if (CohortBinSize < Timestep)
-                        throw new System.Exception("CohortBinSize cannot be smaller than Timestep.");
+                        throw new Exception("CohortBinSize cannot be smaller than Timestep.");
                     else
                         ModelCore.UI.WriteLine("  Succession timestep = " + Timestep + "; CohortBinSize = " + CohortBinSize + ".");
                 }
                 else
-                    throw new System.Exception("CohortBinSize is not an integer value.");
+                    throw new Exception("CohortBinSize is not an integer value.");
             }
             else
                 CohortBinSize = Timestep;
-            string Parallel = ((Parameter<string>)Names.GetParameter(Names.Parallel)).Value;
+            string Parallel = Names.GetParameter(Names.Parallel).Value;
             if (Parallel == "false")
             {
                 ParallelThreads = 1;
@@ -260,15 +250,15 @@ namespace Landis.Extension.Succession.PnETForC
             }
             else
             {
-                if (Int32.TryParse(Parallel, out ParallelThreads))
+                if (int.TryParse(Parallel, out ParallelThreads))
                 {
                     if (ParallelThreads < 1)
-                        throw new System.Exception("Parallel cannot be < 1.");
+                        throw new Exception("Parallel cannot be < 1.");
                     else
                         ModelCore.UI.WriteLine("  MaxParallelThreads = " + ParallelThreads.ToString() + ".");
                 }
                 else
-                    throw new System.Exception("Parallel must be 'true', 'false' or an integer >= 1.");
+                    throw new Exception("Parallel must be 'true', 'false' or an integer >= 1.");
             }
             this.ThreadCount = ParallelThreads;
             FTimeStep = 1.0F / Timestep;
@@ -296,7 +286,7 @@ namespace Landis.Extension.Succession.PnETForC
             string InitialCommunitiesTxtFile = Names.GetParameter(Names.InitialCommunities).Value;
             string InitialCommunitiesMapFile = Names.GetParameter(Names.InitialCommunitiesMap).Value;
             InitialCommunitiesSpinup = Names.GetParameter(Names.InitialCommunitiesSpinup).Value;
-            MinFolRatioFactor = ((Parameter<float>)Names.GetParameter(Names.MinFolRatioFactor, 0, float.MaxValue)).Value;
+            MinFolRatioFactor = ((Parameter<double>)Names.GetParameter(Names.MinFolRatioFactor, 0, double.MaxValue)).Value;
             bool leafLitterMapFile = Names.TryGetParameter(Names.LeafLitterMap, out Parameter<string> LeafLitterMapFile);
             if (leafLitterMapFile)
                 MapReader.ReadLeafLitterFromMap(LeafLitterMapFile.Value);
@@ -319,14 +309,14 @@ namespace Landis.Extension.Succession.PnETForC
                 SiteVars.FineFuels[site] = SiteVars.LeafLitter[site].Mass;
                 IPnETEcoregionData ecoregion = PnETEcoregionData.GetPnETEcoregion(ModelCore.Ecoregion[site]);
                 IHydrology hydrology = new Hydrology(ecoregion.FieldCapacity);
-                float currentPressureHead = hydrology.PressureHeadTable.CalcSoilWaterPressureHead(hydrology.SoilWaterContent, ecoregion.SoilType);
+                double currentPressureHead = hydrology.PressureHeadTable.CalcSoilWaterPressureHead(hydrology.SoilWaterContent, ecoregion.SoilType);
                 SiteVars.PressureHead[site] = currentPressureHead;
                 SiteVars.FieldCapacity[site] = ecoregion.FieldCapacity / 10.0F; // cm volume (accounts for rooting depth)
                 if (UsingClimateLibrary)
                 {
-                    SiteVars.ExtremeMinTemp[site] = (float)Enumerable
+                    SiteVars.ExtremeMinTemp[site] = (double)Enumerable
                         .Min(Climate.FutureEcoregionYearClimate[ecoregion.Index]
-                        .Min(x => x.MonthlyTemp)) - (float)(3.0 * ecoregion.WinterSTD);
+                        .Min(x => x.MonthlyTemp)) - (double)(3.0 * ecoregion.WinterSTD);
                     if (((Parameter<bool>)Names.GetParameter(Names.SoilIceDepth)).Value)
                     {
                         if (SiteVars.MonthlySoilTemp[site].Count() == 0)
@@ -334,53 +324,53 @@ namespace Landis.Extension.Succession.PnETForC
                             // Calculations for soil temperature, ignoring snow?
                             // MG 20251009 -- replace parts with formulations in 
                             // PnET-Cohort Library, esp. soil thermal conductivity
-                            float ThermalConductivity_theta = SoilT.CalcThermalConductivitySoil_Watts(hydrology.SoilWaterContent, ecoregion.Porosity, ecoregion.SoilType) / Constants.Convert_kJperday_to_Watts;
-                            float D = ThermalConductivity_theta / Hydrology_SaxtonRawls.GetCTheta(ecoregion.SoilType);  //m2/day
-                            float Dmms = D * 1000000F / Constants.SecondsPerDay; // mm2/s
-                            float d = (float)Math.Sqrt(2 * Dmms / Constants.omega);
-                            float maxDepth = ecoregion.RootingDepth + ecoregion.LeakageFrostDepth;
-                            float bottomFreezeDepth = maxDepth / 1000;
+                            double ThermalConductivity_theta = SoilT.CalcThermalConductivitySoil_Watts(hydrology.SoilWaterContent, ecoregion.Porosity, ecoregion.SoilType) / Constants.Convert_kJperday_to_Watts;
+                            double D = ThermalConductivity_theta / Hydrology_SaxtonRawls.GetCTheta(ecoregion.SoilType);  //m2/day
+                            double Dmms = D * 1000000.0 / Constants.SecondsPerDay; // mm2/s
+                            double d = (double)Math.Sqrt(2 * Dmms / Constants.omega);
+                            double maxDepth = ecoregion.RootingDepth + ecoregion.LeakageFrostDepth;
+                            double bottomFreezeDepth = maxDepth / 1000.0;
                             foreach (var year in Climate.SpinupEcoregionYearClimate[ecoregion.Index])
                             {
                                 List<double> monthlyAirT = Climate.SpinupEcoregionYearClimate[ecoregion.Index][year.CalendarYear].MonthlyTemp;
                                 double annualAirTemp = Climate.SpinupEcoregionYearClimate[ecoregion.Index][year.CalendarYear].MeanAnnualTemperature;
                                 List<double> monthlyPrecip = Climate.SpinupEcoregionYearClimate[ecoregion.Index][year.CalendarYear].MonthlyPrecip;
-                                SortedList<float, float> depthTempDict = new SortedList<float, float>();
-                                SiteVars.MonthlyPressureHead[site] = new float[monthlyAirT.Count()];
-                                SiteVars.MonthlySoilTemp[site] = new SortedList<float, float>[monthlyAirT.Count()];
+                                SortedList<double, double> depthTempDict = new SortedList<double, double>();
+                                SiteVars.MonthlyPressureHead[site] = new double[monthlyAirT.Count()];
+                                SiteVars.MonthlySoilTemp[site] = new SortedList<double, double>[monthlyAirT.Count()];
                                 for (int m = 0; m < monthlyAirT.Count(); m++)
                                 {
                                     SiteVars.MonthlyPressureHead[site][m] = currentPressureHead;
-                                    float DRz_snow = 1F; // Assume no snow in initialization
+                                    double DRz_snow = 1.0; // Assume no snow in initialization
                                     // Damping ratio for moss - adapted from Kang et al. (2000) and Liang et al. (2014)
-                                    float thermalDamping_Moss = (float)Math.Sqrt(2.0F * Constants.ThermalDiffusivityMoss / Constants.omega);
-                                    float DRz_moss = (float)Math.Exp(-1.0F * ecoregion.MossDepth * thermalDamping_Moss);
+                                    double thermalDamping_Moss = (double)Math.Sqrt(2.0 * Constants.ThermalDiffusivityMoss / Constants.omega);
+                                    double DRz_moss = (double)Math.Exp(-1.0 * ecoregion.MossDepth * thermalDamping_Moss);
                                     // Fill the tempDict with values
-                                    float testDepth = 0F;
-                                    float zTemp = 0F;
+                                    double testDepth = 0.0;
+                                    double zTemp = 0.0;
                                     int month = m + 1;
                                     int maxMonth = 0;
                                     int minMonth = 0;
                                     int mCount = 0;
-                                    float tSum = 0F;
-                                    float pSum = 0F;
-                                    float tMax = float.MinValue;
-                                    float tMin = float.MaxValue;
+                                    double tSum = 0.0;
+                                    double pSum = 0.0;
+                                    double tMax = double.MinValue;
+                                    double tMin = double.MaxValue;
                                     if (m < 12)
                                     {
                                         mCount = Math.Min(12, monthlyAirT.Count());
                                         foreach (int z in Enumerable.Range(0, mCount))
                                         {
-                                            tSum += (float)monthlyAirT[z];
-                                            pSum += (float)monthlyPrecip[z];
+                                            tSum += (double)monthlyAirT[z];
+                                            pSum += (double)monthlyPrecip[z];
                                             if (monthlyAirT[z] > tMax)
                                             {
-                                                tMax = (float)monthlyAirT[z];
+                                                tMax = (double)monthlyAirT[z];
                                                 maxMonth = z + 1;
                                             }
                                             if (monthlyAirT[z] < tMin)
                                             {
-                                                tMin = (float)monthlyAirT[z];
+                                                tMin = (double)monthlyAirT[z];
                                                 minMonth = z + 1;
                                             }
                                         }
@@ -390,43 +380,43 @@ namespace Landis.Extension.Succession.PnETForC
                                         mCount = 12;
                                         foreach (int z in Enumerable.Range(m - 11, 12))
                                         {
-                                            tSum += (float)monthlyAirT[z];
-                                            pSum += (float)monthlyPrecip[z];
-                                            if ((float)monthlyAirT[z] > tMax)
+                                            tSum += (double)monthlyAirT[z];
+                                            pSum += (double)monthlyPrecip[z];
+                                            if ((double)monthlyAirT[z] > tMax)
                                             {
-                                                tMax = (float)monthlyAirT[z];
+                                                tMax = (double)monthlyAirT[z];
                                                 maxMonth = month + z;
                                             }
-                                            if ((float)monthlyAirT[z] < tMin)
+                                            if ((double)monthlyAirT[z] < tMin)
                                             {
-                                                tMin = (float)monthlyAirT[z];
+                                                tMin = (double)monthlyAirT[z];
                                                 minMonth = month + z;
                                             }
                                         }
                                     }
-                                    float annualTavg = tSum / mCount;
-                                    float annualPcpAvg = pSum / mCount;
-                                    float tAmplitude = (tMax - tMin) / 2;
+                                    double annualTavg = tSum / mCount;
+                                    double annualPcpAvg = pSum / mCount;
+                                    double tAmplitude = (tMax - tMin) / 2;
                                     // Calculate depth to bottom of ice lens with FrostDepth
                                     while (testDepth <= bottomFreezeDepth)
                                     {
-                                        float DRz = (float)Math.Exp(-1.0F * testDepth * d * ecoregion.FrostFactor); // adapted from Kang et al. (2000) and Liang et al. (2014); added FrostFactor for calibration
+                                        double DRz = Math.Exp(-1.0F * testDepth * d * ecoregion.FrostFactor); // adapted from Kang et al. (2000) and Liang et al. (2014); added FrostFactor for calibration
                                         // Calculate lag months from both max and min temperature months
                                         int lagMax = month + (3 - maxMonth);
                                         int lagMin = month + (minMonth - 5);
                                         if (minMonth >= 9)
                                             lagMin = month + (minMonth - 12 - 5);
-                                        float lagAvg = (float)(lagMax + lagMin) / 2f;
-                                        zTemp = (float)(annualAirTemp + tAmplitude * DRz_snow * DRz_moss * DRz * Math.Sin(Constants.omega * lagAvg - testDepth / d));
+                                        double lagAvg = (lagMax + lagMin) / 2.0;
+                                        zTemp = annualAirTemp + tAmplitude * DRz_snow * DRz_moss * DRz * Math.Sin(Constants.omega * lagAvg - testDepth / d);
                                         depthTempDict[testDepth] = zTemp;
-                                        if (testDepth == 0f)
-                                            testDepth = 0.10f;
-                                        else if (testDepth == 0.10f)
-                                            testDepth = 0.25f;
+                                        if (testDepth == 0.0)
+                                            testDepth = 0.10;
+                                        else if (testDepth == 0.10)
+                                            testDepth = 0.25;
                                         else
-                                            testDepth += 0.25F;
+                                            testDepth += 0.25;
                                     }
-                                    SiteVars.MonthlySoilTemp[site][m] = SoilT.CalcMonthlySoilTemps(depthTempDict, ecoregion, 0, 0, hydrology, (float)monthlyAirT[m]);
+                                    SiteVars.MonthlySoilTemp[site][m] = SoilT.CalcMonthlySoilTemps(depthTempDict, ecoregion, 0, 0, hydrology, (double)monthlyAirT[m]);
                                 }
                             }
                         }
@@ -438,6 +428,7 @@ namespace Landis.Extension.Succession.PnETForC
             ModelCore.RegisterSiteVar(PnETCohorts, "Succession.CohortsPnET");
         }
 
+        // no equivalent function in PlugIn_ForC.cs
         /// <summary>
         /// This must be called *after* PnETPnETEcoregionData.Initialize() has been called
         /// </summary>
@@ -452,7 +443,7 @@ namespace Landis.Extension.Succession.PnETForC
                 Climate.Initialize(climateLibraryFileName.Value, false, ModelCore);
                 ClimateRegionData.Initialize();
             }
-            string PARunits = ((Parameter<string>)Names.GetParameter(Names.PARunits)).Value;
+            string PARunits = Names.GetParameter(Names.PARunits).Value;
             if (PARunits == "umol")
                 ModelCore.UI.WriteLine("Using PAR units of umol/m2/s.");
             else if (PARunits == "W/m2")
@@ -461,6 +452,48 @@ namespace Landis.Extension.Succession.PnETForC
                 throw new ApplicationException(string.Format("PARunits units are not 'umol' or 'W/m2'"));
         }
 
+        // no equivalent function in PlugIn_ForC.cs
+        /// <summary>
+        /// Reads the initial communities map, finds
+        /// all unique site keys, and sets aside sites 
+        /// to process first and second
+        /// </summary>
+        private void ProcessInitialCommunitiesMap(string initialCommunitiesMap, 
+                                                  IDataset communities,
+                                                  ref List<ActiveSite> processFirst,
+                                                  ref List<ActiveSite> processSecond)
+        {
+            IInputRaster<UIntPixel> map = ModelCore.OpenRaster<UIntPixel>(initialCommunitiesMap);
+            Dictionary<uint, ActiveSite> uniqueKeys = new Dictionary<uint, ActiveSite>();
+            using (map)
+            {
+                UIntPixel pixel = map.BufferPixel;
+                foreach (Site site in ModelCore.Landscape.AllSites)
+                {
+                    map.ReadBufferPixel();
+                    uint mapCode = pixel.MapCode.Value;
+                    if (! site.IsActive)
+                        continue;
+                    ActiveSite activeSite = (ActiveSite)site;
+                    var initialCommunity = communities.Find(mapCode);
+                    if (initialCommunity == null)
+                        throw new ApplicationException(string.Format("Unknown map code for initial community: {0}", mapCode));
+                    sitesAndCommunities.Add(activeSite, initialCommunity);
+                    uint key = Library.PnETCohorts.SiteCohorts.CalcKey((ushort)initialCommunity.MapCode, Globals.ModelCore.Ecoregion[site].MapCode);
+                    if (! uniqueKeys.ContainsKey(key))
+                    {
+                        uniqueKeys.Add(key, activeSite);
+                        processFirst.Add(activeSite);
+                    }
+                    else
+                        processSecond.Add(activeSite);
+                    if (! allKeys.ContainsKey(activeSite))
+                        allKeys.Add(activeSite, key);
+                }
+            }
+        }
+
+        // to be merged with AddNewCohort in PlugIn_ForC.cs
         public void AddNewCohort(ISpecies species,
                                  ActiveSite site,
                                  string reproductionType,
@@ -510,12 +543,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
-        public bool MaturePresent(ISpecies species, ActiveSite site)
-        {
-            bool IsMaturePresent = SiteVars.SiteCohorts[site].IsMaturePresent(species);
-            return IsMaturePresent;
-        }
-
+        // to be merged with InitializeSite in PlugIn_ForC.cs
         protected override void InitializeSite(ActiveSite site)
         {
             lock (threadLock)
@@ -542,6 +570,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
+        // to be merged with InitializeSites in PlugIn_ForC.cs
         public override void InitializeSites(string initialCommunitiesText,
                                              string initialCommunitiesMap,
                                              ICore modelCore)
@@ -587,6 +616,23 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
+        // to be merged with Run in PlugIn_ForC.cs
+        public override void Run()
+        {
+            if (Timestep > 0)
+                ClimateRegionData.SetAllEcoregionsFutureAnnualClimate(ModelCore.CurrentTime);
+            base.Run();
+        }
+
+        // to be merged with IsMaturePresent in PlugIn_ForC.cs
+        public bool MaturePresent(ISpecies species,
+                                  ActiveSite site)
+        {
+            bool IsMaturePresent = SiteVars.SiteCohorts[site].IsMaturePresent(species);
+            return IsMaturePresent;
+        }
+
+        // to be merged with AgeCohorts in PlugIn_ForC.cs
         protected override void AgeCohorts(ActiveSite site,
                                            ushort years,
                                            int? timestep)
@@ -601,27 +647,7 @@ namespace Landis.Extension.Succession.PnETForC
             Date = EndDate;
         }
 
-        // Required function - not used within PnET-Succession
-        public override byte ComputeShade(ActiveSite site)
-        {
-            return 0;
-        }
-
-        public override void Run()
-        {
-            if (Timestep > 0)
-                ClimateRegionData.SetAllEcoregionsFutureAnnualClimate(ModelCore.CurrentTime);
-            base.Run();
-        }
-
-        // This is a Delegate method to base succession.
-        // Not used within PnET-Succession
-        public bool SufficientResources(ISpecies species,
-                                        ActiveSite site)
-        {
-            return true;
-        }
-
+        // NOT to be merged with CanEstablish in PlugIn_ForC.cs
         /// <summary>
         /// Determines if a species can establish on a site.
         /// This is a Delegate method to base succession.
@@ -640,55 +666,51 @@ namespace Landis.Extension.Succession.PnETForC
             return Establish;
         }
 
+        // Required function - not used within PnET-Succession
+        // (MG 20260212: but is used in ForC-Succession)
+        public override byte ComputeShade(ActiveSite site)
+        {
+            return 0;
+        }
+
+        // This is a Delegate method to base succession.
+        // Not used within PnET-Succession
+        // (MG 20260212: but it certainly should be)
+        public bool SufficientResources(ISpecies species,
+                                        ActiveSite site)
+        {
+            return true;
+        }
+
+        // no equivalent function in PlugIn_ForC.cs
         /// <summary>
         /// Determines if a species can be planted on a site 
         /// (all conditions are satisfied).
-        /// This is a Delegate method to base succession.
+        /// This is a Delegate method to base succession. 
         /// </summary>
+        // (MG 20260212: obviously inconsequential, but 
+        //               plantings can fail...)
         public bool PlantingEstablish(ISpecies species,
                                       ActiveSite site)
         {
             return true;
         }
 
-        /// <summary>
-        /// Reads the initial communities map, finds all unique site keys, and sets aside sites to process first and second
-        /// </summary>
-        private void ProcessInitialCommunitiesMap(string initialCommunitiesMap, 
-                                                  IDataset communities,
-                                                  ref List<ActiveSite> processFirst,
-                                                  ref List<ActiveSite> processSecond)
+        // merge with CohortMortality in PlugIn_ForC.cs ???
+        public void DeathEvent(object sender, DeathEventArgs eventArgs)
         {
-            IInputRaster<UIntPixel> map = ModelCore.OpenRaster<UIntPixel>(initialCommunitiesMap);
-            Dictionary<uint, ActiveSite> uniqueKeys = new Dictionary<uint, ActiveSite>();
-            using (map)
+            ExtensionType disturbanceType = eventArgs.DisturbanceType;
+            if (disturbanceType != null)
             {
-                UIntPixel pixel = map.BufferPixel;
-                foreach (Site site in ModelCore.Landscape.AllSites)
-                {
-                    map.ReadBufferPixel();
-                    uint mapCode = pixel.MapCode.Value;
-                    if (! site.IsActive)
-                        continue;
-                    ActiveSite activeSite = (ActiveSite)site;
-                    var initialCommunity = communities.Find(mapCode);
-                    if (initialCommunity == null)
-                        throw new ApplicationException(string.Format("Unknown map code for initial community: {0}", mapCode));
-                    sitesAndCommunities.Add(activeSite, initialCommunity);
-                    uint key = Library.PnETCohorts.SiteCohorts.CalcKey((ushort)initialCommunity.MapCode, Globals.ModelCore.Ecoregion[site].MapCode);
-                    if (! uniqueKeys.ContainsKey(key))
-                    {
-                        uniqueKeys.Add(key, activeSite);
-                        processFirst.Add(activeSite);
-                    }
-                    else
-                        processSecond.Add(activeSite);
-                    if (! allKeys.ContainsKey(activeSite))
-                        allKeys.Add(activeSite, key);
-                }
+                ActiveSite site = eventArgs.Site;
+                if (disturbanceType.IsMemberOf("disturbance:fire"))
+                    Reproduction.CheckForPostFireRegen(eventArgs.Cohort, site);
+                else
+                    Reproduction.CheckForResprouting(eventArgs.Cohort, site);
             }
         }
 
+        // same as equivalent function in PlugIn_ForC.cs
         public override void AddCohortData()
         {
             // CUSTOM DYNAMIC PARAMETERS GO HERE

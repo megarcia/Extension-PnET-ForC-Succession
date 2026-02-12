@@ -42,11 +42,21 @@ namespace Landis.Extension.Succession.PnETForC
         private static List<SiteCohortToAdd> siteCohortsToAdd;
         private List<ILight> sufficientLight;
 
+        public static ICore ModelCore
+        {
+            get
+            {
+                return modelCore;
+            }
+        }
+       
+        // to be merged with PlugIn in PlugIn_PnET.cs
         public PlugIn() : base(Names.ExtensionName)
         {
             siteCohortsToAdd = new List<SiteCohortToAdd>();
         }
 
+        // to be merged with LoadParameters in PlugIn_PnET.cs
         public override void LoadParameters(string dataFile, ICore mCore)
         {
             modelCore = mCore;
@@ -70,14 +80,7 @@ namespace Landis.Extension.Succession.PnETForC
             SiteVars.Initialize(inputParams, inputDisturbanceMatrixParams);
         }
 
-        public static ICore ModelCore
-        {
-            get
-            {
-                return modelCore;
-            }
-        }
-       
+        // to be merged with Initialize in PlugIn_PnET.cs
         public override void Initialize()
         {
             Timestep = inputParams.Timestep;
@@ -107,6 +110,51 @@ namespace Landis.Extension.Succession.PnETForC
             InitializeSites(inputParams.InitialCommunities, inputParams.InitialCommunitiesMap, modelCore);
         }
 
+        // to be merged with InitializeSite in PlugIn_PnET.cs
+        protected override void InitializeSite(ActiveSite site)
+        {
+            SiteBiomass initSiteBiomass = SiteBiomass.CalcInitSiteBiomass(site, initialCommunity);
+            SiteVars.Cohorts[site] = SiteBiomass.Clone(initSiteBiomass.Cohorts);
+            // Note: we need this both here and in SiteVars.Initialize()?
+            SiteVars.soilC[site] = new SoilC(initSiteBiomass.soilC);
+            SiteVars.SoilOrganicMatterC[site] = initSiteBiomass.SoilOrganicMatterC;            
+            SiteVars.WoodyDebris[site].Mass = initSiteBiomass.WoodyDebris;
+            SiteVars.LeafLitter[site].Mass = initSiteBiomass.LeafLitter;
+            SiteVars.WoodyDebrisDecayRate[site] = initSiteBiomass.WoodyDebrisDecayRate;
+            SiteVars.LeafLitterDecayRate[site] = initSiteBiomass.LeafLitterDecayRate;
+            SiteVars.soilC[site].BiomassOutput(site, 1);
+        }
+
+        // to be merged with InitializeSites in PlugIn_PnET.cs
+        public override void InitializeSites(string initialCommunitiesText,
+                                             string initialCommunitiesMap,
+                                             ICore modelCore)
+        {
+            ModelCore.UI.WriteLine("   Loading initial communities from file \"{0}\" ...", initialCommunitiesText);
+            DatasetParser parser = new DatasetParser(Timestep, ModelCore.Species, additionalCohortParameters, initialCommunitiesText);
+            IDataset communities = Landis.Data.Load<IDataset>(initialCommunitiesText, parser);
+            ModelCore.UI.WriteLine("   Reading initial communities map \"{0}\" ...", initialCommunitiesMap);
+            IInputRaster<UIntPixel> map;
+            map = ModelCore.OpenRaster<UIntPixel>(initialCommunitiesMap);
+            using (map)
+            {
+                UIntPixel pixel = map.BufferPixel;
+                foreach (Site site in ModelCore.Landscape.AllSites)
+                {
+                    map.ReadBufferPixel();
+                    uint mapCode = pixel.MapCode.Value;
+                    if (!site.IsActive)
+                        continue;
+                    ActiveSite activeSite = (ActiveSite)site;
+                    initialCommunity = communities.Find(mapCode);
+                    if (initialCommunity == null)
+                        throw new ApplicationException(string.Format("Unknown map code for initial community: {0}", mapCode));
+                    InitializeSite(activeSite);
+                }
+            }
+        }
+
+        // to be merged with Run in PlugIn_PnET.cs
         public override void Run()
         {
             if (ModelCore.CurrentTime > 0 && SiteVars.CapacityReduction == null)
@@ -125,61 +173,17 @@ namespace Landis.Extension.Succession.PnETForC
             siteCohortsToAdd.Clear();
         }
 
-        protected override void InitializeSite(ActiveSite site)
+        // to be merged with IsMaturePresent in PlugIn_PnET.cs
+        /// <summary>
+        /// Determines if there is a mature cohort at a site.  
+        /// </summary>
+        public bool IsMaturePresent(ISpecies species,
+                                    ActiveSite site)
         {
-            SiteBiomass initSiteBiomass = SiteBiomass.CalcInitSiteBiomass(site, initialCommunity);
-            SiteVars.Cohorts[site] = SiteBiomass.Clone(initSiteBiomass.Cohorts);
-            // Note: we need this both here and in SiteVars.Initialize()?
-            SiteVars.soilC[site] = new SoilC(initSiteBiomass.soilC);
-            SiteVars.SoilOrganicMatterC[site] = initSiteBiomass.SoilOrganicMatterC;            
-            SiteVars.WoodyDebris[site].Mass = initSiteBiomass.WoodyDebris;
-            SiteVars.LeafLitter[site].Mass = initSiteBiomass.LeafLitter;
-            SiteVars.WoodyDebrisDecayRate[site] = initSiteBiomass.WoodyDebrisDecayRate;
-            SiteVars.LeafLitterDecayRate[site] = initSiteBiomass.LeafLitterDecayRate;
-            SiteVars.soilC[site].BiomassOutput(site, 1);
+            return SiteVars.Cohorts[site].IsMaturePresent(species);
         }
 
-        public void CohortMortality(object sender,
-                                    MortalityEventArgs eventArgs)
-        {
-            ExtensionType disturbanceType = eventArgs.DisturbanceType;
-            ActiveSite site = eventArgs.Site;
-            ICohort cohort = eventArgs.Cohort;
-            ISpecies species = cohort.Species;
-            double foliar = (double)cohort.ComputeNonWoodyBiomass(site);
-            double wood = (double)cohort.Data.Biomass - foliar;
-            if (eventArgs.Reduction >= 1)
-            {
-                if (disturbanceType == null)
-                {
-                    double totalRoot = Roots.CalcRootBiomass(site, species, cohort.Data.Biomass);
-                    SiteVars.soilC[site].CollectBiomassMortality(species, cohort.Data.Age, wood, foliar, 0);
-                    SiteVars.soilC[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRootBiomass, Roots.FineRootBiomass, 1);
-                    if (site.DataIndex == 1)
-                        ModelCore.UI.WriteLine("{0} Roots from dying cohort {1}", ModelCore.CurrentTime, Roots.FineRootBiomass);
-                }
-                if (disturbanceType != null)
-                {
-                    Disturbed[site] = true;
-                    if (disturbanceType.IsMemberOf("disturbance:fire"))
-                        Reproduction.CheckForPostFireRegen(eventArgs.Cohort, site);
-                    else
-                        Reproduction.CheckForResprouting(eventArgs.Cohort, site);
-                    SiteVars.soilC[site].DisturbanceImpactsBiomass(site, cohort.Species, cohort.Data.Age, wood, foliar, disturbanceType.Name, 0);
-                }
-            }
-            else
-            {
-                float mortality = eventArgs.Reduction;
-                float fractionPartialMortality = mortality / (float)cohort.Data.Biomass;
-                double foliarInput = foliar * fractionPartialMortality;
-                double woodInput = wood * fractionPartialMortality;
-                SiteVars.soilC[site].DisturbanceImpactsBiomass(site, cohort.Species, cohort.Data.Age, woodInput, foliarInput, disturbanceType.Name, 0);
-                Disturbed[site] = true;
-            }
-            return;
-        }
-
+        // to be merged with AddNewCohort in PlugIn_PnET.cs
         /// <summary>
         /// Add a new cohort to a site. Cohort will not be officially 
         /// added to site until after growth phase.
@@ -195,6 +199,8 @@ namespace Landis.Extension.Succession.PnETForC
             siteCohortsToAdd.Add(new SiteCohortToAdd(site, species, newBiomass));
         }
 
+        // to be merged with AgeCohort in PlugIn_PnET.cs
+        // and possibly with GrowCohorts below
         protected override void AgeCohorts(ActiveSite site,
                                            ushort years,
                                            int? successionTimestep)
@@ -202,6 +208,7 @@ namespace Landis.Extension.Succession.PnETForC
             GrowCohorts(site, years, successionTimestep.HasValue);
         }
 
+        // merge with AgeCohorts above, as in PlugIn_PnET.cs ???
         /// <summary>
         /// Grows all cohorts at a site for a specified number of years.  The
         /// dead pools at the site also decompose for the given time period.
@@ -238,6 +245,7 @@ namespace Landis.Extension.Succession.PnETForC
             }
         }
 
+        // no equivalent function in PlugIn_PnET.cs
         private static void AddNewCohortsPostGrowth(ActiveSite site)
         {
             var toAdd = siteCohortsToAdd.Where(x => x.site == site).ToList();
@@ -287,9 +295,10 @@ namespace Landis.Extension.Succession.PnETForC
             return shadeClass;
         }
 
+        // NOT to be merged with Establish in PlugIn_PnET.cs
         /// <summary>
-        /// Determines if a species can establish on a site according
-        /// to a random value threshold.
+        /// Determines if a species can establish on a site
+        /// according to a random value threshold.
         /// </summary>
         public bool CanEstablish(ISpecies species,
                                  ActiveSite site)
@@ -299,43 +308,49 @@ namespace Landis.Extension.Succession.PnETForC
             return modelCore.GenerateUniform() < establishProbability;
         }
 
-        /// <summary>
-        /// Determines if there is a mature cohort at a site.  
-        /// </summary>
-        public bool IsMaturePresent(ISpecies species,
-                                    ActiveSite site)
+        // merge with DeathEvent in PlugIn_PnET.cs ???
+        public void CohortMortality(object sender,
+                                    MortalityEventArgs eventArgs)
         {
-            return SiteVars.Cohorts[site].IsMaturePresent(species);
-        }
-
-        public override void InitializeSites(string initialCommunitiesText,
-                                             string initialCommunitiesMap,
-                                             ICore modelCore)
-        {
-            ModelCore.UI.WriteLine("   Loading initial communities from file \"{0}\" ...", initialCommunitiesText);
-            DatasetParser parser = new DatasetParser(Timestep, ModelCore.Species, additionalCohortParameters, initialCommunitiesText);
-            IDataset communities = Landis.Data.Load<IDataset>(initialCommunitiesText, parser);
-            ModelCore.UI.WriteLine("   Reading initial communities map \"{0}\" ...", initialCommunitiesMap);
-            IInputRaster<UIntPixel> map;
-            map = ModelCore.OpenRaster<UIntPixel>(initialCommunitiesMap);
-            using (map)
+            ExtensionType disturbanceType = eventArgs.DisturbanceType;
+            ActiveSite site = eventArgs.Site;
+            ICohort cohort = eventArgs.Cohort;
+            ISpecies species = cohort.Species;
+            double foliar = (double)cohort.ComputeNonWoodyBiomass(site);
+            double wood = (double)cohort.Data.Biomass - foliar;
+            if (eventArgs.Reduction >= 1)
             {
-                UIntPixel pixel = map.BufferPixel;
-                foreach (Site site in ModelCore.Landscape.AllSites)
+                if (disturbanceType == null)
                 {
-                    map.ReadBufferPixel();
-                    uint mapCode = pixel.MapCode.Value;
-                    if (!site.IsActive)
-                        continue;
-                    ActiveSite activeSite = (ActiveSite)site;
-                    initialCommunity = communities.Find(mapCode);
-                    if (initialCommunity == null)
-                        throw new ApplicationException(string.Format("Unknown map code for initial community: {0}", mapCode));
-                    InitializeSite(activeSite);
+                    double totalRoot = Roots.CalcRootBiomass(site, species, cohort.Data.Biomass);
+                    SiteVars.soilC[site].CollectBiomassMortality(species, cohort.Data.Age, wood, foliar, 0);
+                    SiteVars.soilC[site].CollectBiomassMortality(species, cohort.Data.Age, Roots.CoarseRootBiomass, Roots.FineRootBiomass, 1);
+                    if (site.DataIndex == 1)
+                        ModelCore.UI.WriteLine("{0} Roots from dying cohort {1}", ModelCore.CurrentTime, Roots.FineRootBiomass);
+                }
+                if (disturbanceType != null)
+                {
+                    Disturbed[site] = true;
+                    if (disturbanceType.IsMemberOf("disturbance:fire"))
+                        Reproduction.CheckForPostFireRegen(eventArgs.Cohort, site);
+                    else
+                        Reproduction.CheckForResprouting(eventArgs.Cohort, site);
+                    SiteVars.soilC[site].DisturbanceImpactsBiomass(site, cohort.Species, cohort.Data.Age, wood, foliar, disturbanceType.Name, 0);
                 }
             }
+            else
+            {
+                float mortality = eventArgs.Reduction;
+                float fractionPartialMortality = mortality / (float)cohort.Data.Biomass;
+                double foliarInput = foliar * fractionPartialMortality;
+                double woodInput = wood * fractionPartialMortality;
+                SiteVars.soilC[site].DisturbanceImpactsBiomass(site, cohort.Species, cohort.Data.Age, woodInput, foliarInput, disturbanceType.Name, 0);
+                Disturbed[site] = true;
+            }
+            return;
         }
 
+        // same as equivalent function in PlugIn_PnET.cs
         /// <summary>
         /// NEW DYNAMIC COHORT PARAMETERS GO HERE
         /// </summary>
