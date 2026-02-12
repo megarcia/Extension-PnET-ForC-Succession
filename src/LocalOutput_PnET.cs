@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿// from PnET-Succession extension
+
+// NOTE: File --> System.IO
+// NOTE: IOException --> System.IO
+// NOTE: StreamWriter --> System.IO
+
+using System.Collections.Generic;
 using System.IO;
 
 namespace Landis.Extension.Succession.PnETForC 
